@@ -2,7 +2,7 @@ import { Avatar } from "../components";
 
 export default function Home() {
   return (
-    <div className="Home">
+    <div className="Home page">
       <h1>Home</h1>
       <h2>Idle</h2>
       <div className="tmp-grid">
