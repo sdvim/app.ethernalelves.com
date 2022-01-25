@@ -1,0 +1,30 @@
+.Avatar {
+  width: 4em;
+  border: 3px solid;
+
+  &:hover {
+    background: rgba(limegreen, 0.25);
+    box-shadow: 0 0 1em 0.125em limegreen;
+    cursor: pointer;
+  }
+
+  &__image {
+    width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__bar {
+    border-top: 3px solid;
+    width: 100%;
+    height: 0.25em;
+  }
+
+  &__health {
+    background: limegreen;
+  }
+
+  &__experience {
+    background: purple;
+  }
+}
