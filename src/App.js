@@ -9,7 +9,6 @@ import {
   Route,
   NavLink
 } from "react-router-dom";
-import './App.scss';
 
 function App() {
   return (
