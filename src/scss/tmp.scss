@@ -1,0 +1,10 @@
+// temporary classes that should be refactored asap
+
+.tmp {
+  &-grid {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 4 * 4em + 3;
+  }
+}
