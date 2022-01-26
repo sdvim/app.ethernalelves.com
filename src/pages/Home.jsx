@@ -58,6 +58,9 @@ export default function Home() {
       if (reducedSelection.length === 0) {
         setSelectedSection(null);
       }
+    } else if (selection.length === MAX_SELECTION_SIZE) {
+      const shiftedSelection = selection.slice(1);
+      setSelection([...shiftedSelection, avatarId]);
     } else {
       setSelection([...selection, avatarId]);
     }
