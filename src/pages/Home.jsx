@@ -74,7 +74,7 @@ export default function Home() {
     const buttonLabel = `${section.action} ${selectionCount}`;
     return (
       <React.Fragment key={sectionIndex}>
-        <div class="tmp-flex">
+        <div className="tmp-flex">
           <h2 key={`${section.title}`}>{ section.title }</h2>
           { isSelected && <button>{ buttonLabel }</button> }
         </div>
