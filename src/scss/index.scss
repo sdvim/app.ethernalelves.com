@@ -21,6 +21,7 @@
 html {
   box-sizing: border-box;
   font-size: 16px;
+  overflow-x: hidden;
 }
 
 *,
@@ -35,6 +36,7 @@ body {
   font-family: 'Pixel Operator Mono', monospace;
   font-smooth: never;
   -webkit-font-smoothing : none;
+  overflow-x: hidden;
 }
 
 code {
