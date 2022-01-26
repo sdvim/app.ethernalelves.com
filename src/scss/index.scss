@@ -1,17 +1,26 @@
 @import 'tmp';
 
 @font-face {
-  font-family: 'PixelMordred';
-  src: url('/font/PixelMordred.woff2') format('woff2'),
-      url('/font/PixelMordred.woff') format('woff');
+  font-family: 'Pixel Operator Mono';
+  src: url('/font/PixelOperatorMono.woff2') format('woff2'),
+      url('/font/PixelOperatorMono.woff') format('woff');
   font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pixel Operator Mono';
+  src: url('/font/PixelOperatorMono-Bold.woff2') format('woff2'),
+      url('/font/PixelOperatorMono-Bold.woff') format('woff');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
 html {
   box-sizing: border-box;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 *,
@@ -22,7 +31,8 @@ html {
 
 body {
   margin: 0;
-  font-family: PixelMordred, monospace;
+  line-height: 1;
+  font-family: 'Pixel Operator Mono', monospace;
   font-smooth: never;
   -webkit-font-smoothing : none;
 }
@@ -32,6 +42,23 @@ code {
     monospace;
 }
 
+button {
+  border: 6px solid;
+  font: inherit;
+  font-weight: bold;
+  padding: 0;
+  line-height: 0;
+  padding: 1em;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
 nav {
   background: whitesmoke;
   display: flex;
@@ -39,13 +66,15 @@ nav {
   position: fixed;
   bottom: 0;
   width: 100%;
-  font-size: 0.8em;
+  font-size: 1em;
+  text-transform: uppercase;
 
   a {
     flex: 1;
     text-decoration: none;
     padding: 0.2em;
     color: currentColor;
+    font-weight: bold;
     
     &::before {
       content: '\2735';
