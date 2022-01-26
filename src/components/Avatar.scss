@@ -2,7 +2,7 @@
   border: 3px solid lightgrey;
   position: relative;
 
-  &:hover {
+  &--is-selected {
     background: rgba(limegreen, 0.25);
     box-shadow: 0 0 1em 0.125em limegreen;
     cursor: pointer;
@@ -12,6 +12,7 @@
     width: 100%;
     object-fit: contain;
     display: block;
+    pointer-events: none;
   }
 
   &__bar {
