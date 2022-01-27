@@ -92,16 +92,20 @@ export default function Home() {
         </div>
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
           {
-            section.elves.map((data, index) =>
-              <Avatar
-                key={`${sectionIndex}-${index}`}
-                data-id={data.id}
-                data-action={data.action}
-                isSelected={data.isSelected}
-                level={data.level}
-                onClick={() => handleAvatarClick(sectionIndex, data.id)}
-              />
-            )
+            section.elves.map((data, index) => {
+              const selectionIndex = data.isSelected
+                ? selection.indexOf(data.id)
+                : -1
+              return (
+                <Avatar
+                  key={`${sectionIndex}-${index}`}
+                  isSelected={data.isSelected}
+                  selectionIndex={selectionIndex}
+                  level={data.level}
+                  onClick={() => handleAvatarClick(sectionIndex, data.id)}
+                />
+              );
+            })
           }
         </div>
       </React.Fragment>
