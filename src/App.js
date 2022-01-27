@@ -1,7 +1,7 @@
-import Balance from "./pages/Balance";
 import Home from "./pages/Home";
 import Help from "./pages/Help";
 import Profile from "./pages/Profile";
+import { Provider, useSetState, useTrackedState } from "./Store";
 
 import {
   BrowserRouter as Router,
@@ -10,22 +10,32 @@ import {
   NavLink
 } from "react-router-dom";
 
-function App() {
+const App = () => {
   return (
-    <Router className="App">
-      <Routes>
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/balance" element={<Balance />} />
-        <Route path="/help" element={<Help />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/profile">Profile</NavLink>
-        <NavLink to="/balance">Miren</NavLink>
-        <NavLink to="/help">Help</NavLink>
-      </nav>
-    </Router>
+    <Provider>
+      <Router className="App">
+        <Routes>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <Nav />
+      </Router>
+    </Provider>
+  );
+}
+
+const Nav = () => {
+  const setState = useSetState();
+  const state = useTrackedState();
+  const profileLabel = `${state.ren} $REN`;
+
+  return (
+    <nav>
+      <NavLink to="/">Home</NavLink>
+      <NavLink to="/profile">{ profileLabel }</NavLink>
+      <NavLink to="/help">Help</NavLink>
+    </nav>
   );
 }
 
