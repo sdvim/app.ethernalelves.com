@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
 import { useDispatch, useTrackedState, MINT_PRICE_REN } from "../Store";
 
@@ -9,6 +9,13 @@ export default function Home() {
   const [selection, setSelection] = useState([]);
   const dispatch = useDispatch();
   const state = useTrackedState();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      dispatch({ type: "UPDATE_REN", value: Math.ceil(Math.random() * 20) });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [dispatch]);
   
   const sections = useMemo(() => {
     const collections = [
@@ -107,6 +114,7 @@ export default function Home() {
       <button onClick={handleMintClick} disabled={mintButtonDisabled}>
         Mint 1 Elf for { MINT_PRICE_REN } $REN
       </button>
+      <p>Earn free $REN by staring at this page.</p>
       { sectionsDOM }
     </div>
   );
