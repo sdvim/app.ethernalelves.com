@@ -91,6 +91,7 @@ export default function Home() {
                 data-id={data.id}
                 data-action={data.action}
                 isSelected={data.isSelected}
+                level={data.level}
                 onClick={() => handleAvatarClick(sectionIndex, data.id)}
               />
             )
