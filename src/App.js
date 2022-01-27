@@ -1,7 +1,7 @@
 import Home from "./pages/Home";
 import Help from "./pages/Help";
 import Profile from "./pages/Profile";
-import { Provider, useSetState, useTrackedState } from "./Store";
+import { Provider, useTrackedState } from "./Store";
 
 import {
   BrowserRouter as Router,
@@ -26,7 +26,6 @@ const App = () => {
 }
 
 const Nav = () => {
-  const setState = useSetState();
   const state = useTrackedState();
   const profileLabel = `${state.ren} $REN`;
 

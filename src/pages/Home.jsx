@@ -1,15 +1,17 @@
 import React, { useState, useMemo } from "react";
-import ElvesData from "../data/elves";
 import { Avatar } from "../components";
+import { useDispatch, useTrackedState, MINT_PRICE_REN } from "../Store";
 
 const MAX_SELECTION_SIZE = 8;
 
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState(null);
   const [selection, setSelection] = useState([]);
+  const dispatch = useDispatch();
+  const state = useTrackedState();
   
   const sections = useMemo(() => {
-    const swag = [
+    const collections = [
       {
         title: "Idle",
         action: "Act",
@@ -27,23 +29,23 @@ export default function Home() {
       },
     ];
 
-    ElvesData.forEach((elf) => {
+    state.elves.forEach((elf) => {
       elf.isSelected = selection.includes(elf.id);
       switch (elf.action) {
         case 3:
-          swag[1].elves.push(elf);
+          collections[1].elves.push(elf);
           break;
         case 4:
-          swag[2].elves.push(elf);
+          collections[2].elves.push(elf);
           break;
         default:
-          swag[0].elves.push(elf);
+          collections[0].elves.push(elf);
           break;
       }
     });
 
-    return swag;
-  }, [selection]);
+    return collections;
+  }, [selection, state]);
 
   const handleAvatarClick = (sectionIndex, avatarId) => {
     if (selectedSection === null || selectedSection !== sectionIndex) {
@@ -66,6 +68,9 @@ export default function Home() {
     }
 
   };
+
+  const handleMintClick = () => dispatch({ type: "MINT_ELF" });
+  const mintButtonDisabled = state.ren < MINT_PRICE_REN;
 
   const sectionsDOM = sections.map((section, sectionIndex) => {
     const isSelected = selectedSection === sectionIndex;
@@ -98,7 +103,9 @@ export default function Home() {
   return (
     <div className="Home page">
       <h1>Home</h1>
-      <button>Mint 1 Elf</button>
+      <button onClick={handleMintClick} disabled={mintButtonDisabled}>
+        Mint 1 Elf for { MINT_PRICE_REN } $REN
+      </button>
       { sectionsDOM }
     </div>
   );

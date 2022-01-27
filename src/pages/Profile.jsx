@@ -1,20 +1,20 @@
-import { useSetState, useTrackedState } from "../Store";
+import { useDispatch, useTrackedState } from "../Store";
 
 const INCREASE_AMOUNT = 15;
 const DECREASE_AMOUNT = 100;
 
 export default function Help() {
-  const setState = useSetState();
+  const dispatch = useDispatch();
   const state = useTrackedState();
   const balanceLabel = `${state.ren} $REN`;
-  const increaseRen = () => {
-    const ren = state.ren + INCREASE_AMOUNT;
-    setState((prev) => ({ ...prev, ren }));
-  }
-  const decreaseRen = () => {
-    const ren = state.ren - DECREASE_AMOUNT;
-    setState((prev) => ({ ...prev, ren }));
-  }
+  const increaseRen = () => dispatch({
+    type: "UPDATE_REN",
+    value: INCREASE_AMOUNT,
+  });
+  const decreaseRen = () => dispatch({
+    type: "UPDATE_REN",
+    value: -DECREASE_AMOUNT,
+  });
   const decreaseButtonDisabled = state.ren < DECREASE_AMOUNT;
 
   return (
