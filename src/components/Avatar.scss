@@ -5,7 +5,12 @@
   &--is-selected {
     background: rgba(limegreen, 0.25);
     box-shadow: 0 0 1em 0.125em limegreen;
+    border-color: limegreen;
     cursor: pointer;
+    
+    .Avatar__level {
+      background: limegreen;
+    }
   }
 
   &__image {
@@ -30,7 +35,7 @@
   }
 
   &__health {
-    background: limegreen;
+    background: green;
   }
 
   &__experience {
