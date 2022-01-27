@@ -1,4 +1,5 @@
 import ElvesData from "./data/elves";
+import PlaceholderElf from "./data/PlaceholderElf.svg";
 import { useReducer } from "react";
 import { createContainer } from "react-tracked";
 
@@ -29,6 +30,7 @@ const reducer = (state, action) => {
             attack: 1,
             class: 1,
             hair: 1,
+            image: PlaceholderElf,
             inventory: [],
             name: `Elf #${nextId}`,
             level: Math.ceil(Math.random() * 10),

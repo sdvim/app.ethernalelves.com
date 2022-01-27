@@ -102,6 +102,7 @@ export default function Home() {
               return (
                 <Avatar
                   key={`${sectionIndex}-${index}`}
+                  image={data.image}
                   isSelected={data.isSelected}
                   selectionIndex={selectionIndex}
                   level={data.level}
