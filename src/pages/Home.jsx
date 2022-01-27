@@ -87,7 +87,10 @@ export default function Home() {
     return (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
-          <h2 key={`${section.title}`}>{ section.title }</h2>
+          <h2 key={`${section.title}`}>
+            { section.title }:
+            { section.elves.length }
+          </h2>
           { isSelected && <button>{ buttonLabel }</button> }
         </div>
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
