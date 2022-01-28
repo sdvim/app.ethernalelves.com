@@ -19,20 +19,30 @@ export default function Home() {
   }, [dispatch]);
   
   const sections = useMemo(() => {
+    const unstakeElves = () => {
+      dispatch({ type: "UNSTAKE_ELVES", selection });
+      setSelectedSection(null);
+      setSelection([]);
+    }
+
     const collections = [
       {
         title: "Idle",
         action: "Act",
+        onClick: () => null,
+        isDisabled: true,
         elves: [],
       },
       {
         title: "Campaign",
         action: "Unstake",
+        onClick: () => unstakeElves(),
         elves: [],
       },
       {
         title: "Passive",
         action: "Unstake",
+        onClick: () => unstakeElves(),
         elves: [],
       },
     ];
@@ -53,7 +63,7 @@ export default function Home() {
     });
 
     return collections;
-  }, [selection, state]);
+  }, [selection, state, dispatch]);
 
   const handleAvatarClick = (sectionIndex, avatarId) => {
     if (selectedSection === null || selectedSection !== sectionIndex) {
@@ -85,6 +95,7 @@ export default function Home() {
     const maxSize = Math.min(section.elves.length, MAX_SELECTION_SIZE);
     const selectionCount = `(${selection.length}/${maxSize})`;
     const buttonLabel = `${section.action} ${selectionCount}`;
+    if (maxSize <= 0) return null;
     return (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
@@ -92,7 +103,11 @@ export default function Home() {
             { section.title }:
             { section.elves.length }
           </h2>
-          { isSelected && <button>{ buttonLabel }</button> }
+          { isSelected &&
+            <button onClick={section.onClick} disabled={section.isDisabled}>
+              { buttonLabel }
+            </button>
+          }
         </div>
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
           {

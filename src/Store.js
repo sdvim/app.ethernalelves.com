@@ -18,7 +18,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         ren: state.ren + action.value,
-      }
+      };
+    case "UNSTAKE_ELVES":
+      return {
+        ...state,
+        elves: [...state.elves.map((elf) => {
+          return {
+            ...elf,
+            action: action.selection.includes(elf.id) ? 0 : elf.action,
+          };
+        })],
+      };
     case "MINT_ELF":
       if (state.ren >= MINT_PRICE_REN) {
         return {
@@ -39,7 +49,7 @@ const reducer = (state, action) => {
             time: new Date(),
             weaponTier: 1,
           }]
-        }
+        };
       } else {
         return state;
       }

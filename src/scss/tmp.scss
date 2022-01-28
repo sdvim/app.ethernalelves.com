@@ -16,4 +16,8 @@
 .page {
   padding: 1em 1em 4em;
   position: relative;
+
+  &.Home {
+    padding-bottom: 12em;
+  }
 }
