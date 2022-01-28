@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
+import CharacterWindow from "../components/CharacterWindow";
 import { useDispatch, useTrackedState, MINT_PRICE_REN } from "../Store";
 
 const MAX_SELECTION_SIZE = 8;
@@ -116,6 +117,11 @@ export default function Home() {
     );
   });
 
+  const focusedCharacter = useMemo(() => {
+    const selectedId = selection[selection.length - 1];
+    return state.elves.find((elf) => elf.id === selectedId);
+  }, [dispatch, selection]);
+
   return (
     <div className="Home page">
       <h1>Home</h1>
@@ -124,6 +130,13 @@ export default function Home() {
       </button>
       <p>Earn free $REN by staring at this page.</p>
       { sectionsDOM }
+      { focusedCharacter &&
+        <CharacterWindow
+          name={focusedCharacter.name}
+          image={focusedCharacter.image}
+          level={focusedCharacter.level}
+        />
+      }
     </div>
   );
 }

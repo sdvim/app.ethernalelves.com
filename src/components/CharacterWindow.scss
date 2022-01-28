@@ -1,0 +1,65 @@
+.CharacterWindow {
+  background: grey;
+  height: 10em;
+  margin: 1em;
+  padding: 1em;
+  border: 3px solid;
+  &__shim {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    &--is-active {
+      background: rgba(white, 0.8);
+      justify-content: center;
+      top: 0;
+
+      .CharacterWindow {
+        height: unset;
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__image {
+    border: 3px solid;
+    width: 5.5em;
+  }
+
+  &__summary {
+    flex: 1;
+  }
+
+  &__name {
+    margin: 0 0 0.125em 0.25em;
+  }
+
+  &__bar {
+    width: 100%;
+    padding: 0.25em;
+    border: 3px solid;
+    border-left: none;
+    &:last-child {
+      border-top: none;
+    }
+  }
+
+  &__health {
+    background: green;
+  }
+
+  &__experience {
+    background: purple;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
