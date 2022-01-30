@@ -11,6 +11,14 @@ const initialState = {
 let nextId = ElvesData.length + 1;
 
 export const MINT_PRICE_REN = 200;
+export const ELF_ACTION = {
+  UNSTAKE: 0,
+  SEND_CAMPAIGN: 3,
+  SEND_PASSIVE: 4,
+  REROLL_WEAPON: 5,
+  REROLL_ITEMS: 6,
+  HEAL: 7,
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,13 +27,15 @@ const reducer = (state, action) => {
         ...state,
         ren: state.ren + action.value,
       };
-    case "UNSTAKE_ELVES":
+    case "SET_ELF_ACTION":
       return {
         ...state,
         elves: [...state.elves.map((elf) => {
           return {
             ...elf,
-            action: action.selection.includes(elf.id) ? 0 : elf.action,
+            action: action.selection.includes(elf.id)
+              ? ELF_ACTION[action.key]
+              : elf.action,
           };
         })],
       };

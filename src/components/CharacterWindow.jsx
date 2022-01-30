@@ -14,19 +14,44 @@ export default function CharacterWindow(props) {
       return (
         <div className="CharacterWindow__actions">
           <button onClick={() => onClick({
-            type: "UNSTAKE_ELVES",
+            type: "SET_ELF_ACTION",
+            key: "UNSTAKE",
             selection: [props.character.id],
           })}>Unstake</button>
         </div>
       );
     } else {
+      const actions = [
+        {
+          buttonLabel: "Forge Item",
+          key: "REROLL_ITEMS",
+        },
+        {
+          buttonLabel: "Buy from Merchant",
+          key: "REROLL_WEAPONS",
+        },
+        {
+          buttonLabel: "Enter Campaign",
+          key: "SEND_CAMPAIGN",
+        },
+        {
+          buttonLabel: "Enter Passive",
+          key: "SEND_PASSIVE",
+        },
+      ];
       return (
         <div className="CharacterWindow__actions">
-          <button>Forge Item</button>
-          <button>Buy from Merchant</button>
-          <button>Enter Campaign</button>
-          <button>Enter Passive</button>
-          <button disabled={true}>Bloodthirst</button>
+          { actions.map((action) => {
+            return (
+              <button onClick={() => onClick({
+                type: "SET_ELF_ACTION",
+                key: action.key,
+                selection: [props.character.id],
+              })}>
+                { action.buttonLabel }
+              </button>
+            );
+          }) }
         </div>
       );
     }
