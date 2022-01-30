@@ -43,11 +43,14 @@ export default function CharacterWindow(props) {
         <div className="CharacterWindow__actions">
           { actions.map((action) => {
             return (
-              <button onClick={() => onClick({
-                type: "SET_ELF_ACTION",
-                key: action.key,
-                selection: [props.character.id],
-              })}>
+              <button
+                key={`action-${action.key}`}
+                onClick={() => onClick({
+                  type: "SET_ELF_ACTION",
+                  key: action.key,
+                  selection: [props.character.id],
+                })}
+              >
                 { action.buttonLabel }
               </button>
             );
