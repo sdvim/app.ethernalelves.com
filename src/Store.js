@@ -6,10 +6,13 @@ import { createContainer } from "react-tracked";
 const initialState = {
   ren: 400,
   elves: ElvesData,
+  selectedGroupId: null,
+  selection: [],
 };
 
 let nextId = ElvesData.length + 1;
 
+export const MAX_SELECTION_SIZE = 8;
 export const MINT_PRICE_REN = 200;
 export const ELF_ACTION = {
   UNSTAKE: 0,
@@ -22,6 +25,27 @@ export const ELF_ACTION = {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "UPDATE_SELECTION":
+      let { selection, selectedGroupId } = state;
+      let newSelection;
+      if (selectedGroupId === null || selectedGroupId !== action.sectionId) {
+        // Set
+        newSelection = [action.id];
+      } else if (selection.includes(action.id)) {
+        // Remove
+        newSelection = selection.filter((id) => id !== action.id);
+      } else if (selection.length === MAX_SELECTION_SIZE) {
+        // Cycle
+        newSelection = [...selection.slice(1), action.id];
+      } else {
+        // Add
+        newSelection = [...selection, action.id];
+      }
+      return {
+        ...state,
+        selection: newSelection,
+        selectedGroupId: newSelection.length > 0 ? action.sectionId : null,
+      };
     case "UPDATE_REN":
       return {
         ...state,
@@ -30,10 +54,12 @@ const reducer = (state, action) => {
     case "SET_ELF_ACTION":
       return {
         ...state,
+        selection: [],
+        selectedGroupId: null,
         elves: [...state.elves.map((elf) => {
           return {
             ...elf,
-            action: action.selection.includes(elf.id)
+            action: state.selection.includes(elf.id)
               ? ELF_ACTION[action.key]
               : elf.action,
           };

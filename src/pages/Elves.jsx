@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
-import { useDispatch, useTrackedState, MINT_PRICE_REN } from "../Store";
-
-const MAX_SELECTION_SIZE = 8;
+import {
+  useDispatch,
+  useTrackedState,
+  MAX_SELECTION_SIZE,
+  MINT_PRICE_REN,
+} from "../Store";
 
 export default function Home() {
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [selection, setSelection] = useState([]);
   const [displayType, setDisplayType] = useState("level");
   const dispatch = useDispatch();
   const state = useTrackedState();
@@ -18,18 +19,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [dispatch]);
 
-  useEffect(() => {
-    if (selection.length === 0) {
-      setSelectedSection(null);
-    }
-  }, [selection]);
-  
   const sections = useMemo(() => {
-    const unstakeElves = (selection) => {
-      dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE", selection });
-      setSelection([]);
-    }
-
     const collections = [
       {
         title: "Idle",
@@ -41,19 +31,19 @@ export default function Home() {
       {
         title: "Campaign",
         action: "Unstake",
-        onClick: () => unstakeElves(selection),
+        onClick: () => dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE" }),
         elves: [],
       },
       {
         title: "Passive",
         action: "Unstake",
-        onClick: () => unstakeElves(selection),
+        onClick: () => dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE" }),
         elves: [],
       },
     ];
 
     state.elves.forEach((elf) => {
-      elf.isSelected = selection.includes(elf.id);
+      elf.isSelected = state?.selection.includes(elf.id);
       switch (elf.action) {
         case 3:
           collections[1].elves.push(elf);
@@ -68,32 +58,14 @@ export default function Home() {
     });
 
     return collections;
-  }, [selection, state, dispatch]);
+  }, [state, dispatch]);
 
-  const handleAvatarClick = (sectionIndex, avatarId) => {
-    if (selectedSection === null || selectedSection !== sectionIndex) {
-      setSelection([avatarId]);
-      setSelectedSection(sectionIndex);
-      return;
-    }
-
-    if (selection.includes(avatarId)) {
-      setSelection(selection.filter((id) => id !== avatarId));
-    } else if (selection.length === MAX_SELECTION_SIZE) {
-      setSelection([...selection.slice(1), avatarId]);
-    } else {
-      setSelection([...selection, avatarId]);
-    }
-
-  };
-
-  const handleMintClick = () => dispatch({ type: "MINT_ELF" });
   const mintButtonDisabled = state.ren < MINT_PRICE_REN;
 
   const sectionsDOM = sections.map((section, sectionIndex) => {
-    const isSelected = selectedSection === sectionIndex;
+    const isSelected = state.selectedGroupId === sectionIndex;
     const maxSize = Math.min(section.elves.length, MAX_SELECTION_SIZE);
-    const selectionCount = `(${selection.length}/${maxSize})`;
+    const selectionCount = `(${state.selection.length}/${maxSize})`;
     const buttonLabel = `${section.action} ${selectionCount}`;
     if (maxSize <= 0) return null;
     return (
@@ -118,7 +90,7 @@ export default function Home() {
                   ? `#${data.id}`
                   : null;
               const selectionIndex = data.isSelected
-                ? selection.indexOf(data.id)
+                ? state.selection.indexOf(data.id)
                 : -1
               return (
                 <Avatar
@@ -127,7 +99,11 @@ export default function Home() {
                   isSelected={data.isSelected}
                   selectionIndex={selectionIndex}
                   display={display}
-                  onClick={() => handleAvatarClick(sectionIndex, data.id)}
+                  onClick={() => dispatch({
+                    type: "UPDATE_SELECTION",
+                    id: data.id,
+                    sectionId: sectionIndex,
+                  })}
                 />
               );
             })
@@ -137,15 +113,15 @@ export default function Home() {
     );
   });
 
-  const focusedCharacter = useMemo(() => {
-    const selectedId = selection[selection.length - 1];
-    return state.elves.find((elf) => elf.id === selectedId);
-  }, [selection, state.elves]);
+  // const focusedCharacter = useMemo(() => {
+  //   const selectedId = selection[selection.length - 1];
+  //   return state.elves.find((elf) => elf.id === selectedId);
+  // }, [selection, state.elves]);
 
-  const handleActionCallback = (data) => {
-    dispatch(data);
-    setSelection([...selection.slice(0, -1)]);
-  };
+  // const handleActionCallback = (data) => {
+  //   dispatch(data);
+  //   setSelection([...selection.slice(0, -1)]);
+  // };
 
   const handleDisplayTypeChange = (e) => {
     setDisplayType(e.target.value);
@@ -154,7 +130,7 @@ export default function Home() {
   return (
     <div className="Home page">
       <h1>Elves</h1>
-      <button onClick={handleMintClick} disabled={mintButtonDisabled}>
+      <button onClick={() => dispatch({ type: "MINT_ELF" })} disabled={mintButtonDisabled}>
         Mint 1 Elf for { MINT_PRICE_REN } $REN
       </button>
       <p>Balance: {state.ren} $REN</p>
