@@ -27,7 +27,6 @@ export default function Home() {
   const sections = useMemo(() => {
     const unstakeElves = (selection) => {
       dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE", selection });
-      setSelectedSection(null);
       setSelection([]);
     }
 
