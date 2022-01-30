@@ -8,6 +8,7 @@ const MAX_SELECTION_SIZE = 8;
 export default function Home() {
   const [selectedSection, setSelectedSection] = useState(null);
   const [selection, setSelection] = useState([]);
+  const [displayType, setDisplayType] = useState("level");
   const dispatch = useDispatch();
   const state = useTrackedState();
 
@@ -112,6 +113,11 @@ export default function Home() {
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
           {
             section.elves.map((data, index) => {
+              const display = (displayType === "level")
+                ? `Lv. ${data.level}`
+                : (displayType === "id")
+                  ? `#${data.id}`
+                  : null;
               const selectionIndex = data.isSelected
                 ? selection.indexOf(data.id)
                 : -1
@@ -121,7 +127,7 @@ export default function Home() {
                   image={data.image}
                   isSelected={data.isSelected}
                   selectionIndex={selectionIndex}
-                  level={data.level}
+                  display={display}
                   onClick={() => handleAvatarClick(sectionIndex, data.id)}
                 />
               );
@@ -140,7 +146,11 @@ export default function Home() {
   const handleActionCallback = (data) => {
     dispatch(data);
     setSelection([...selection.slice(0, -1)]);
-  }
+  };
+
+  const handleDisplayTypeChange = (e) => {
+    setDisplayType(e.target.value);
+  };
 
   return (
     <div className="Home page">
@@ -150,6 +160,28 @@ export default function Home() {
       </button>
       <p>Balance: {state.ren} $REN</p>
       <p>Earn free $REN by staring at this page.</p>
+      <form>
+        <label>
+          <input
+            type="radio"
+            name="display"
+            value="level"
+            checked={displayType === "level"}
+            onChange={handleDisplayTypeChange}
+          />
+          <span>Levels</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="display"
+            value="id"
+            checked={displayType === "id"}
+            onChange={handleDisplayTypeChange}
+          />
+          <span>IDs</span>
+        </label>
+      </form>
       { sectionsDOM }
       {/* { focusedCharacter &&
         <CharacterWindow

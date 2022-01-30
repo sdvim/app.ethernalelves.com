@@ -5,7 +5,7 @@ export default function Avatar(props) {
   return (
     <div className={`Avatar ${isSelected}`} onClick={props.onClick}>
       <img className="Avatar__image" src={props.image} alt="Avatar of Elf" />
-      <div className="Avatar__level">Lv.{props.level}</div>
+      <div className="Avatar__display">{props.display}</div>
       { props.selectionIndex >= 0 &&
         <div className="Avatar__index">#{ props.selectionIndex + 1 }</div>
       }
