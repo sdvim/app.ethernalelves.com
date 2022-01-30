@@ -19,7 +19,7 @@ export default function Home() {
   }, [dispatch]);
   
   const sections = useMemo(() => {
-    const unstakeElves = () => {
+    const unstakeElves = (selection) => {
       dispatch({ type: "UNSTAKE_ELVES", selection });
       setSelectedSection(null);
       setSelection([]);
@@ -36,13 +36,13 @@ export default function Home() {
       {
         title: "Campaign",
         action: "Unstake",
-        onClick: () => unstakeElves(),
+        onClick: () => unstakeElves(selection),
         elves: [],
       },
       {
         title: "Passive",
         action: "Unstake",
-        onClick: () => unstakeElves(),
+        onClick: () => unstakeElves(selection),
         elves: [],
       },
     ];
@@ -135,7 +135,12 @@ export default function Home() {
   const focusedCharacter = useMemo(() => {
     const selectedId = selection[selection.length - 1];
     return state.elves.find((elf) => elf.id === selectedId);
-  }, [dispatch, selection]);
+  }, [selection, state.elves]);
+
+  const handleActionCallback = (data) => {
+    dispatch(data);
+    setSelection([...selection.slice(0, -1)]);
+  }
 
   return (
     <div className="Home page">
@@ -147,9 +152,8 @@ export default function Home() {
       { sectionsDOM }
       { focusedCharacter &&
         <CharacterWindow
-          name={focusedCharacter.name}
-          image={focusedCharacter.image}
-          level={focusedCharacter.level}
+          character={focusedCharacter}
+          actionCallback={handleActionCallback}
         />
       }
     </div>

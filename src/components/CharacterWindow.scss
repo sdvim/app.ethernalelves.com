@@ -62,4 +62,16 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      margin-top: 1em;
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
 }

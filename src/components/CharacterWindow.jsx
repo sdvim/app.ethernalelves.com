@@ -2,9 +2,35 @@ import { useState } from "react";
 
 import "./CharacterWindow.scss";
 
+const stakingActions = [3, 4];
+
 export default function CharacterWindow(props) {
   const [isActive, setIsActive] = useState(false);
   const isActiveClass = isActive ? "CharacterWindow__shim--is-active" : "";
+
+  const actionsDOM = () => {
+    const onClick = props.actionCallback;
+    if (stakingActions.includes(props.character.action)) {
+      return (
+        <div className="CharacterWindow__actions">
+          <button onClick={() => onClick({
+            type: "UNSTAKE_ELVES",
+            selection: [props.character.id],
+          })}>Unstake</button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="CharacterWindow__actions">
+          <button>Forge Item</button>
+          <button>Buy from Merchant</button>
+          <button>Enter Campaign</button>
+          <button>Enter Passive</button>
+          <button disabled={true}>Bloodthirst</button>
+        </div>
+      );
+    }
+  };
 
   const handleClick = (e, boolean) => {
     e.stopPropagation();
@@ -15,9 +41,9 @@ export default function CharacterWindow(props) {
     <div className={`CharacterWindow__shim ${isActiveClass}`} onClick={(e) => handleClick(e, false)}>
       <div className="CharacterWindow" onClick={(e) => handleClick(e, true)}>
         <header className="CharacterWindow__header">
-          <img className="CharacterWindow__image" src={props.image} alt="Character avatar" />
+          <img className="CharacterWindow__image" src={props.character.image} alt="Character avatar" />
           <div className="CharacterWindow__summary">
-            <h3 className="CharacterWindow__name">{props.name}</h3>
+            <h3 className="CharacterWindow__name">{props.character.name}</h3>
             <div className="CharacterWindow__bar CharacterWindow__health">HP</div>
             <div className="CharacterWindow__bar CharacterWindow__experience">XP</div>
           </div>
@@ -43,6 +69,8 @@ export default function CharacterWindow(props) {
           <span>HEALTH POINTS:</span>
           <span>23</span>
         </div>
+        <h3>Actions</h3>
+        { actionsDOM() }
       </div>
     </div>
   );
