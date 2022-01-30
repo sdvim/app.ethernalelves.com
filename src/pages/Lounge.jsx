@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { Avatar } from "../components";
 import {
   useDispatch,
@@ -7,7 +7,6 @@ import {
 import {
   useNavigate,
 } from "react-router-dom";
-import { useEffect } from "react/cjs/react.development";
 
 
 const actions = [
