@@ -151,12 +151,12 @@ export default function Home() {
       <p>Balance: {state.ren} $REN</p>
       <p>Earn free $REN by staring at this page.</p>
       { sectionsDOM }
-      { focusedCharacter &&
+      {/* { focusedCharacter &&
         <CharacterWindow
           character={focusedCharacter}
           actionCallback={handleActionCallback}
         />
-      }
+      } */}
     </div>
   );
 }
