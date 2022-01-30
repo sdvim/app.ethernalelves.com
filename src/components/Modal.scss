@@ -1,4 +1,4 @@
-.CharacterWindow {
+.Modal {
   background: grey;
   height: 10em;
   margin: 1em;
@@ -16,7 +16,7 @@
       justify-content: center;
       top: 0;
 
-      .CharacterWindow {
+      .Modal {
         height: unset;
       }
     }

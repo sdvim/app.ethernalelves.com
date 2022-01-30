@@ -2,25 +2,33 @@ import Elves from "./pages/Elves";
 import Help from "./pages/Help";
 import Account from "./pages/Account";
 import { Provider } from "./Store";
+import { Modal } from "./components";
 
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
-  NavLink
+  NavLink,
+  useLocation,
 } from "react-router-dom";
 
 const App = () => {
+  let location = useLocation();
+  let state = location.state;
+
   return (
     <Provider>
-      <Router className="App">
+      <Routes location={state?.backgroundLocation || location}>
+        <Route path="/" element={<Elves />} index />
+        <Route path="/account" element={<Account />} />
+        <Route path="/help" element={<Help />} />
+      </Routes>
+
+      {state?.backgroundLocation && (
         <Routes>
-          <Route path="/account" element={<Account />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/" element={<Elves />} />
+          <Route path="/elf/:id" element={<Modal />} />
         </Routes>
-        <Nav />
-      </Router>
+      )}
+      <Nav />
     </Provider>
   );
 }

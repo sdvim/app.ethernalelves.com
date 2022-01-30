@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-import "./CharacterWindow.scss";
+import "./Modal.scss";
 
 const stakingActions = [3, 4];
 
-export default function CharacterWindow(props) {
+export default function Modal(props) {
   const [isActive, setIsActive] = useState(false);
-  const isActiveClass = isActive ? "CharacterWindow__shim--is-active" : "";
+  const isActiveClass = isActive ? "Modal__shim--is-active" : "";
 
   const actionsDOM = () => {
     const onClick = props.actionCallback;
     if (stakingActions.includes(props.character.action)) {
       return (
-        <div className="CharacterWindow__actions">
+        <div className="Modal__actions">
           <button onClick={() => onClick({
             type: "SET_ELF_ACTION",
             key: "UNSTAKE",
@@ -40,7 +40,7 @@ export default function CharacterWindow(props) {
         },
       ];
       return (
-        <div className="CharacterWindow__actions">
+        <div className="Modal__actions">
           { actions.map((action) => {
             return (
               <button
@@ -66,18 +66,18 @@ export default function CharacterWindow(props) {
   };
 
   return (
-    <div className={`CharacterWindow__shim ${isActiveClass}`} onClick={(e) => handleClick(e, false)}>
-      <div className="CharacterWindow" onClick={(e) => handleClick(e, true)}>
-        <header className="CharacterWindow__header">
-          <img className="CharacterWindow__image" src={props.character.image} alt="Character avatar" />
-          <div className="CharacterWindow__summary">
-            <h3 className="CharacterWindow__name">{props.character.name}</h3>
-            <div className="CharacterWindow__bar CharacterWindow__health">HP</div>
-            <div className="CharacterWindow__bar CharacterWindow__experience">XP</div>
+    <div className={`Modal__shim ${isActiveClass}`} onClick={(e) => handleClick(e, false)}>
+      <div className="Modal" onClick={(e) => handleClick(e, true)}>
+        <header className="Modal__header">
+          <img className="Modal__image" src={props.character.image} alt="Character avatar" />
+          <div className="Modal__summary">
+            <h3 className="Modal__name">{props.character.name}</h3>
+            <div className="Modal__bar Modal__health">HP</div>
+            <div className="Modal__bar Modal__experience">XP</div>
           </div>
         </header>
         <h3>Stats</h3>
-        <div className="CharacterWindow__stats">
+        <div className="Modal__stats">
           <span>CLASS:</span>
           <span>ASSASSIN</span>
           <span>RACE:</span>

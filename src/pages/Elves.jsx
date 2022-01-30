@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
-import CharacterWindow from "../components/CharacterWindow";
 import { useDispatch, useTrackedState, MINT_PRICE_REN } from "../Store";
 
 const MAX_SELECTION_SIZE = 8;
@@ -184,7 +183,7 @@ export default function Home() {
       </form>
       { sectionsDOM }
       {/* { focusedCharacter &&
-        <CharacterWindow
+        <Modal
           character={focusedCharacter}
           actionCallback={handleActionCallback}
         />
