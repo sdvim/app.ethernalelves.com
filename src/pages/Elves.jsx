@@ -17,6 +17,12 @@ export default function Home() {
     }, 1000);
     return () => clearInterval(timer);
   }, [dispatch]);
+
+  useEffect(() => {
+    if (selection.length === 0) {
+      setSelectedSection(null);
+    }
+  }, [selection]);
   
   const sections = useMemo(() => {
     const unstakeElves = (selection) => {
@@ -73,14 +79,9 @@ export default function Home() {
     }
 
     if (selection.includes(avatarId)) {
-      const reducedSelection = selection.filter((id) => id !== avatarId);
-      setSelection(reducedSelection);
-      if (reducedSelection.length === 0) {
-        setSelectedSection(null);
-      }
+      setSelection(selection.filter((id) => id !== avatarId));
     } else if (selection.length === MAX_SELECTION_SIZE) {
-      const shiftedSelection = selection.slice(1);
-      setSelection([...shiftedSelection, avatarId]);
+      setSelection([...selection.slice(1), avatarId]);
     } else {
       setSelection([...selection, avatarId]);
     }
