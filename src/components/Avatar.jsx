@@ -9,8 +9,12 @@ export default function Avatar(props) {
       { props.selectionIndex >= 0 &&
         <div className="Avatar__index">#{ props.selectionIndex + 1 }</div>
       }
-      <div className="Avatar__bar Avatar__health"></div>
-      <div className="Avatar__bar Avatar__experience"></div>
+      { !props.hideBars &&
+        <>
+          <div className="Avatar__bar Avatar__health"></div>
+          <div className="Avatar__bar Avatar__experience"></div>
+        </>
+      }
     </div>
   );
 }

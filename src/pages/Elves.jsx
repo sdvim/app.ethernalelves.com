@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar } from "../components";
 import {
   useDispatch,
@@ -10,6 +11,7 @@ import {
 export default function Home() {
   const [displayType, setDisplayType] = useState("level");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const state = useTrackedState();
 
   useEffect(() => {
@@ -23,9 +25,8 @@ export default function Home() {
     const collections = [
       {
         title: "Idle",
-        action: "Act",
-        onClick: () => null,
-        isDisabled: true,
+        action: "Enter Lounge",
+        onClick: () => navigate("/lounge"),
         elves: [],
       },
       {
@@ -58,7 +59,7 @@ export default function Home() {
     });
 
     return collections;
-  }, [state, dispatch]);
+  }, [state, dispatch, navigate]);
 
   const mintButtonDisabled = state.ren < MINT_PRICE_REN;
 

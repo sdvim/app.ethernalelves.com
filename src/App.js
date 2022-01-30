@@ -1,6 +1,7 @@
+import Account from "./pages/Account";
+import Lounge from "./pages/Lounge";
 import Elves from "./pages/Elves";
 import Help from "./pages/Help";
-import Account from "./pages/Account";
 import { Provider } from "./Store";
 import { Modal } from "./components";
 
@@ -20,6 +21,7 @@ const App = () => {
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<Elves />} index />
         <Route path="/account" element={<Account />} />
+        <Route path="/lounge" element={<Lounge />} />
         <Route path="/help" element={<Help />} />
       </Routes>
 
