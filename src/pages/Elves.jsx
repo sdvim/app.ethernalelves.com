@@ -144,10 +144,11 @@ export default function Home() {
 
   return (
     <div className="Home page">
-      <h1>Home</h1>
+      <h1>Elves</h1>
       <button onClick={handleMintClick} disabled={mintButtonDisabled}>
         Mint 1 Elf for { MINT_PRICE_REN } $REN
       </button>
+      <p>Balance: {state.ren} $REN</p>
       <p>Earn free $REN by staring at this page.</p>
       { sectionsDOM }
       { focusedCharacter &&

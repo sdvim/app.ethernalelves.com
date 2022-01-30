@@ -1,7 +1,7 @@
-import Home from "./pages/Home";
+import Elves from "./pages/Elves";
 import Help from "./pages/Help";
-import Profile from "./pages/Profile";
-import { Provider, useTrackedState } from "./Store";
+import Account from "./pages/Account";
+import { Provider } from "./Store";
 
 import {
   BrowserRouter as Router,
@@ -15,9 +15,9 @@ const App = () => {
     <Provider>
       <Router className="App">
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Elves />} />
         </Routes>
         <Nav />
       </Router>
@@ -26,13 +26,10 @@ const App = () => {
 }
 
 const Nav = () => {
-  const state = useTrackedState();
-  const profileLabel = `${state.ren} $REN`;
-
   return (
     <nav>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/profile">{ profileLabel }</NavLink>
+      <NavLink to="/">Elves</NavLink>
+      <NavLink to="/account">Account</NavLink>
       <NavLink to="/help">Help</NavLink>
     </nav>
   );
