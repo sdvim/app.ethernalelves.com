@@ -30,15 +30,13 @@ export default function Home() {
         elves: [],
       },
       {
-        title: "Campaign",
+        title: "Passive",
         action: "Unstake",
         onClick: () => dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE" }),
         elves: [],
       },
       {
-        title: "Passive",
-        action: "Unstake",
-        onClick: () => dispatch({ type: "SET_ELF_ACTION", key: "UNSTAKE" }),
+        title: "Campaign",
         elves: [],
       },
     ];
@@ -67,7 +65,6 @@ export default function Home() {
     const isSelected = state.selectedGroupId === sectionIndex;
     const maxSize = Math.min(section.elves.length, MAX_SELECTION_SIZE);
     const selectionCount = `(${state.selection.length}/${maxSize})`;
-    const buttonLabel = `${section.action} ${selectionCount}`;
     if (maxSize <= 0) return null;
     return (
       <React.Fragment key={sectionIndex}>
@@ -76,9 +73,9 @@ export default function Home() {
             { section.title }:
             { section.elves.length }
           </h2>
-          { isSelected &&
+          { isSelected && section.action &&
             <button onClick={section.onClick} disabled={section.isDisabled}>
-              { buttonLabel }
+              {section.action} {selectionCount}
             </button>
           }
         </div>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 54 54" preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:grid x="0" y="0" width="1" height="1"/>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="39.806" y1="4.683" x2="39.806" y2="12.488" id="gradient-5" gradientTransform="matrix(0.492781, 0, 0, 0.768738, 7.384616, -0.599996)">
+      <stop offset="0" style="stop-color: rgb(20, 27, 33);"/>
+      <stop offset="0.508" style="stop-color: rgb(63, 89, 112);"/>
+      <stop offset="1" style="stop-color: rgb(20, 27, 33);"/>
+    </linearGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="12.429" cy="12.488" r="9.307" id="gradient-7" gradientTransform="matrix(1, 0, 0, 1, 0, 0)">
+      <stop offset="0" style="stop-color: rgb(63, 89, 112);"/>
+      <stop offset="1" style="stop-color: rgb(4, 6, 8);"/>
+    </radialGradient>
+    <filter id="filter-1" x="-500%" y="-500%" width="1000%" height="1000%" bx:preset="inner-shadow 1 -1 -1 1 0.3 rgba(0,0,0,0.7)">
+      <feOffset dx="-1" dy="-1"/>
+      <feGaussianBlur stdDeviation="1"/>
+      <feComposite operator="out" in="SourceGraphic"/>
+      <feComponentTransfer result="choke">
+        <feFuncA type="linear" slope="0.6"/>
+      </feComponentTransfer>
+      <feFlood flood-color="rgba(0,0,0,0.7)" result="color"/>
+      <feComposite operator="in" in="color" in2="choke" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="5.187" y1="0" x2="5.187" y2="10.376" id="gradient-8" gradientTransform="matrix(1.026221, 1.018267, -1.522452, 1.522452, 10.473957, -5.281748)">
+      <stop offset="0" style="stop-color: rgb(39, 51, 66);"/>
+      <stop offset="0.497" style="stop-color: rgb(116, 144, 166);"/>
+      <stop offset="1" style="stop-color: rgb(39, 51, 66);"/>
+    </linearGradient>
+    <symbol id="symbol-0" viewBox="0 0 25 25" bx:pinned="true">
+      <polygon style="fill: url(#gradient-7);" points="22 9 9 9 9 22 6.244 18.732 7 12 12 7 18.732 6.244"/>
+      <path style="stroke-width: 0px; filter: none; fill: rgb(43, 56, 72);" d="M 21.976 1.561 L 25 9 L 17 9 C 17 9 11.481 5.528 8.383 5.009 C 7.187 4.809 7.36 3.139 7.107 3.099 L 4 1 C 4 1 9.488 3.122 14.171 3.122 C 18.854 3.122 21.949 1.632 21.976 1.561 Z"/>
+      <path style="stroke-width: 0px; fill: rgb(39, 51, 66); filter: none;" d="M 4.683 9.366 L 4.6739999999999995 9.361 C 4.61 8.959 4.683 9.366 4.683 9.366 Z"/>
+      <path style="stroke-width: 0px; filter: none; fill: rgb(43, 56, 72);" d="M 3.122 14.171 C 3.122 9.488 1 4 1 4 L 3.54 7.19 C 3.58 7.443 4.809 7.187 5.009 8.383 C 5.528 11.481 9 17 9 17 L 9 25 L 1.561 21.976 C 1.632 21.949 3.122 18.854 3.122 14.171 Z"/>
+      <path style="stroke-width: 0px; fill: rgb(39, 51, 66); filter: none;" d="M 9.361 4.6739999999999995 L 9.366 4.683 C 9.366 4.683 8.959 4.61 9.361 4.6739999999999995 Z"/>
+      <path style="fill: rgb(117, 144, 163); filter: url(#filter-1);" d="M 21.184 3.491 L 22.706 7.805 L 17.293 7.805 C 12.388 4.683 10 4.234 9.831 4.064 C 9.831 4.064 10.985 4.548 13.925 4.712 C 16.865 4.876 20.45 3.72 21.184 3.491 Z"/>
+      <path style="fill: rgb(117, 144, 163); filter: url(#filter-1);" d="M 4.712 14.002 C 4.548 11.062 4.064 9.908 4.064 9.908 C 4.27 10 4.683 12.465 7.805 17.37 L 7.805 22.783 L 3.491 21.261 C 3.72 20.527 4.876 16.942 4.712 14.002 Z"/>
+      <path style="fill: url(#gradient-8);" d="M 14.077 12.492 C 14.077 12.492 13.764 13.207 13.541 13.458 C 13.244 13.796 12.492 14.078 12.492 14.078 C 10.866 14.656 8.789 15.218 7.457 14.915 C 4.996 14.358 1.446 11.566 1.446 11.566 L 0 2.308 C 0 2.308 6.109 11.082 8.596 8.597 C 11.082 6.111 2.308 0 2.308 0 L 11.566 1.446 C 11.566 1.446 14.356 4.996 14.913 7.457 C 15.215 8.789 14.654 10.867 14.077 12.492 Z"/>
+      <defs>
+        <bx:grid x="0" y="0" width="1" height="1"/>
+      </defs>
+    </symbol>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="39.806" y1="4.683" x2="39.806" y2="12.488" id="gradient-1" gradientTransform="matrix(0.492781, 0, 0, 0.768738, 7.384616, -54.599998)">
+      <stop offset="0" style="stop-color: rgb(20, 27, 33);"/>
+      <stop offset="0.508" style="stop-color: rgb(63, 89, 112);"/>
+      <stop offset="1" style="stop-color: rgb(20, 27, 33);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="39.806" y1="4.683" x2="39.806" y2="12.488" id="gradient-2" gradientTransform="matrix(0.492781, 0, 0, 0.768738, 8.384616, 0.400004)">
+      <stop offset="0" style="stop-color: rgb(20, 27, 33);"/>
+      <stop offset="0.508" style="stop-color: rgb(63, 89, 112);"/>
+      <stop offset="1" style="stop-color: rgb(20, 27, 33);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="39.806" y1="4.683" x2="39.806" y2="12.488" id="gradient-3" gradientTransform="matrix(0.492781, 0, 0, 0.768738, 8.384617, -55.599998)">
+      <stop offset="0" style="stop-color: rgb(20, 27, 33);"/>
+      <stop offset="0.508" style="stop-color: rgb(63, 89, 112);"/>
+      <stop offset="1" style="stop-color: rgb(20, 27, 33);"/>
+    </linearGradient>
+  </defs>
+  <rect x="22" y="3" width="10" height="6" style="fill: url(#gradient-5);"/>
+  <rect x="23" y="-52" width="10" height="6" style="fill: url(#gradient-3);" transform="matrix(0, 1, 1, 0, 55, -1)"/>
+  <rect x="22" y="-51" width="10" height="6" style="fill: url(#gradient-1);" transform="matrix(1, 0, 0, -1, 0, 0)"/>
+  <rect x="23" y="4" width="10" height="6" style="fill: url(#gradient-2);" transform="matrix(0, 1, -1, 0, 55, -1)"/>
+  <use width="25" height="25" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(0, 1, -1, 0, 54, 0)" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(1, 0, 0, -1, 0, 54)" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(0, -1, -1, 0, 54, 54)" xlink:href="#symbol-0"/>
+</svg>

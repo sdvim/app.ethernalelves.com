@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 54 54" preserveAspectRatio="xMinYMin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:grid x="0" y="0" width="1" height="1"/>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="5.187" y1="0" x2="5.187" y2="10.376" id="gradient-8" gradientTransform="matrix(1.381648, 1.202244, -1.445644, 1.638396, 9.833392, -5.236041)">
+      <stop offset="0" style="stop-color: rgb(38, 41, 43);"/>
+      <stop offset="0.497" style="stop-color: rgb(122, 122, 122);"/>
+      <stop offset="1" style="stop-color: rgb(38, 41, 43);"/>
+    </linearGradient>
+    <symbol id="symbol-0" viewBox="0 0 25 25" bx:pinned="true">
+      <polygon style="fill: rgb(50, 51, 52);" points="0 0 7 12 12 12 12 7"/>
+      <path style="stroke-width: 0px; fill: rgb(39, 51, 66); filter: none;" d="M 4.683 9.366 L 4.6739999999999995 9.361 C 4.61 8.959 4.683 9.366 4.683 9.366 Z"/>
+      <path style="stroke-width: 0px; fill: rgb(39, 51, 66); filter: none;" d="M 9.361 4.6739999999999995 L 9.366 4.683 C 9.366 4.683 8.959 4.61 9.361 4.6739999999999995 Z"/>
+      <polygon style="paint-order: fill; stroke-width: 2px; stroke: rgb(50, 51, 52); fill: rgb(67, 70, 71);" points="13.5 23.5 13.5 12.5 5.5 12.5 1.5 20.5" transform="matrix(0, 1, -1, 0, 25.5, 10.5)"/>
+      <polygon style="paint-order: fill; stroke-width: 2px; stroke: rgb(50, 51, 52); fill: rgb(67, 70, 71);" points="24 2 24 13 16 13 12 5"/>
+      <path style="fill: url(#gradient-8);" d="M 17.833 15.826 C 17.833 15.826 17.437 16.731 17.155 17.05 C 16.779 17.478 15.826 17.835 15.826 17.835 C 13.766 18.567 11.135 19.279 9.446 18.896 C 6.329 18.19 2 15 2 15 L 0 0 C 0 0 7.739 14.039 10.89 10.891 C 14.039 7.742 0 0 0 0 L 15 2 C 15 2 18.187 6.329 18.893 9.446 C 19.276 11.135 18.565 13.768 17.833 15.826 Z"/>
+      <defs>
+        <bx:grid x="0" y="0" width="1" height="1"/>
+      </defs>
+    </symbol>
+  </defs>
+  <use width="25" height="25" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(0, 1, -1, 0, 54, 0)" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(1, 0, 0, -1, 0, 54)" xlink:href="#symbol-0"/>
+  <use width="25" height="25" transform="matrix(0, -1, -1, 0, 54, 54)" xlink:href="#symbol-0"/>
+</svg>
