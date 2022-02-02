@@ -70,7 +70,7 @@ export default function Home() {
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
           <h2 key={`${section.title}`}>
-            { section.title }:
+            { section.title }:{ " " }
             { section.elves.length }
           </h2>
           { isSelected && section.action &&

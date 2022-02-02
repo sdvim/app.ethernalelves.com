@@ -1,22 +1,6 @@
 @import 'tmp';
 
-@font-face {
-  font-family: 'Pixel Operator Mono';
-  src: url('/font/PixelOperatorMono.woff2') format('woff2'),
-      url('/font/PixelOperatorMono.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Pixel Operator Mono';
-  src: url('/font/PixelOperatorMono-Bold.woff2') format('woff2'),
-      url('/font/PixelOperatorMono-Bold.woff') format('woff');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Sen:wght@400;700&display=swap');
 
 :root {
   --background-color: #090D16;
@@ -27,7 +11,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 14px;
   overflow-x: hidden;
 }
 
@@ -41,10 +25,7 @@ body {
   background: var(--background-color);
   color: white;
   margin: 0;
-  line-height: 1;
-  font-family: 'Pixel Operator Mono', monospace;
-  font-smooth: never;
-  -webkit-font-smoothing : none;
+  font-family: 'Sen', sans-serif;
   overflow-x: hidden;
 }
 
@@ -55,9 +36,9 @@ hr {
   opacity: .1;
 }
 
+.mono,
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .button,
@@ -65,7 +46,8 @@ button {
   border: none;
   border-radius: 0;
   font: inherit;
-  font-weight: bold;
+  font-family: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-weight: 500;
   padding: 0;
   background: linear-gradient(#1E1E1E 20%, #070707) no-repeat;
   position: relative;
@@ -124,7 +106,6 @@ nav {
   bottom: 0;
   width: 100%;
   font-size: 1em;
-  text-transform: uppercase;
 
   a {
     flex: 1;

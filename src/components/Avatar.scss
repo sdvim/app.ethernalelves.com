@@ -9,6 +9,11 @@
     border-color: var(--selection-color);
     border-image: none;
     cursor: pointer;
+
+    .Avatar__display {
+      background: var(--selection-color);
+      color: var(--foreground-color);
+    }
   }
 
   &__image {
@@ -36,9 +41,10 @@
   &__display {
     background: #0E1A27;
     position: absolute;
+    font-size: 0.75em;
     top: 0;
     right: 0;
-    padding: 0 0 3px 3px;
+    padding: 0 0 2px 4px;
   }
 
   &__health {
