@@ -21,3 +21,32 @@
     padding-bottom: 12em;
   }
 }
+
+.App {
+  &__header {
+    background: var(--foreground-color);
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 3em;
+    padding: 0.5em;
+
+    h1 {
+      flex: 1;
+      width: 100%;
+    }
+
+    button {
+      border: none;
+      background: none;
+      padding: 0;
+      width: 2em;
+      height: 2em;
+      box-shadow: none;
+      &:empty {
+        visibility: hidden;
+      }
+    }
+  }
+}

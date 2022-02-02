@@ -80,8 +80,6 @@ export default function Lounge() {
 
   return (
     <div className="Lounge page">
-      <h1>Elven Lounge</h1>
-      <button onClick={() => navigate(-1)}>Back</button>
       <br />
       <br />
       <div className="tmp-grid">

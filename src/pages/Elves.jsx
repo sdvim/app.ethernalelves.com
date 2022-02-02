@@ -127,7 +127,6 @@ export default function Home() {
 
   return (
     <div className="Home page">
-      <h1>Elves</h1>
       <button onClick={() => dispatch({ type: "MINT_ELF" })} disabled={mintButtonDisabled}>
         Mint 1 Elf for { MINT_PRICE_REN } $REN
       </button>

@@ -19,7 +19,6 @@ export default function Account() {
 
   return (
     <div className="Account page">
-      <h1>Account</h1>
       <button onClick={increaseRen}>+{ INCREASE_AMOUNT } $REN</button>
       <br />
       <br />

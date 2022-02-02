@@ -1,7 +1,6 @@
 export default function Help() {
   return (
     <div className="Help page">
-      <h1>Help</h1>
       <h2>FAQ</h2>
       
       <h4>Pellentesque at mauris tellus.</h4>
