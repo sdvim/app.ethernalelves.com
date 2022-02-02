@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(-1)}>Back</button>
+    <button onClick={() => navigate(-1)}>&lt;</button>
   );
 }
 
