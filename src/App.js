@@ -1,6 +1,7 @@
 import Account from "./pages/Account";
 import Actions from "./pages/Actions";
 import Elves from "./pages/Elves";
+import NotFound from "./pages/404";
 import Help from "./pages/Help";
 import { Provider } from "./Store";
 import { Modal } from "./components";
@@ -44,6 +45,12 @@ const pages = [
     title: "Help",
     element: <Help />,
   },
+  {
+    path: "*",
+    title: "404",
+    leftButton: <BackButton />,
+    element: <NotFound />,
+  }
 ];
 
 const App = () => {
@@ -52,7 +59,8 @@ const App = () => {
   let [currentPage, setCurrentPage] = useState(pages[0]);
 
   useEffect(() => {
-    setCurrentPage(pages.find((page) => page.path === location.pathname));
+    const matchedPage = pages.find((page) => page.path === location.pathname);
+    setCurrentPage(matchedPage ? matchedPage : pages[pages.length - 1]);
     document.title = `${currentPage.title} - Ethernal Elves`;
   }, [currentPage, location]);
 

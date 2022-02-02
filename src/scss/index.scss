@@ -41,6 +41,11 @@ code {
   font-family: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+a {
+  color: var(--selection-color);
+  font-weight: bold;
+}
+
 .button,
 button {
   border: none;
