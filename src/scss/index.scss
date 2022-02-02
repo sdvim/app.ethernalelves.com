@@ -7,6 +7,8 @@
   --foreground-color: #0E1A27;
   --selection-color: cyan;
   --selection-bg: rgba(0, 255, 255, 0.5);
+  --button-gradient: linear-gradient(#E8C171 0%, #DE9E40 15%, #602C2C 85%);
+  --button-disabled-gradient: linear-gradient(#1E1E1E 20%, #070707);
 }
 
 html {
@@ -53,7 +55,7 @@ button {
   font-family: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-weight: 500;
   padding: 0;
-  background: linear-gradient(#1E1E1E 20%, #070707) no-repeat;
+  background: var(--button-gradient) no-repeat;
   position: relative;
   height: calc(30px + 1em);
   padding: 0 1em;
@@ -61,13 +63,17 @@ button {
   border: 4px solid #393A3B;
   border-radius: 5px;
   text-decoration: none;
-  border-image: url('/assets/border-button.png') 25;
-  box-shadow: 0 0 0 1px rgba(white, 0.05) inset;
+  border-image: url('/assets/borders/button.png') 25;
+  box-shadow: 0 0 0 1px rgba(white, 0.25) inset;
+  &:active,
   &:hover {
-    box-shadow: 0 0 0 1px rgba(white, 0.25) inset;
+    border-image: url('/assets/borders/button-highlighted.png') 25;
+    box-shadow: 0 0 5px rgba(white, 0.75) inset;
   }
   &:disabled {
-    color: #666;
+    border-image: url('/assets/borders/button.png') 25;
+    background-image: var(--button-disabled-gradient);
+    color: #444;
     opacity: 0.66;
     box-shadow: none;
   }
