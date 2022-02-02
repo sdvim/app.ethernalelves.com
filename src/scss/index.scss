@@ -12,7 +12,7 @@
 html {
   box-sizing: border-box;
   font-size: 14px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 *,
@@ -26,7 +26,6 @@ body {
   color: white;
   margin: 0;
   font-family: 'Sen', sans-serif;
-  overflow-x: hidden;
 }
 
 hr {
@@ -101,33 +100,4 @@ h3 {
 
 h4 {
   font-size: 1.3125em;
-}
-
-nav {
-  background: var(--foreground-color);
-  display: flex;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  font-size: 1em;
-
-  a {
-    flex: 1;
-    text-decoration: none;
-    padding: 0.2em;
-    color: currentColor;
-    font-weight: bold;
-    
-    &::before {
-      content: '\2735';
-      display: block;
-      font-size: 2em;
-    }
-    
-    &.active {
-      cursor: default;
-      opacity: 0.2;
-    }
-  }
 }

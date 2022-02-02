@@ -5,6 +5,7 @@ import NotFound from "./pages/404";
 import Help from "./pages/Help";
 import { Provider } from "./Store";
 import { Modal } from "./components";
+import "./App.scss";
 
 import {
   Routes,
@@ -66,29 +67,31 @@ const App = () => {
 
   return (
     <Provider>
-      {currentPage && (
-        <Header
-          title={currentPage.title}
-          leftButton={currentPage.leftButton}
-          rightButton={currentPage.rightButton}
-        />
-      )}
-      <Routes location={state?.backgroundLocation || location}>
-        { pages.map((page) => <Route
-            path={page.path}
-            element={page.element}
-            index={page.isIndex}
-            key={`page-${page.title}`}
-          />)
-        }
-      </Routes>
-
-      {state?.backgroundLocation && (
-        <Routes>
-          <Route path="/elf/:id" element={<Modal />} />
+      <main className="App">
+        {currentPage && (
+          <Header
+            title={currentPage.title}
+            leftButton={currentPage.leftButton}
+            rightButton={currentPage.rightButton}
+          />
+        )}
+        <Routes location={state?.backgroundLocation || location}>
+          { pages.map((page) => <Route
+              path={page.path}
+              element={page.element}
+              index={page.isIndex}
+              key={`page-${page.title}`}
+            />)
+          }
         </Routes>
-      )}
-      <Nav />
+
+        {state?.backgroundLocation && (
+          <Routes>
+            <Route path="/elf/:id" element={<Modal />} />
+          </Routes>
+        )}
+        <Footer />
+      </main>
     </Provider>
   );
 }
@@ -111,13 +114,13 @@ const Header = (props) => {
   );
 };
 
-const Nav = () => {
+const Footer = () => {
   return (
-    <nav>
+    <footer className="App__footer">
       <NavLink to="/">Elves</NavLink>
       <NavLink to="/account">Account</NavLink>
       <NavLink to="/help">Help</NavLink>
-    </nav>
+    </footer>
   );
 }
 
