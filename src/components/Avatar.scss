@@ -4,9 +4,9 @@
   position: relative;
 
   &--is-selected {
-    background: rgba(limegreen, 0.25);
-    box-shadow: 0 0 1em 0.125em limegreen;
-    border-color: limegreen;
+    background: var(--selection-bg);
+    box-shadow: 0 0 1em 0.125em var(--selection-color);
+    border-color: var(--selection-color);
     border-image: none;
     cursor: pointer;
   }
@@ -26,7 +26,7 @@
   }
 
   &__index {
-    background: limegreen;
+    background: var(--selection-color);
     position: absolute;
     top: 0;
     left: 0;

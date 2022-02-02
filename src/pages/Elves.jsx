@@ -95,7 +95,7 @@ export default function Home() {
                   key={`${sectionIndex}-${index}`}
                   image={data.image}
                   isSelected={data.isSelected}
-                  selectionIndex={selectionIndex}
+                  // selectionIndex={selectionIndex}
                   display={display}
                   onClick={() => dispatch({
                     type: "UPDATE_SELECTION",
