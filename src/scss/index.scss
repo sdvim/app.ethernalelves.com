@@ -18,6 +18,11 @@
   font-display: swap;
 }
 
+:root {
+  --background-color: #090D16;
+  --foreground-color: #0E1A27;
+}
+
 html {
   box-sizing: border-box;
   font-size: 16px;
@@ -31,12 +36,21 @@ html {
 }
 
 body {
+  background: var(--background-color);
+  color: white;
   margin: 0;
   line-height: 1;
   font-family: 'Pixel Operator Mono', monospace;
   font-smooth: never;
   -webkit-font-smoothing : none;
   overflow-x: hidden;
+}
+
+hr {
+  border: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: .1;
 }
 
 code {
@@ -50,28 +64,30 @@ button {
   font: inherit;
   font-weight: bold;
   padding: 0;
-  background: linear-gradient(rgb(20, 27, 33), rgb(63, 89, 112), rgb(20, 27, 33)) no-repeat;
+  background: linear-gradient(#1E1E1E 20%, #070707) no-repeat;
   position: relative;
   height: calc(30px + 1em);
   padding: 0 1em;
   color: white;
   border: 4px solid #393A3B;
   border-radius: 5px;
+  border-image: url('/assets/border-button.png') 25;
+  box-shadow: 0 0 0 1px rgba(white, 0.05) inset;
   &:hover {
-    box-shadow: 0 0 0.25em 2px white inset;
+    box-shadow: 0 0 0 1px rgba(white, 0.25) inset;
   }
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    border: 15px solid;
-    top: 0;
-    left: 0;
-    border-image: url('/assets/border-button@4x.png') 108;
-    border-image-outset: 8px;
-    width: 100%;
-    height: 100%;
-  }
+  // &::before {
+  //   content: '';
+  //   display: block;
+  //   position: absolute;
+  //   border: 15px solid;
+  //   top: 0;
+  //   left: 0;
+  //   border-image: url('/assets/border-button@4x.png') 108;
+  //   border-image-outset: 8px;
+  //   width: 100%;
+  //   height: 100%;
+  // }
 }
 
 h1 {
@@ -91,7 +107,7 @@ h4 {
 }
 
 nav {
-  background: whitesmoke;
+  background: var(--foreground-color);
   display: flex;
   text-align: center;
   position: fixed;

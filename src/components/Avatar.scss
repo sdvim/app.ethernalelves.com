@@ -1,11 +1,13 @@
 .Avatar {
-  border: 3px solid lightgrey;
+  border: 4px solid #0E1A27;
+  border-image: url('/assets/frame.png') 4;
   position: relative;
 
   &--is-selected {
     background: rgba(limegreen, 0.25);
     box-shadow: 0 0 1em 0.125em limegreen;
     border-color: limegreen;
+    border-image: none;
     cursor: pointer;
   }
 
@@ -20,6 +22,7 @@
     border-top: inherit;
     width: 100%;
     height: 8px;
+    box-shadow: 0 0 0 1px inset rgba(white, 0.2);
   }
 
   &__index {
@@ -31,7 +34,7 @@
   }
 
   &__display {
-    background: lightgrey;
+    background: #0E1A27;
     position: absolute;
     top: 0;
     right: 0;
