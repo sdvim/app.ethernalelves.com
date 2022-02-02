@@ -1,5 +1,5 @@
 import Account from "./pages/Account";
-import Lounge from "./pages/Lounge";
+import Actions from "./pages/Actions";
 import Elves from "./pages/Elves";
 import Help from "./pages/Help";
 import { Provider } from "./Store";
@@ -34,10 +34,10 @@ const pages = [
     element: <Account />,
   },
   {
-    path: "/lounge",
+    path: "/actions",
     title: "Actions",
     leftButton: <BackButton />,
-    element: <Lounge />,
+    element: <Actions />,
   },
   {
     path: "/help",

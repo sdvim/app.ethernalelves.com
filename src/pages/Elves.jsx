@@ -25,8 +25,8 @@ export default function Home() {
     const collections = [
       {
         title: "Idle",
-        action: "Enter Lounge",
-        onClick: () => navigate("/lounge"),
+        action: "Take Action",
+        onClick: () => navigate("/actions"),
         elves: [],
       },
       {
