@@ -21,7 +21,6 @@ export default function Actions() {
       const elf = state.elves.find((elf) => elf.id === id);
       return <Avatar
         image={elf.image}
-        display={`#${elf.id}`}
         hideBars={true}
         key={`avatar-${elf.id}`}
       />;
