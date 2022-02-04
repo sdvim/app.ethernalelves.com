@@ -1,16 +1,15 @@
-import ElvesData from "./data/elves";
 import PlaceholderElf from "./data/PlaceholderElf.svg";
 import { useReducer } from "react";
 import { createContainer } from "react-tracked";
 
 const initialState = {
   ren: 400,
-  elves: ElvesData,
+  elves: [],
   selectedGroupId: null,
   selection: [],
 };
 
-let nextId = ElvesData.length + 1;
+let nextId = 0;
 
 export const MAX_SELECTION_SIZE = 8;
 export const MINT_PRICE_REN = 200;
