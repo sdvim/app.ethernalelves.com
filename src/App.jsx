@@ -10,7 +10,6 @@ import "./App.scss";
 import {
   Routes,
   Route,
-  NavLink,
   useLocation,
   useNavigate,
 } from "react-router-dom";
@@ -90,7 +89,6 @@ const App = () => {
             <Route path="/elf/:id" element={<Modal />} />
           </Routes>
         )}
-        <Footer />
       </main>
     </Provider>
   );
@@ -113,15 +111,5 @@ const Header = (props) => {
     </header>
   );
 };
-
-const Footer = () => {
-  return (
-    <footer className="App__footer">
-      <NavLink to="/">Elves</NavLink>
-      <NavLink to="/account">Account</NavLink>
-      <NavLink to="/help">Help</NavLink>
-    </footer>
-  );
-}
 
 export default App;

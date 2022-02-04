@@ -38,34 +38,4 @@
       }
     }
   }
-
-  &__footer {
-    background: var(--foreground-color);
-    display: flex;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-    font-size: 1em;
-    box-shadow: 0 -1em 2em rgba(0, 0, 0, .75);
-    position: relative;
-
-    a {
-      flex: 1;
-      text-decoration: none;
-      padding: 0.2em;
-      color: currentColor;
-      font-weight: bold;
-      
-      &::before {
-        content: '\2735';
-        display: block;
-        font-size: 2em;
-      }
-      
-      &.active {
-        cursor: default;
-        opacity: 0.2;
-      }
-    }
-  }
 }
