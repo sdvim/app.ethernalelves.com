@@ -4,7 +4,6 @@ import { Avatar } from "../components";
 import {
   useDispatch,
   useTrackedState,
-  MAX_SELECTION_SIZE,
   MINT_PRICE_REN,
 } from "../Store";
 
@@ -62,20 +61,16 @@ export default function Home() {
   const mintButtonDisabled = state.ren < MINT_PRICE_REN;
 
   const sectionsDOM = sections.map((section, sectionIndex) => {
-    const isSelected = state.selectedGroupId === sectionIndex;
-    const maxSize = Math.min(section.elves.length, MAX_SELECTION_SIZE);
-    const selectionCount = `(${state.selection.length}/${maxSize})`;
-    if (maxSize <= 0) return null;
-    return (
+    return (section.elves.length > 0) && (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
           <h2 key={`${section.title}`}>
             { section.title }:{ " " }
             { section.elves.length }
           </h2>
-          { isSelected && section.action &&
+          { section.action &&
             <button onClick={section.onClick} disabled={section.isDisabled}>
-              {section.action} {selectionCount}
+              {section.action}
             </button>
           }
         </div>
@@ -87,15 +82,11 @@ export default function Home() {
                 : (displayType === "id")
                   ? `#${data.id}`
                   : null;
-              const selectionIndex = data.isSelected
-                ? state.selection.indexOf(data.id)
-                : -1
               return (
                 <Avatar
                   key={`${sectionIndex}-${index}`}
                   image={data.image}
                   isSelected={data.isSelected}
-                  // selectionIndex={selectionIndex}
                   display={display}
                   onClick={() => dispatch({
                     type: "UPDATE_SELECTION",
