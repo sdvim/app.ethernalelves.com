@@ -8,14 +8,13 @@ import { useEffect } from "react";
 const storageKey = "ethernalElves";
 const initialState = {
   ren: 0,
+  nextId: 0,
   elves: [],
   selection: [],
   isMoralisConnected: false,
   pending: false,
   wallet: null,
 };
-
-let nextId = 0;
 
 export const MINT_PRICE_REN = 200;
 export const ELF_ACTION = {
@@ -29,7 +28,8 @@ export const ELF_ACTION = {
 
 const init = () => {
   if (typeof window === "undefined") return initialState;
-  const  preloadedState = JSON.parse(window.localStorage.getItem(storageKey));
+  const preloadedState = JSON.parse(window.localStorage.getItem(storageKey));
+  if (preloadedState) preloadedState.isMoralisConnected = false;
   return preloadedState || initialState;
 }
 
@@ -46,10 +46,9 @@ const reducer = (state, action) => {
           : [...selection, action.id],
       };
     case "SHOW_ERROR":
-      console.log(action.error);
+      console.error(action.error);
       return null;
     case "UPDATE_WALLET":
-      console.log(action.wallet);
       return { ...state,  wallet: action.wallet, };
     case "UPDATE_REN":
       return {
@@ -71,11 +70,13 @@ const reducer = (state, action) => {
       };
     case "MINT_ELF":
       if (state.ren >= MINT_PRICE_REN) {
+        const nextId = state.nextId + 1;
         return {
           ...state,
+          nextId,
           ren: state.ren - MINT_PRICE_REN,
           elves: [...state.elves, {
-            id: nextId++,
+            id: nextId,
             action: 0,
             attack: 1,
             class: 1,
@@ -119,7 +120,9 @@ const asyncActionHandlers = {
     },
   DISCONNECT_WALLET: ({ dispatch }) =>
     async (action) => {
-      Moralis.User.logOut();
+      await Moralis.User.logOut().then(() => {
+        dispatch({ type: "UPDATE_WALLET", wallet: null });
+      });
     },
   GET_TOKENS: ({ dispatch }) =>
     async (action) => {

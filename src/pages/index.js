@@ -5,7 +5,7 @@ import Elves from "./Elves";
 import NotFound from "./404";
 import Help from "./Help";
 
-import { useTrackedState } from "../Store";
+import { useDispatch, useTrackedState } from "../Store";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const BackButton = () => {
@@ -15,6 +15,14 @@ const BackButton = () => {
     <button onClick={() => navigate(-1)}>&lt;</button>
   );
 }
+
+const LogoutButton = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <button onClick={() => dispatch({type: "DISCONNECT_WALLET"})}>X</button>
+  );
+};
 
 const RequireAuth = ({ children }) => {
   const location = useLocation();
@@ -37,6 +45,7 @@ export const pages = [
         <Elves />
       </RequireAuth>,
     isIndex: true,
+    leftButton: <LogoutButton />,
   },
   {
     path: "/account",
