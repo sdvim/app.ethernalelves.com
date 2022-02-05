@@ -3,7 +3,9 @@ import { useReducerAsync } from "use-reducer-async";
 import { createContainer } from "react-tracked";
 import Moralis from "moralis/dist/moralis.min.js";
 import env from "react-dotenv";
+import { useEffect } from "react";
 
+const storageKey = "ethernalElves";
 const initialState = {
   ren: 0,
   elves: [],
@@ -24,6 +26,12 @@ export const ELF_ACTION = {
   REROLL_ITEMS: 6,
   HEAL: 7,
 };
+
+const init = () => {
+  if (typeof window === "undefined") return initialState;
+  const  preloadedState = JSON.parse(window.localStorage.getItem(storageKey));
+  return preloadedState || initialState;
+}
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -119,7 +127,14 @@ const asyncActionHandlers = {
     },
 };
 
-const useValue = () => useReducerAsync(reducer, initialState, asyncActionHandlers);
+const useValue = () => {
+  const [state, dispatch] = useReducerAsync(reducer, init(), asyncActionHandlers);
+  useEffect(() => {
+    window.localStorage.setItem(storageKey, JSON.stringify(state));
+  }, [state]);
+
+  return [state, dispatch];
+};
 
 export const {
   Provider,
