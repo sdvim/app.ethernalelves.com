@@ -1,83 +1,9 @@
-import Account from "./pages/Account";
-import Actions from "./pages/Actions";
-import Connect from "./pages/Connect";
-import Elves from "./pages/Elves";
-import NotFound from "./pages/404";
-import Help from "./pages/Help";
 import { Modal } from "./components";
-import "./App.scss";
-import {
-  useDispatch,
-  useTrackedState,
-} from "./Store";
-
-import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useTrackedState } from "./Store";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-const BackButton = () => {
-  const navigate = useNavigate();
-  return (
-    <button onClick={() => navigate(-1)}>&lt;</button>
-  );
-}
-
-const RequireAuth = ({ children }) => {
-  let location = useLocation();
-  const state = useTrackedState();
-  const { wallet } = state;
-
-  if (!wallet) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/connect" state={{ from: location }} replace />;
-  }
-
-  return children;
-}
-
-const pages = [
-  {
-    path: "/",
-    title: "Elves",
-    element:
-      <RequireAuth>
-        <Elves />
-      </RequireAuth>,
-    isIndex: true,
-  },
-  {
-    path: "/account",
-    title: "Account",
-    element: 
-      <RequireAuth>
-        <Account />
-      </RequireAuth>,
-  },
-  {
-    path: "/actions",
-    title: "Actions",
-    leftButton: <BackButton />,
-    element: <Actions />,
-  },
-  {
-    path: "/connect",
-    title: "Connect",
-    element: <Connect />,
-  },
-  {
-    path: "/help",
-    title: "Help",
-    element: <Help />,
-  },
-  {
-    path: "*",
-    title: "404",
-    leftButton: <BackButton />,
-    element: <NotFound />,
-  }
-];
+import { pages } from "./pages";
+import "./App.scss";
 
 const App = () => {
   const location = useLocation();
