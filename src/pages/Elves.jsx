@@ -12,6 +12,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useTrackedState();
+  const { elves, ren, selection } = state.user;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,8 +41,8 @@ export default function Home() {
       },
     ];
 
-    state.elves.forEach((elf) => {
-      elf.isSelected = state?.selection.includes(elf.id);
+    elves.forEach((elf) => {
+      elf.isSelected = selection?.includes(elf.id);
       switch (elf.action) {
         case 3:
           collections[1].elves.push(elf);
@@ -56,9 +57,9 @@ export default function Home() {
     });
 
     return collections;
-  }, [state, dispatch, navigate]);
+  }, [elves, selection, dispatch, navigate]);
 
-  const mintButtonDisabled = state.ren < MINT_PRICE_REN;
+  const mintButtonDisabled = ren < MINT_PRICE_REN;
 
   const sectionsDOM = sections.map((section, sectionIndex) => {
     return (section.elves.length > 0) && (
@@ -102,26 +103,19 @@ export default function Home() {
     );
   });
 
-  // const focusedCharacter = useMemo(() => {
-  //   const selectedId = selection[selection.length - 1];
-  //   return state.elves.find((elf) => elf.id === selectedId);
-  // }, [selection, state.elves]);
-
-  // const handleActionCallback = (data) => {
-  //   dispatch(data);
-  //   setSelection([...selection.slice(0, -1)]);
-  // };
-
   const handleDisplayTypeChange = (e) => {
     setDisplayType(e.target.value);
   };
 
   return (
     <div className="Home page">
-      <button onClick={() => dispatch({ type: "MINT_ELF" })} disabled={mintButtonDisabled}>
+      <button
+        onClick={() => dispatch({ type: "MINT_ELF" })}
+        disabled={mintButtonDisabled}
+      >
         Mint 1 Elf for { MINT_PRICE_REN } $REN
       </button>
-      <p>Balance: {state.ren} $REN</p>
+      <p>Balance: {ren} $REN</p>
       <p>Earn free $REN by staring at this page.</p>
       <form>
         <label>

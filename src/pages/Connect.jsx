@@ -7,11 +7,12 @@ export default function Connect() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = useTrackedState();
+  const { wallet } = state.user;
   const from = location.state?.from?.pathname || "/";
   
   useEffect(() => {
-    if (state.wallet) navigate(from, { replace: true });
-  }, [state, from, navigate]);
+    if (wallet) navigate(from, { replace: true });
+  }, [wallet, from, navigate]);
 
   return (
     <div className="Connect page">

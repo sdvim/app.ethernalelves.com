@@ -7,13 +7,15 @@ import { useEffect } from "react";
 
 const storageKey = "ethernalElves";
 const initialState = {
-  ren: 0,
-  nextId: 0,
-  elves: [],
-  selection: [],
   isMoralisConnected: false,
   pending: false,
-  wallet: null,
+  user: {
+    ren: 0,
+    nextId: 0,
+    elves: [],
+    selection: [],
+    wallet: null,
+  },
 };
 
 export const MINT_PRICE_REN = 200;
@@ -35,61 +37,73 @@ const init = () => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "MORALIS_CONNECTED":
+    case "UPDATE_MORALIS_CONNECTED":
       return { ...state,  isMoralisConnected: true, };
-    case "UPDATE_SELECTION":
-      let { selection } = state;
-      return {
-        ...state,
-        selection: selection.includes(action.id)
-          ? selection.filter((id) => id !== action.id)
-          : [...selection, action.id],
-      };
     case "SHOW_ERROR":
       console.error(action.error);
       return null;
+    
+    // User Actions
+    case "UPDATE_SELECTION":
+      const { selection } = state.user;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          selection: selection.includes(action.id)
+          ? selection.filter((id) => id !== action.id)
+          : [...selection, action.id],
+        },
+      };
     case "UPDATE_WALLET":
-      return { ...state,  wallet: action.wallet, };
+      const { wallet } = action;
+      const user = (wallet)
+        ? { ...state.user, wallet }
+        : { ...initialState.user };
+      return { ...state, user };
     case "UPDATE_REN":
-      return {
-        ...state,
-        ren: state.ren + action.value,
-      };
-    case "SET_ELF_ACTION":
-      return {
-        ...state,
-        selection: [],
-        elves: [...state.elves.map((elf) => {
-          return {
-            ...elf,
-            action: state.selection.includes(elf.id)
-              ? ELF_ACTION[action.key]
-              : elf.action,
-          };
-        })],
-      };
+      return { ...state, user: {
+        ...state.user,
+        ren: state.user.ren + action.value,
+      }};
+    // case "SET_ELF_ACTION":
+    //   return {
+    //     ...state,
+    //     selection: [],
+    //     elves: [...state.elves.map((elf) => {
+    //       return {
+    //         ...elf,
+    //         action: state.selection.includes(elf.id)
+    //           ? ELF_ACTION[action.key]
+    //           : elf.action,
+    //       };
+    //     })],
+    //   };
     case "MINT_ELF":
-      if (state.ren >= MINT_PRICE_REN) {
-        const nextId = state.nextId + 1;
+      if (state.user.ren >= MINT_PRICE_REN) {
+        const nextId = state.user.nextId + 1;
         return {
           ...state,
-          nextId,
-          ren: state.ren - MINT_PRICE_REN,
-          elves: [...state.elves, {
-            id: nextId,
-            action: 0,
-            attack: 1,
-            class: 1,
-            hair: 1,
-            image: PlaceholderElf,
-            inventory: [],
-            name: `Elf #${nextId}`,
-            level: Math.ceil(Math.random() * 10),
-            primaryWeapon: 1,
-            race: 1,
-            time: new Date(),
-            weaponTier: 1,
-          }]
+          user: {
+            ...state.user,
+            nextId,
+            ren: state.user.ren - MINT_PRICE_REN,
+            elves: [...state.user.elves, {
+              id: nextId,
+              action: 0,
+              attack: 1,
+              class: 1,
+              hair: 1,
+              image: PlaceholderElf,
+              inventory: [],
+              name: `Elf #${nextId}`,
+              level: Math.ceil(Math.random() * 10),
+              primaryWeapon: 1,
+              race: 1,
+              time: new Date(),
+              weaponTier: 1,
+            }]
+          },
         };
       } else {
         return state;
@@ -105,7 +119,7 @@ const asyncActionHandlers = {
       let appId = env.MORALIS_APP_ID;
       let serverUrl = env.MORALIS_SERVER_URL;
       Moralis.start({ serverUrl, appId });
-      dispatch({ type: "MORALIS_CONNECTED" });
+      dispatch({ type: "UPDATE_MORALIS_CONNECTED" });
     },
   CONNECT_WALLET: ({ dispatch }) =>
     async (action) => {

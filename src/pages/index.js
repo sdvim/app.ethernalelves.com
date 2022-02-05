@@ -27,7 +27,7 @@ const LogoutButton = () => {
 const RequireAuth = ({ children }) => {
   const location = useLocation();
   const state = useTrackedState();
-  const { wallet } = state;
+  const { wallet } = state.user;
 
   if (!wallet) {
     return <Navigate to="/connect" state={{ from: location }} replace />;
