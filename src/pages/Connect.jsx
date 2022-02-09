@@ -19,7 +19,7 @@ export default function Connect() {
   }, [wallet, from, navigate]);
 
   return (
-    <div className="Connect page">
+    <div className="Connect page page--centered">
       <p>Please login.</p>
       <button onClick={() => dispatch({ type: "CONNECT_WALLET" })}>
         Connect with {walletName}

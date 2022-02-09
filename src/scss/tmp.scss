@@ -38,6 +38,12 @@
 .page {
   padding: 2em 1em;
   position: relative;
+  &--centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .errors {
