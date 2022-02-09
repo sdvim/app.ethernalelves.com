@@ -9,6 +9,10 @@ export default function Connect() {
   const state = useTrackedState();
   const { wallet } = state.user;
   const from = location.state?.from?.pathname || "/";
+
+  const walletName = window.ethereum?.isMetaMask
+    ? "MetaMask"
+    : "Wallet Connect";
   
   useEffect(() => {
     if (wallet) navigate(from, { replace: true });
@@ -18,7 +22,7 @@ export default function Connect() {
     <div className="Connect page">
       <p>Please login.</p>
       <button onClick={() => dispatch({ type: "CONNECT_WALLET" })}>
-        Connect Wallet
+        Connect with {walletName}
       </button>
     </div>
   );

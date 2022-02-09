@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "@walletconnect/web3-provider": "^1.7.1",
     "isarray": "^2.0.5",
     "moralis": "^1.3.0",
     "react": "^17.0.2",
@@ -51,7 +52,8 @@
   "react-dotenv": {
     "whitelist": [
       "MORALIS_APP_ID",
-      "MORALIS_SERVER_URL"
+      "MORALIS_SERVER_URL",
+      "INFURA_ID"
     ]
   }
 }

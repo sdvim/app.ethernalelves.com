@@ -4,11 +4,13 @@ import { createContainer } from "react-tracked";
 import Moralis from "moralis/dist/moralis.min.js";
 import env from "react-dotenv";
 import { useEffect } from "react";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 
 const storageKey = "ethernalElves";
 const initialState = {
   isMoralisConnected: false,
   pending: false,
+  errors: [],
   user: {
     ren: 0,
     nextId: 0,
@@ -31,17 +33,25 @@ export const ELF_ACTION = {
 const init = () => {
   if (typeof window === "undefined") return initialState;
   const preloadedState = JSON.parse(window.localStorage.getItem(storageKey));
-  if (preloadedState) preloadedState.isMoralisConnected = false;
-  return preloadedState || initialState;
+  if (preloadedState) {
+    preloadedState.isMoralisConnected = false;
+    preloadedState.errors = [];
+  }
+  return { ...initialState, ...preloadedState };
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_MORALIS_CONNECTED":
-      return { ...state,  isMoralisConnected: true, };
+      return { ...state, isMoralisConnected: true, };
     case "SHOW_ERROR":
-      console.error(action.error);
-      return null;
+      return {
+        ...state,
+        errors: [
+          ...state.errors,
+          action.message
+        ]
+      };
     
     // User Actions
     case "UPDATE_SELECTION":
@@ -118,19 +128,45 @@ const asyncActionHandlers = {
     async (action) => {
       let appId = env.MORALIS_APP_ID;
       let serverUrl = env.MORALIS_SERVER_URL;
+      let infuraId = env.INFURA_ID;
+      let provider = window.ethereum?.isMetaMask
+        ? "metamask"
+        : new WalletConnectProvider({ infuraId });
+      
       Moralis.start({ serverUrl, appId });
-      dispatch({ type: "UPDATE_MORALIS_CONNECTED" });
+      Moralis.enableWeb3({ provider });
+      Moralis.onWeb3Enabled((result) => {
+        dispatch({ type: "UPDATE_MORALIS_CONNECTED" });
+      });
     },
   CONNECT_WALLET: ({ dispatch }) =>
     async (action) => {
-      await Moralis.authenticate({
-        signingMessage: "Log into Ethernal Elves dApp"
-      }).then((user) => {
-        dispatch({ type: "UPDATE_WALLET", wallet: user.get("ethAddress") });
-      }).catch((error) => {
-        dispatch({ type: "SHOW_ERROR", error });
-      });
-      
+      let infuraId = env.INFURA_ID;
+      let provider = window.ethereum?.isMetaMask
+        ? "metamask"
+        : new WalletConnectProvider({ infuraId });
+
+      if (provider !== "metamask") {
+        try {
+          await provider.enable();
+        } catch (error) {
+          dispatch({ type: "SHOW_ERROR", message: error.message });
+        }
+      }
+
+      try {
+        await Moralis.Web3.authenticate({
+          provider,
+          mobileLinks: ["metamask", "rainbow"],
+          signingMessage: "Log into Ethernal Elves dApp"
+        }).then((user) => {
+          dispatch({ type: "UPDATE_WALLET", wallet: user.get("ethAddress") });
+        }).catch((error) => {
+          dispatch({ type: "SHOW_ERROR", message: error.message });
+        });
+      } catch (error) {
+        dispatch({ type: "SHOW_ERROR", error: "RIP" });
+      }
     },
   DISCONNECT_WALLET: ({ dispatch }) =>
     async (action) => {

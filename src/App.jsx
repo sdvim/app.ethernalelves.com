@@ -9,7 +9,7 @@ const App = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const state = useTrackedState();
-  const { isMoralisConnected } = state;
+  const { errors, isMoralisConnected } = state;
   const [currentPage, setCurrentPage] = useState(pages[0]);
 
   useEffect(() => {
@@ -48,6 +48,12 @@ const App = () => {
           <Route path="/elf/:id" element={<Modal />} />
         </Routes>
       )}
+
+      <div className="errors">
+        { errors?.map((error) => (
+          <div>{ error }</div>
+        )) }
+      </div>
     </main>
   );
 }
