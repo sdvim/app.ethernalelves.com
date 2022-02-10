@@ -12,11 +12,11 @@ const initialState = {
   pending: false,
   errors: [],
   user: {
+    address: null,
     ren: 0,
     nextId: 0,
     elves: [],
     selection: [],
-    wallet: null,
   },
 };
 
@@ -65,10 +65,10 @@ const reducer = (state, action) => {
           : [...selection, action.id],
         },
       };
-    case "UPDATE_WALLET":
-      const { wallet } = action;
-      const user = (wallet)
-        ? { ...state.user, wallet }
+    case "UPDATE_ADDRESS":
+      const { address } = action;
+      const user = (address)
+        ? { ...state.user, address }
         : { ...initialState.user };
       return { ...state, user };
     case "UPDATE_REN":
@@ -160,7 +160,7 @@ const asyncActionHandlers = {
           mobileLinks: ["metamask", "rainbow"],
           signingMessage: "Log into Ethernal Elves dApp"
         }).then((user) => {
-          dispatch({ type: "UPDATE_WALLET", wallet: user.get("ethAddress") });
+          dispatch({ type: "UPDATE_ADDRESS", address: user.get("ethAddress") });
         }).catch((error) => {
           dispatch({ type: "SHOW_ERROR", message: error.message });
         });
@@ -171,7 +171,7 @@ const asyncActionHandlers = {
   DISCONNECT_WALLET: ({ dispatch }) =>
     async (action) => {
       await Moralis.User.logOut().then(() => {
-        dispatch({ type: "UPDATE_WALLET", wallet: null });
+        dispatch({ type: "UPDATE_ADDRESS", address: null });
       });
     },
   GET_TOKENS: ({ dispatch }) =>

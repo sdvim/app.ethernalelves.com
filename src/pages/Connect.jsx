@@ -7,7 +7,7 @@ export default function Connect() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = useTrackedState();
-  const { wallet } = state.user;
+  const { address } = state.user;
   const from = location.state?.from?.pathname || "/";
 
   const walletName = window.ethereum?.isMetaMask
@@ -15,8 +15,8 @@ export default function Connect() {
     : "Wallet Connect";
   
   useEffect(() => {
-    if (wallet) navigate(from, { replace: true });
-  }, [wallet, from, navigate]);
+    if (address) navigate(from, { replace: true });
+  }, [address, from, navigate]);
 
   return (
     <div className="Connect page page--centered">
