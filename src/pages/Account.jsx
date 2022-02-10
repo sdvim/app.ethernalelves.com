@@ -6,7 +6,7 @@ const DECREASE_AMOUNT = 100;
 export default function Account() {
   const dispatch = useDispatch();
   const state = useTrackedState();
-  const balanceLabel = `${state.ren} $REN`;
+  const balanceLabel = `${state.user.ren} $REN`;
   const increaseRen = () => dispatch({
     type: "UPDATE_REN",
     value: INCREASE_AMOUNT,
@@ -15,10 +15,10 @@ export default function Account() {
     type: "UPDATE_REN",
     value: -DECREASE_AMOUNT,
   });
-  const decreaseButtonDisabled = state.ren < DECREASE_AMOUNT;
+  const decreaseButtonDisabled = state.user.ren < DECREASE_AMOUNT;
 
   return (
-    <div className="Account page">
+    <div className="Account page page--centered">
       <button onClick={increaseRen}>+{ INCREASE_AMOUNT } $REN</button>
       <br />
       <br />
