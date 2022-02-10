@@ -1,3 +1,5 @@
+import elvesABI from "./abi/elves.json";
+import { Multicall } from "ethereum-multicall";
 import PlaceholderElf from "./data/PlaceholderElf.svg";
 import { useReducerAsync } from "use-reducer-async";
 import { createContainer } from "react-tracked";
@@ -16,9 +18,15 @@ const initialState = {
     ren: 0,
     nextId: 0,
     elves: [],
+    elfIds: [],
     selection: [],
   },
 };
+
+const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
+const MIREN_CONTRACT = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f";
+const CAMPAIGNS_CONTRACT = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e";
+const ELF_PAGE_LIMIT = 50;
 
 export const MINT_PRICE_REN = 200;
 export const ELF_ACTION = {
@@ -65,6 +73,8 @@ const reducer = (state, action) => {
           : [...selection, action.id],
         },
       };
+    case "UPDATE_ELF_IDS":
+      return { ...state, user: { ...state.user, elfIds: action.elfIds } };
     case "UPDATE_ADDRESS":
       const { address } = action;
       const user = (address)
@@ -160,7 +170,9 @@ const asyncActionHandlers = {
           mobileLinks: ["metamask", "rainbow"],
           signingMessage: "Log into Ethernal Elves dApp"
         }).then((user) => {
-          dispatch({ type: "UPDATE_ADDRESS", address: user.get("ethAddress") });
+          let address = user.get("ethAddress");
+          dispatch({ type: "LOAD_ELVES", address });
+          dispatch({ type: "UPDATE_ADDRESS", address });
         }).catch((error) => {
           dispatch({ type: "SHOW_ERROR", message: error.message });
         });
@@ -174,11 +186,65 @@ const asyncActionHandlers = {
         dispatch({ type: "UPDATE_ADDRESS", address: null });
       });
     },
-  GET_TOKENS: ({ dispatch }) =>
+  LOAD_ELVES: ({ dispatch }) =>
     async (action) => {
+      await Moralis.enableWeb3();
 
+      let elfIds = [];
+      let elvesQuery = new Moralis.Query(Moralis.Object.extend("Elves"));
+      let isMoreElves = true;
+      let page = 1;
+
+      while (isMoreElves) {
+        let currentIndex = ELF_PAGE_LIMIT * page;
+
+        elvesQuery.equalTo("owner_of", action.address);
+        elvesQuery.limit(ELF_PAGE_LIMIT);
+        elvesQuery.skip(ELF_PAGE_LIMIT * (page - 1));
+        elvesQuery.withCount();
+
+        let response = await elvesQuery.find();
+        isMoreElves = currentIndex < response.count;
+        elfIds.push(...response.results.map((obj) => obj.attributes.token_id));
+        page++;
+      }
+
+      dispatch({ type: "UPDATE_ELF_IDS", elfIds });
+
+      lookupMultipleElves(elfIds);
     },
 };
+
+const lookupMultipleElves = async (elfIds) => {
+  if (!elfIds || elfIds.length < 1) return;
+
+  console.log(elfIds);
+  console.log(typeof elfIds);
+
+  const calls = ["elves", "attributes", "ownerOfCall", "tokenURI"];
+  const txArr = elfIds.map((id) => ({
+    reference: `Elves${id}`,
+    contractAddress: ELVES_CONTRACT,
+    abi: elvesABI.abi,
+    calls: calls.map((call) => ({
+      reference: `${call}${id}`,
+      methodName: call,
+      methodParameters: [id],
+    }))
+  }));
+
+  // console.log(txArr);
+
+  const web3Instance = await Moralis.enableWeb3();
+  // console.log(web3Instance);
+
+  const multicall = new Multicall({ web3Instance, tryAggregate: true });
+  console.log(multicall);
+
+  // const results = await multicall.call(txArr);
+  // console.log(results);
+  
+}
 
 const useValue = () => {
   const [state, dispatch] = useReducerAsync(reducer, init(), asyncActionHandlers);
