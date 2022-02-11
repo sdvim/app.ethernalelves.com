@@ -10,10 +10,12 @@ export default function Avatar(props) {
         <div className="Avatar__index">#{ props.selectionIndex + 1 }</div>
       }
       { !props.hideBars &&
-        <>
-          <div className="Avatar__bar Avatar__health"></div>
-          <div className="Avatar__bar Avatar__experience"></div>
-        </>
+        <div className="Avatar__bar Avatar__health">
+          <div
+            className="Avatar__health--inner"
+            style={{ width: `${props.healthPercentage}%` }}
+          ></div>
+        </div>
       }
     </div>
   );

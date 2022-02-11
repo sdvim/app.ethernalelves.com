@@ -8,6 +8,13 @@ const web3 = new Web3(new Web3.providers.HttpProvider(env.ALCHEMY_URL));
 
 export const hexToInt = (hex) => parseInt(hex.hex, 16);
 
+export const timestampToHealthPercentage = (timestamp) => {
+  const now = new Date().getTime()
+  const diff = Math.floor(new Date(timestamp * 1000).getTime() - now) / 36e5;
+  const result = 100 - 2.5 * diff;
+  return Math.min(100, Math.max(0, result));
+}
+
 export const actionIntToString = (action, isCoolingDown = false) => {
   switch (action) {
     case 0: return "Idle";
@@ -70,7 +77,7 @@ export const fetchElvesByIds = async (elfIds) => {
     const isBurnedOrIdle = action === 0
       || addressOwner === "0x0000000000000000000000000000000000000000";
 
-    const isCoolingDown = timestamp > Math.floor( Date.now() / 1000 );
+    const isCoolingDown =  hexToInt(timestamp) > Math.floor(Date.now() / 1000);
     
     const status = isBurnedOrIdle ? "unstaked" : "staked";
 
@@ -103,6 +110,7 @@ export const fetchElvesByIds = async (elfIds) => {
       inventory: hexToInt(inventory),
       primaryWeapon: hexToInt(primaryWeapon),
       adddressCurrent,
+      isCoolingDown,
       status,
       image,
       name: name ? name : `Elf #${id}`,

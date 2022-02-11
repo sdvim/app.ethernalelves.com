@@ -83,19 +83,6 @@ const reducer = (state, action) => {
         ...state.user,
         ren: state.user.ren + action.value,
       }};
-    // case "SET_ELF_ACTION":
-    //   return {
-    //     ...state,
-    //     selection: [],
-    //     elves: [...state.elves.map((elf) => {
-    //       return {
-    //         ...elf,
-    //         action: state.selection.includes(elf.id)
-    //           ? ELF_ACTION[action.key]
-    //           : elf.action,
-    //       };
-    //     })],
-    //   };
     case "MINT_ELF":
       if (state.user.ren >= MINT_PRICE_REN) {
         const nextId = state.user.nextId + 1;
