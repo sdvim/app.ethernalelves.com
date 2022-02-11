@@ -1,6 +1,3 @@
-import elvesABI from "./abi/elves.json";
-import { Multicall } from "ethereum-multicall";
-import Web3 from "web3";
 import PlaceholderElf from "./data/PlaceholderElf.svg";
 import { useReducerAsync } from "use-reducer-async";
 import { createContainer } from "react-tracked";
@@ -8,6 +5,7 @@ import Moralis from "moralis/dist/moralis.min.js";
 import env from "react-dotenv";
 import { useEffect } from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { fetchElvesByIds } from "./Utils.js";
 
 const storageKey = "ethernalElves";
 const initialState = {
@@ -23,12 +21,6 @@ const initialState = {
     selection: [],
   },
 };
-
-const web3 = new Web3(new Web3.providers.HttpProvider(env.ALCHEMY_URL));
-
-const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
-const MIREN_CONTRACT = "0xe6b055abb1c40b6c0bf3a4ae126b6b8dbe6c5f3f";
-const CAMPAIGNS_CONTRACT = "0x367Dd3A23451B8Cc94F7EC1ecc5b3db3745D254e";
 const ELF_PAGE_LIMIT = 50;
 
 export const MINT_PRICE_REN = 200;
@@ -216,97 +208,11 @@ const asyncActionHandlers = {
 
       dispatch({ type: "UPDATE_ELF_IDS", elfIds });
 
-      let elves = await lookupMultipleElves(elfIds);
+      let elves = await fetchElvesByIds(elfIds);
 
       dispatch({ type: "UPDATE_ELVES", elves });
     },
 };
-
-const lookupMultipleElves = async (elfIds) => {
-  if (!elfIds || elfIds.length < 1) return;
-
-  const txArr = elfIds.map((id) => ({
-    reference: `Elves${id}`,
-    contractAddress: ELVES_CONTRACT,
-    abi: elvesABI.abi,
-    calls: [
-      { reference: `elves${id}`, methodName: 'elves', methodParameters: [id] },
-      { reference: `attributes${id}`, methodName: 'attributes', methodParameters: [id] },
-      { reference: `ownerOfCall${id}`, methodName: 'ownerOf', methodParameters: [id] },
-      { reference: `tokenURI${id}`, methodName: 'tokenURI', methodParameters: [id] },
-     ]
-  }));
-
-  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
-  const results = await multicall.call(txArr);
-
-  return elfIds.map((id) => {
-    const [stats, metadata, addresses, tokenData] = results.results[`Elves${id}`].callsReturnContext;
-    const [addressOwner, timestamp, action, health, attack, level] = stats.returnValues;
-    const [hair, race, accessories, sentinelClass, weaponTier, inventory] = metadata.returnValues;
-    const [adddressCurrent] = addresses.returnValues;
-    const [base64metadata] = tokenData.returnValues;
-
-    const isBurnedOrIdle = action === 0
-      || addressOwner === "0x0000000000000000000000000000000000000000";
-
-    const isCoolingDown = timestamp > Math.floor( Date.now() / 1000 );
-
-    const hexToInt = (hex) => parseInt(hex.hex, 16);
-
-    const actionIntToString = (action) => {
-      switch (action) {
-        case 0: return "Idle";
-        case 1: return "Staked, but Idle";
-        case 2: return isCoolingDown ? "On Campaign" : "Campaign Ended";
-        case 3: return "Sent to Passive Campaign";
-        case 4: return "Returned from Passive Campaign";
-        case 5: return "Re-Rolled Weapon";
-        case 6: return "Re-Rolled Items";
-        case 7: return isCoolingDown ? "Healing" : "Done Healing";
-        default: return "Unknown";
-      }
-    }
-    
-    const status = isBurnedOrIdle ? "unstaked" : "staked";
-
-    const tokenObject = base64metadata
-      ? JSON.parse(window.atob(base64metadata.split(",")[1]))
-      : {
-        image: null,
-        name: null,
-        body: null,
-        helm: null,
-        mainhand: null,
-        offhand: null,
-        attributes: null,
-      };
-    
-    const { image, name, attributes } = tokenObject;
-
-    return {
-      addressOwner,
-      timestamp: hexToInt(timestamp),
-      action: hexToInt(action),
-      health: hexToInt(health),
-      attack: hexToInt(attack),
-      level: hexToInt(level),
-      hair: hexToInt(hair),
-      race: hexToInt(race),
-      accessories: hexToInt(accessories),
-      sentinelClass: hexToInt(sentinelClass),
-      weaponTier: hexToInt(weaponTier),
-      inventory: hexToInt(inventory),
-      adddressCurrent,
-      status,
-      image,
-      name: name ? name : `Elf #${id}`,
-      actionString: actionIntToString(hexToInt(action)),
-      attributes,
-      id,
-    };
-  });
-}
 
 const useValue = () => {
   const [state, dispatch] = useReducerAsync(reducer, init(), asyncActionHandlers);
