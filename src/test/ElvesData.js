@@ -1,6 +1,6 @@
 import PlaceholderElf from "../data/PlaceholderElf.svg";
 
-const ElvesData = [
+export const ElvesData = [
   {
     id: 1,
     action: 0,
@@ -227,5 +227,3 @@ const ElvesData = [
     weaponTier: 1,
   },
 ];
-
-export default ElvesData;
