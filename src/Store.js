@@ -1,4 +1,3 @@
-import PlaceholderElf from "./data/PlaceholderElf.svg";
 import { useReducerAsync } from "use-reducer-async";
 import { createContainer } from "react-tracked";
 import Moralis from "moralis/dist/moralis.min.js";
@@ -83,35 +82,6 @@ const reducer = (state, action) => {
         ...state.user,
         ren: state.user.ren + action.value,
       }};
-    case "MINT_ELF":
-      if (state.user.ren >= MINT_PRICE_REN) {
-        const nextId = state.user.nextId + 1;
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            nextId,
-            ren: state.user.ren - MINT_PRICE_REN,
-            elves: [...state.user.elves, {
-              id: nextId,
-              action: 0,
-              attack: 1,
-              class: 1,
-              hair: 1,
-              image: PlaceholderElf,
-              inventory: [],
-              name: `Elf #${nextId}`,
-              level: Math.ceil(Math.random() * 10),
-              primaryWeapon: 1,
-              race: 1,
-              time: new Date(),
-              weaponTier: 1,
-            }]
-          },
-        };
-      } else {
-        return state;
-      }
     default:
       return state;
   }
