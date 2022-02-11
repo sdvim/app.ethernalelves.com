@@ -15,6 +15,35 @@ export const timestampToHealthPercentage = (timestamp) => {
   return Math.min(100, Math.max(5, result));
 }
 
+export const timestampToTimeString = (timestamp) => {
+  let diff = +new Date() / 1000 - timestamp;
+  let isFuture = diff < 0;
+
+  diff = Math.abs(diff);
+  let hours = Math.floor(diff / 3600);
+
+  if (!isFuture) {
+    if (hours >= 24) {
+      return `${(hours / 24).toFixed(1)}d ago`;
+    }
+    return `${hours}h ago`;
+  }
+
+  if (hours > 1) {
+    const timestampDate = new Date(timestamp * 1000);
+    const today = new Date().toLocaleString([], { weekday: "short" });
+    const day = timestampDate.toLocaleString([], { weekday: "short" });
+    const time = timestampDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return today !== day ? `${day} ${time}` : `${time}`;
+  }
+
+  diff -= hours * 3600;
+  const minutes = String((diff / 60) | 0).padStart(2, "0");
+  const seconds = String((diff % 60) | 0).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}`;
+}
+
 export const actionIntToString = (action, isCoolingDown = false) => {
   switch (action) {
     case 0: return "Idle";
@@ -76,8 +105,6 @@ export const fetchElvesByIds = async (elfIds) => {
 
     const isBurnedOrIdle = action === 0
       || addressOwner === "0x0000000000000000000000000000000000000000";
-
-    const isCoolingDown =  hexToInt(timestamp) > Math.floor(Date.now() / 1000);
     
     const status = isBurnedOrIdle ? "unstaked" : "staked";
 
@@ -110,11 +137,9 @@ export const fetchElvesByIds = async (elfIds) => {
       inventory: hexToInt(inventory),
       primaryWeapon: hexToInt(primaryWeapon),
       adddressCurrent,
-      isCoolingDown,
       status,
       image,
       name: name ? name : `Elf #${id}`,
-      actionString: actionIntToString(hexToInt(action), isCoolingDown),
       attributes,
       id,
     };

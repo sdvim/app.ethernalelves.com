@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { Avatar } from "../components";
-import { timestampToHealthPercentage } from "../Utils";
+import { timestampToTimeString, timestampToHealthPercentage } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
 
 export default function Home() {
-  const [displayType, setDisplayType] = useState("level");
+  const [displayType, setDisplayType] = useState("time");
   const dispatch = useDispatch();
   const state = useTrackedState();
   const { elves, selection } = state.user;
@@ -28,18 +28,38 @@ export default function Home() {
     elves.forEach((elf) => {
       elf.isSelected = selection?.includes(elf.id);
       elf.healthPercentage = timestampToHealthPercentage(elf.timestamp);
+      switch (displayType) {
+        case "time":
+          elf.display = timestampToTimeString(elf.timestamp);
+          elf.sort = elf.timestamp;
+          break;
+        case "level":
+          elf.display = `Lv. ${elf.level}`;
+          elf.sort = elf.level;
+          break;
+        case "id":
+        default:
+          elf.display = `#${elf.id}`;
+          elf.sort = elf.id;
+          break;
+      }
       switch (elf.action) {
         case 3:
           collections[2].elves.push(elf);
           break;
         default:
-          collections[elf.isCoolingDown ? 1 : 0].elves.push(elf);
+          let isCoolingDown = elf.timestamp > +new Date() / 1000;
+          collections[isCoolingDown ? 1 : 0].elves.push(elf);
           break;
       }
     });
 
+    collections.forEach((collection) => {
+      collection.elves.sort((a, b) => a.sort - b.sort);
+    });
+
     return collections;
-  }, [elves, selection]);
+  }, [displayType, elves, selection]);
 
   const sectionsDOM = sections.map((section, sectionIndex) => {
     return (section.elves.length > 0) && (
@@ -58,17 +78,12 @@ export default function Home() {
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
           {
             section.elves.map((data, index) => {
-              const display = (displayType === "level")
-                ? `Lv. ${data.level}`
-                : (displayType === "id")
-                  ? `#${data.id}`
-                  : null;
               return (
                 <Avatar
                   key={`${sectionIndex}-${index}`}
                   image={data.image}
                   isSelected={data.isSelected}
-                  display={display}
+                  display={data.display}
                   healthPercentage={data.healthPercentage}
                   hideBars={data.action === 3}
                   onClick={() => dispatch({
@@ -96,11 +111,21 @@ export default function Home() {
           <input
             type="radio"
             name="display"
+            value="time"
+            checked={displayType === "time"}
+            onChange={handleDisplayTypeChange}
+          />
+          <span>Time</span>
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="display"
             value="level"
             checked={displayType === "level"}
             onChange={handleDisplayTypeChange}
           />
-          <span>Levels</span>
+          <span>Level</span>
         </label>
         <label>
           <input
@@ -110,7 +135,7 @@ export default function Home() {
             checked={displayType === "id"}
             onChange={handleDisplayTypeChange}
           />
-          <span>IDs</span>
+          <span>ID</span>
         </label>
       </form>
       { sectionsDOM }
