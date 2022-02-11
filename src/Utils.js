@@ -12,7 +12,7 @@ export const timestampToHealthPercentage = (timestamp) => {
   const now = new Date().getTime()
   const diff = Math.floor(new Date(timestamp * 1000).getTime() - now) / 36e5;
   const result = 100 - 2.5 * diff;
-  return Math.min(100, Math.max(0, result));
+  return Math.min(100, Math.max(5, result));
 }
 
 export const actionIntToString = (action, isCoolingDown = false) => {

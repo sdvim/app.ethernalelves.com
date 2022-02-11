@@ -28,7 +28,6 @@ export default function Home() {
     elves.forEach((elf) => {
       elf.isSelected = selection?.includes(elf.id);
       elf.healthPercentage = timestampToHealthPercentage(elf.timestamp);
-      console.log(elf.id, elf.healthPercentage);
       switch (elf.action) {
         case 3:
           collections[2].elves.push(elf);

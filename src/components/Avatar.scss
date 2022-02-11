@@ -17,6 +17,16 @@
     pointer-events: none;
   }
 
+  &__cooldown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 1;
+    opacity: 0.75;
+    display: none;
+  }
+
   &__bar {
     border-top: inherit;
     border-image: inherit;
