@@ -5,21 +5,24 @@ import { useDispatch, useTrackedState } from "../Store";
 
 const displayTypes = [
   {
-    key: "time",
+    attr: "timestamp",
     label: "Time",
+    avatarDisplay: (timestamp) => timestampToTimeString(timestamp),
   },
   {
-    key: "level",
+    attr: "level",
     label: "Level",
+    avatarDisplay: (level) => `Lv. ${level}`,
   },
   {
-    key: "id",
+    attr: "id",
     label: "ID",
+    avatarDisplay: (id) => `#${id}`,
   },
 ];
 
 export default function Home() {
-  const [displayType, setDisplayType] = useState(displayTypes[0].key);
+  const [displayType, setDisplayType] = useState(displayTypes[0]);
   const dispatch = useDispatch();
   const state = useTrackedState();
   const { elves, selection } = state.user;
@@ -42,22 +45,7 @@ export default function Home() {
 
     elves.forEach((elf) => {
       elf.isSelected = selection?.includes(elf.id);
-      elf.healthPercentage = timestampToHealthPercentage(elf.timestamp);
-      switch (displayType) {
-        case "time":
-          elf.display = timestampToTimeString(elf.timestamp);
-          elf.sort = elf.timestamp;
-          break;
-        case "level":
-          elf.display = `Lv. ${elf.level}`;
-          elf.sort = elf.level;
-          break;
-        case "id":
-        default:
-          elf.display = `#${elf.id}`;
-          elf.sort = elf.id;
-          break;
-      }
+      elf.sort = elf[displayType.attr];
       switch (elf.action) {
         case 3:
           collections[2].elves.push(elf);
@@ -76,7 +64,7 @@ export default function Home() {
     return collections;
   }, [displayType, elves, selection]);
 
-  const sectionsDOM = sections.map((section, sectionIndex) => {
+  const sectionsDOM = useMemo(() => sections.map((section, sectionIndex) => {
     return (section.elves.length > 0) && (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
@@ -92,18 +80,18 @@ export default function Home() {
         </div>
         <div key={`${sectionIndex}-grid`} className="tmp-grid">
           {
-            section.elves.map((data, index) => {
+            section.elves.map((elf, index) => {
               return (
                 <Avatar
                   key={`${sectionIndex}-${index}`}
-                  image={data.image}
-                  isSelected={data.isSelected}
-                  display={data.display}
-                  healthPercentage={data.healthPercentage}
-                  hideBars={data.action === 3}
+                  image={elf.image}
+                  isSelected={elf.isSelected}
+                  display={displayType.avatarDisplay(elf[displayType.attr])}
+                  healthPercentage={timestampToHealthPercentage(elf.timestamp)}
+                  hideBars={elf.action === 3}
                   onClick={() => dispatch({
                     type: "UPDATE_SELECTION",
-                    id: data.id,
+                    id: elf.id,
                     sectionId: sectionIndex,
                   })}
                 />
@@ -113,25 +101,28 @@ export default function Home() {
         </div>
       </React.Fragment>
     );
-  });
+  }), [dispatch, displayType, sections]);
 
   const handleDisplayTypeChange = (e) => {
-    setDisplayType(e.target.value);
+    const newDisplayType = displayTypes.find(
+      (type) => type.attr === e.target.value
+    );
+    setDisplayType(newDisplayType);
   };
 
   return (
     <div className="Home page">
       <form>
-        { displayTypes.map(({ key, label }) => 
-          <label key={`displayType-${key}`}>
+        { displayTypes.map(({ attr, label }) => 
+          <label key={`displayType-${attr}`}>
             <input
               type="radio"
               name="display"
-              value={key}
-              checked={displayType === key}
+              value={attr}
+              checked={displayType.attr === attr}
               onChange={handleDisplayTypeChange}
             />
-            <span>{label}</span>
+            <span>{ label }</span>
           </label>
         )}
       </form>
