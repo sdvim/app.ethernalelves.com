@@ -3,8 +3,23 @@ import { Avatar } from "../components";
 import { timestampToTimeString, timestampToHealthPercentage } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
 
+const displayTypes = [
+  {
+    key: "time",
+    label: "Time",
+  },
+  {
+    key: "level",
+    label: "Level",
+  },
+  {
+    key: "id",
+    label: "ID",
+  },
+];
+
 export default function Home() {
-  const [displayType, setDisplayType] = useState("time");
+  const [displayType, setDisplayType] = useState(displayTypes[0].key);
   const dispatch = useDispatch();
   const state = useTrackedState();
   const { elves, selection } = state.user;
@@ -107,36 +122,18 @@ export default function Home() {
   return (
     <div className="Home page">
       <form>
-        <label>
-          <input
-            type="radio"
-            name="display"
-            value="time"
-            checked={displayType === "time"}
-            onChange={handleDisplayTypeChange}
-          />
-          <span>Time</span>
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="display"
-            value="level"
-            checked={displayType === "level"}
-            onChange={handleDisplayTypeChange}
-          />
-          <span>Level</span>
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="display"
-            value="id"
-            checked={displayType === "id"}
-            onChange={handleDisplayTypeChange}
-          />
-          <span>ID</span>
-        </label>
+        { displayTypes.map(({ key, label }) => 
+          <label key={`displayType-${key}`}>
+            <input
+              type="radio"
+              name="display"
+              value={key}
+              checked={displayType === key}
+              onChange={handleDisplayTypeChange}
+            />
+            <span>{label}</span>
+          </label>
+        )}
       </form>
       { sectionsDOM }
     </div>
