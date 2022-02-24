@@ -26,6 +26,10 @@ export const timestampToTimeString = (timestamp) => {
     if (hours >= 24) {
       return `${(hours / 24).toFixed(1)}d ago`;
     }
+    if (hours < 1) {
+      diff -= hours * 3600;
+      return `${Math.floor(diff / 60)}m ago`;
+    }
     return `${hours}h ago`;
   }
 
