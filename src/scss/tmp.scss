@@ -11,6 +11,23 @@
     justify-content: space-between;
     align-items: center;
   }
+  &-avatar-list-item {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 0em 1em;
+    justify-content: center;
+    // justify-items: center;
+    align-items: center;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 2px solid var(--foreground-color);
+    &:last-child {
+      border-bottom: none;
+    }
+    .Avatar {
+      grid-row: 1 / 4;
+    }
+  }
   &-frame {
     border: 25px solid;
     border-image: url('/assets/border@4x.png') 100;

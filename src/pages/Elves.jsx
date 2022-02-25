@@ -21,8 +21,20 @@ const displayTypes = [
   },
 ];
 
+const viewTypes = [
+  {
+    view: "grid",
+    label: "Grid",
+  },
+  {
+    view: "list",
+    label: "List",
+  },
+];
+
 export default function Home() {
   const [displayType, setDisplayType] = useState(displayTypes[0]);
+  const [viewType, setViewType] = useState(viewTypes[0]);
   const dispatch = useDispatch();
   const state = useTrackedState();
   const { elves, selection } = state.user;
@@ -78,36 +90,63 @@ export default function Home() {
             </button>
           }
         </div>
-        <div key={`${sectionIndex}-grid`} className="tmp-grid">
+        <div key={`${sectionIndex}-view`} className={`tmp-${viewType.view}`}>
           {
             section.elves.map((elf, index) => {
-              return (
-                <Avatar
-                  key={`${sectionIndex}-${index}`}
-                  image={elf.image}
-                  isSelected={elf.isSelected}
-                  display={displayType.avatarDisplay(elf[displayType.attr])}
-                  healthPercentage={timestampToHealthPercentage(elf.timestamp)}
-                  hideBars={elf.action === 3}
-                  onClick={() => dispatch({
-                    type: "UPDATE_SELECTION",
-                    id: elf.id,
-                    sectionId: sectionIndex,
-                  })}
-                />
-              );
+              return (viewType.view === "grid")
+                ? <Avatar
+                    key={`${sectionIndex}-${index}`}
+                    image={elf.image}
+                    isSelected={elf.isSelected}
+                    display={displayType.avatarDisplay(elf[displayType.attr])}
+                    healthPercentage={timestampToHealthPercentage(elf.timestamp)}
+                    hideBars={elf.action === 3}
+                    onClick={() => dispatch({
+                      type: "UPDATE_SELECTION",
+                      id: elf.id,
+                      sectionId: sectionIndex,
+                    })}
+                  />
+                : (
+                  <div
+                    className="tmp-avatar-list-item"
+                    key={`${sectionIndex}-${index}`}
+                    onClick={() => dispatch({
+                      type: "UPDATE_SELECTION",
+                      id: elf.id,
+                      sectionId: sectionIndex,
+                    })}
+                  >
+                    <Avatar
+                      image={elf.image}
+                      isSelected={elf.isSelected}
+                      healthPercentage={timestampToHealthPercentage(elf.timestamp)}
+                      hideBars={elf.action === 3}
+                    />
+                    <span>{ displayTypes[2].avatarDisplay(elf.id) }</span>
+                    <span>{ displayTypes[1].avatarDisplay(elf.level) }</span>
+                    <span>{ displayTypes[0].avatarDisplay(elf.timestamp) }</span>
+                  </div>
+                );
             })
           }
         </div>
       </React.Fragment>
     );
-  }), [dispatch, displayType, sections]);
+  }), [dispatch, displayType, sections, viewType.view]);
 
   const handleDisplayTypeChange = (e) => {
     const newDisplayType = displayTypes.find(
       (type) => type.attr === e.target.value
     );
     setDisplayType(newDisplayType);
+  };
+
+  const handleViewTypeChange = (e) => {
+    const newViewType = viewTypes.find(
+      (type) => type.view === e.target.value
+    );
+    setViewType(newViewType);
   };
 
   return (
@@ -121,6 +160,20 @@ export default function Home() {
               value={attr}
               checked={displayType.attr === attr}
               onChange={handleDisplayTypeChange}
+            />
+            <span>{ label }</span>
+          </label>
+        )}
+      </form>
+      <form>
+        { viewTypes.map(({ view, label }) => 
+          <label key={`viewType-${view}`}>
+            <input
+              type="radio"
+              name="view"
+              value={view}
+              checked={viewType.view === view}
+              onChange={handleViewTypeChange}
             />
             <span>{ label }</span>
           </label>
