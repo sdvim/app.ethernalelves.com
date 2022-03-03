@@ -53,12 +53,19 @@ export default function Home() {
         title: "Passive",
         elves: [],
       },
+      {
+        title: "Bridged (Polygon)",
+        elves: [],
+      },
     ];
 
     elves.forEach((elf) => {
       elf.isSelected = selection?.includes(elf.id);
       elf.sort = elf[displayType.attr];
       switch (elf.action) {
+        case 8:
+          collections[3].elves.push(elf);
+          break;
         case 3:
           collections[2].elves.push(elf);
           break;
