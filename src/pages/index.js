@@ -2,11 +2,12 @@ import Account from "./Account";
 import Actions from "./Actions";
 import Connect from "./Connect";
 import Elves from "./Elves";
-import NotFound from "./404";
 import Help from "./Help";
+import Menu from "./Menu";
+import NotFound from "./404";
 
-import { useDispatch, useTrackedState } from "../Store";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useTrackedState } from "../Store";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const BackButton = () => {
   const navigate = useNavigate();
@@ -16,13 +17,11 @@ const BackButton = () => {
   );
 }
 
-const LogoutButton = () => {
-  const dispatch = useDispatch();
-
+const MenuButton = () => {
   return (
-    <button onClick={() => dispatch({type: "DISCONNECT_WALLET"})}>X</button>
-  );
-};
+    <Link to="/menu">Menu</Link>
+  )
+}
 
 const RequireAuth = ({ children }) => {
   const location = useLocation();
@@ -45,7 +44,7 @@ export const pages = [
         <Elves />
       </RequireAuth>,
     isIndex: true,
-    leftButton: <LogoutButton />,
+    leftButton: <MenuButton />,
   },
   {
     path: "/account",
@@ -70,6 +69,15 @@ export const pages = [
     path: "/help",
     title: "Help",
     element: <Help />,
+  },
+  {
+    path: "/menu",
+    title: "Menu",
+    element: 
+      <RequireAuth>
+        <Menu />
+      </RequireAuth>,
+    leftButton: <BackButton />,
   },
   {
     path: "*",
