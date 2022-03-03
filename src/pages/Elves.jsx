@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Avatar } from "../components";
 import {
   actionIntToString,
+  itemIntToObject,
   timestampToTimeString,
   timestampToHealthPercentage
 } from "../Utils";
@@ -138,6 +139,13 @@ export default function Home() {
                     <span>{ actionIntToString(elf.action) }</span>
                     <span>{ displayTypes[1].avatarDisplay(elf.level) }</span>
                     <span>{ displayTypes[0].avatarDisplay(elf.timestamp) }</span>
+                    { elf.inventory > 0 && (
+                      <>
+                        <img className="item-image" src={itemIntToObject(elf.inventory).image} alt="" />
+                        <strong>{ itemIntToObject(elf.inventory).text }</strong>
+                        <span>{ itemIntToObject(elf.inventory).description }</span>
+                      </>
+                    ) }
                   </div>
                 );
             })
