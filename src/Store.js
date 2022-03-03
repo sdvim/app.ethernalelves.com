@@ -11,6 +11,7 @@ const initialState = {
   isMoralisConnected: false,
   pending: false,
   errors: [],
+  chain: "eth",
   user: {
     address: null,
     ren: 0,
@@ -44,6 +45,8 @@ const init = () => {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "UPDATE_CHAIN":
+      return { ...state, chain: action.chain };
     case "UPDATE_MORALIS_CONNECTED":
       return { ...state, isMoralisConnected: true, };
     case "SHOW_ERROR":
@@ -140,12 +143,24 @@ const asyncActionHandlers = {
         dispatch({ type: "UPDATE_ADDRESS", address: null });
       });
     },
-  LOAD_ELVES: ({ dispatch }) =>
+  TOGGLE_CHAIN: ({ dispatch, getState }) =>
     async (action) => {
+      const chain = getState().chain === "eth" ? "polygon" : "eth";
+      dispatch({ type: "UPDATE_CHAIN", chain });
+      dispatch({ type: "LOAD_ELVES", address: getState().user?.address });
+    },
+  LOAD_ELVES: ({ dispatch, getState }) =>
+    async (action) => {
+      if (!action.address) {
+        dispatch({ type: "SHOW_ERROR", message: "Address unknown" });
+        return false;
+      }
+
       await Moralis.enableWeb3();
 
-      let elfIds = [];
-      let elvesQuery = new Moralis.Query(Moralis.Object.extend("Elves"));
+      const { chain } = getState();
+      const elfIds = [];
+      const elvesQuery = new Moralis.Query(Moralis.Object.extend("Elves"));
       let isMoreElves = true;
       let page = 1;
 
@@ -153,6 +168,7 @@ const asyncActionHandlers = {
         let currentIndex = ELF_PAGE_LIMIT * page;
 
         elvesQuery.equalTo("owner_of", action.address);
+        if (chain !== "eth") elvesQuery.equalTo("chain", chain);
         elvesQuery.limit(ELF_PAGE_LIMIT);
         elvesQuery.skip(ELF_PAGE_LIMIT * (page - 1));
         elvesQuery.withCount();
@@ -165,9 +181,10 @@ const asyncActionHandlers = {
 
       dispatch({ type: "UPDATE_ELF_IDS", elfIds });
 
-      let elves = await fetchElvesByIds(elfIds);
-
-      dispatch({ type: "UPDATE_ELVES", elves });
+      let elves = await fetchElvesByIds(elfIds, chain);
+      if (elves) {
+        dispatch({ type: "UPDATE_ELVES", elves });
+      }
     },
 };
 

@@ -1,10 +1,15 @@
 import Web3 from "web3";
 import elvesABI from "./abi/elves.json";
+import polygonElvesABI from "./abi/polygonElves.json";
 import { Multicall } from "ethereum-multicall";
 import env from "react-dotenv";
 
 const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
+const POLYGON_ELVES_CONTRACT = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5";
 const web3 = new Web3(new Web3.providers.HttpProvider(env.ALCHEMY_URL));
+const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(env.POLYGON_ALCHEMY_URL));
+
+// const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
 export const hexToInt = (hex) => parseInt(hex.hex, 16);
 
@@ -58,17 +63,30 @@ export const actionIntToString = (action, isCoolingDown = false) => {
     case 5: return "Re-Rolled Weapon";
     case 6: return "Re-Rolled Items";
     case 7: return isCoolingDown ? "Healing" : "Done Healing";
+    case 8: return "Recently bridged";
     default: return "Unknown";
   }
 }
 
-export const fetchElvesByIds = async (elfIds) => {
+export const fetchElvesByIds = async (elfIds, chain = "eth") => {
   if (!elfIds || elfIds.length < 1) return;
 
+  let abi, contractAddress, web3Instance;
+
+  if (chain === "polygon") {
+    abi = polygonElvesABI.abi;
+    contractAddress = POLYGON_ELVES_CONTRACT;
+    web3Instance = polygonWeb3;
+  } else {
+    abi = elvesABI.abi;
+    contractAddress = ELVES_CONTRACT;
+    web3Instance = web3;
+  }
+
   const txArray = elfIds.map((id) => ({
+    abi,
+    contractAddress,
     reference: `Elves${id}`,
-    contractAddress: ELVES_CONTRACT,
-    abi: elvesABI.abi,
     calls: [
       { reference: `elves${id}`, methodName: 'elves', methodParameters: [id] },
       { reference: `attributes${id}`, methodName: 'attributes', methodParameters: [id] },
@@ -77,7 +95,7 @@ export const fetchElvesByIds = async (elfIds) => {
      ]
   }));
 
-  const multicall = new Multicall({ web3Instance: web3, tryAggregate: true });
+  const multicall = new Multicall({ web3Instance, tryAggregate: true });
   const results = await multicall.call(txArray);
 
   return elfIds.map((id) => {

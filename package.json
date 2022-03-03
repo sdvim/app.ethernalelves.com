@@ -56,7 +56,8 @@
       "MORALIS_APP_ID",
       "MORALIS_SERVER_URL",
       "INFURA_ID",
-      "ALCHEMY_URL"
+      "ALCHEMY_URL",
+      "POLYGON_ALCHEMY_URL"
     ]
   }
 }

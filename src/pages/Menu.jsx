@@ -1,14 +1,15 @@
-import { Link } from "react-router-dom";
-import { useDispatch } from "../Store";
+import { useDispatch, useTrackedState } from "../Store";
 
-export default function Menu() { 
-
+export default function Menu() {
+  const state = useTrackedState();
   const dispatch = useDispatch();
+
+  const chainLabel = state.chain !== "eth" ? "Ethereum" : "Polygon";
 
   return (
     <div className="NotFound page">
-      <button>
-        Switch to Etherum
+      <button onClick={() => dispatch({type: "TOGGLE_CHAIN"})}>
+        Switch to { chainLabel }
       </button>
       <br />
       <br />
