@@ -108,7 +108,7 @@ export default function Home() {
                     display={displayType.avatarDisplay(elf[displayType.attr])}
                     healthPercentage={timestampToHealthPercentage(elf.timestamp)}
                     hideBars={elf.action === 3}
-                    onClick={() => dispatch({
+                    onClick={() => elf.action !== 8 && dispatch({
                       type: "UPDATE_SELECTION",
                       id: elf.id,
                       sectionId: sectionIndex,
@@ -118,7 +118,7 @@ export default function Home() {
                   <div
                     className="tmp-avatar-list-item"
                     key={`${sectionIndex}-${index}`}
-                    onClick={() => dispatch({
+                    onClick={() => elf.action !== 8 && dispatch({
                       type: "UPDATE_SELECTION",
                       id: elf.id,
                       sectionId: sectionIndex,
