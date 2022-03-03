@@ -1,6 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { Avatar } from "../components";
-import { timestampToTimeString, timestampToHealthPercentage } from "../Utils";
+import {
+  actionIntToString,
+  timestampToTimeString,
+  timestampToHealthPercentage
+} from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
 
 const displayTypes = [
@@ -131,6 +135,7 @@ export default function Home() {
                       hideBars={elf.action === 3}
                     />
                     <span>{ displayTypes[2].avatarDisplay(elf.id) }</span>
+                    <span>{ actionIntToString(elf.action) }</span>
                     <span>{ displayTypes[1].avatarDisplay(elf.level) }</span>
                     <span>{ displayTypes[0].avatarDisplay(elf.timestamp) }</span>
                   </div>

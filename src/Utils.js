@@ -64,6 +64,8 @@ export const actionIntToString = (action, isCoolingDown = false) => {
     case 6: return "Re-Rolled Items";
     case 7: return isCoolingDown ? "Healing" : "Done Healing";
     case 8: return "Recently bridged";
+    case 9: return "Synergized";
+    case 10: return "Bloodthirst";
     default: return "Unknown";
   }
 }
