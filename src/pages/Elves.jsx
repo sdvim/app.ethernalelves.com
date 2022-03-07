@@ -48,18 +48,22 @@ export default function Home() {
     const collections = [
       {
         title: "Idle",
+        filter: (elf) => elf.action !== 8 && elf.timestamp < +new Date() / 1000,
         elves: [],
       },
       {
         title: "Active",
+        filter: (elf) => elf.timestamp > +new Date() / 1000,
         elves: [],
       },
       {
         title: "Passive",
+        filter: (elf) => elf.action === 3,
         elves: [],
       },
       {
         title: "Bridged (Polygon)",
+        filter: (elf) => elf.action === 8,
         elves: [],
       },
     ];
@@ -67,26 +71,15 @@ export default function Home() {
     elves.forEach((elf) => {
       elf.isSelected = selection?.includes(elf.id);
       elf.sort = elf[displayType.attr];
-      switch (elf.action) {
-        case 8:
-          collections[3].elves.push(elf);
-          break;
-        case 3:
-          collections[2].elves.push(elf);
-          break;
-        default:
-          let isCoolingDown = elf.timestamp > +new Date() / 1000;
-          collections[isCoolingDown ? 1 : 0].elves.push(elf);
-          break;
-      }
     });
 
     collections.forEach((collection) => {
+      collection.elves = elves.filter(collection.filter);
       collection.elves.sort((a, b) => a.sort - b.sort);
     });
 
     return collections;
-  }, [displayType, elves, selection]);
+  }, [displayType.attr, elves, selection]);
 
   const sectionsDOM = useMemo(() => sections.map((section, sectionIndex) => {
     return (section.elves.length > 0) && (
