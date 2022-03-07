@@ -4,7 +4,7 @@ import Moralis from "moralis/dist/moralis.min.js";
 import env from "react-dotenv";
 import { useEffect } from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { fetchElvesByIds } from "./Utils.js";
+import { fetchElfDataByIds } from "./Utils.js";
 
 const storageKey = "ethernalElves";
 const initialState = {
@@ -16,8 +16,7 @@ const initialState = {
     address: null,
     ren: 0,
     nextId: 0,
-    elves: [],
-    elfIds: [],
+    elfData: [],
     selection: [],
   },
 };
@@ -70,10 +69,8 @@ const reducer = (state, action) => {
           : [...selection, action.id],
         },
       };
-    case "UPDATE_ELF_IDS":
-      return { ...state, user: { ...state.user, elfIds: action.elfIds } };
-    case "UPDATE_ELVES":
-      return { ...state, user: { ...state.user, elves: action.elves } };
+    case "UPDATE_ELF_DATA":
+      return { ...state, user: { ...state.user, elfData: action.elfData } };
     case "UPDATE_ADDRESS":
       const { address } = action;
       const user = (address)
@@ -128,7 +125,7 @@ const asyncActionHandlers = {
           signingMessage: "Log into Ethernal Elves dApp"
         }).then((user) => {
           let address = user.get("ethAddress");
-          dispatch({ type: "LOAD_ELVES", address });
+          dispatch({ type: "LOAD_ELF_DATA", address });
           dispatch({ type: "UPDATE_ADDRESS", address });
         }).catch((error) => {
           dispatch({ type: "SHOW_ERROR", message: error.message });
@@ -147,9 +144,9 @@ const asyncActionHandlers = {
     async (action) => {
       const chain = getState().chain === "eth" ? "polygon" : "eth";
       dispatch({ type: "UPDATE_CHAIN", chain });
-      dispatch({ type: "LOAD_ELVES", address: getState().user?.address });
+      dispatch({ type: "LOAD_ELF_DATA", address: getState().user?.address });
     },
-  LOAD_ELVES: ({ dispatch, getState }) =>
+  LOAD_ELF_DATA: ({ dispatch, getState }) =>
     async (action) => {
       if (!action.address) {
         dispatch({ type: "SHOW_ERROR", message: "Address unknown" });
@@ -179,11 +176,9 @@ const asyncActionHandlers = {
         page++;
       }
 
-      dispatch({ type: "UPDATE_ELF_IDS", elfIds });
-
-      let elves = await fetchElvesByIds(elfIds, chain);
-      if (elves) {
-        dispatch({ type: "UPDATE_ELVES", elves });
+      let elfData = await fetchElfDataByIds(elfIds, chain);
+      if (elfData) {
+        dispatch({ type: "UPDATE_ELF_DATA", elfData });
       }
     },
 };

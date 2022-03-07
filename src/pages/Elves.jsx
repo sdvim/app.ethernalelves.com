@@ -1,28 +1,20 @@
 import React, { useState, useMemo } from "react";
 import { Avatar } from "../components";
-import {
-  actionIntToString,
-  itemIntToObject,
-  timestampToTimeString,
-  timestampToHealthPercentage
-} from "../Utils";
+import { Elf } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
 
 const displayTypes = [
   {
     attr: "timestamp",
     label: "Time",
-    avatarDisplay: (timestamp) => timestampToTimeString(timestamp),
   },
   {
     attr: "level",
     label: "Level",
-    avatarDisplay: (level) => `Lv. ${level}`,
   },
   {
     attr: "id",
     label: "ID",
-    avatarDisplay: (id) => `#${id}`,
   },
 ];
 
@@ -42,47 +34,49 @@ export default function Home() {
   const [viewType, setViewType] = useState(viewTypes[0]);
   const dispatch = useDispatch();
   const state = useTrackedState();
-  const { elves, selection } = state.user;
+  const { elfData, selection } = state.user;
+
+  const elves = useMemo(() => elfData?.map((elfObject) => {
+    const elf = new Elf(elfObject);
+    elf.select(selection?.includes(elf.id));
+    elf.sort(displayType.attr);
+    return elf;
+  }), [displayType.attr, elfData, selection]);
 
   const sections = useMemo(() => {
     const collections = [
       {
         title: "Idle",
-        filter: (elf) => elf.action !== 8 && elf.timestamp < +new Date() / 1000,
+        filter: (elf) => !elf.didBridge && !elf.isCoolingDown,
         elves: [],
       },
       {
         title: "Active",
-        filter: (elf) => elf.timestamp > +new Date() / 1000,
+        filter: (elf) => elf.isCoolingDown,
         elves: [],
       },
       {
         title: "Passive",
-        filter: (elf) => elf.action === 3,
+        filter: (elf) => elf.didPassive,
         elves: [],
       },
       {
         title: "Bridged (Polygon)",
-        filter: (elf) => elf.action === 8,
+        filter: (elf) => elf.didBridge,
         elves: [],
       },
     ];
 
-    elves.forEach((elf) => {
-      elf.isSelected = selection?.includes(elf.id);
-      elf.sort = elf[displayType.attr];
-    });
-
     collections.forEach((collection) => {
-      collection.elves = elves.filter(collection.filter);
-      collection.elves.sort((a, b) => a.sort - b.sort);
+      collection.elves = elves?.filter(collection.filter);
+      collection.elves?.sort((a, b) => a.sort - b.sort);
     });
 
     return collections;
-  }, [displayType.attr, elves, selection]);
+  }, [elves]);
 
   const sectionsDOM = useMemo(() => sections.map((section, sectionIndex) => {
-    return (section.elves.length > 0) && (
+    return (section.elves?.length > 0) && (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
           <h2 key={`${section.title}`}>
@@ -103,10 +97,9 @@ export default function Home() {
                     key={`${sectionIndex}-${index}`}
                     image={elf.image}
                     isSelected={elf.isSelected}
-                    display={displayType.avatarDisplay(elf[displayType.attr])}
-                    healthPercentage={timestampToHealthPercentage(elf.timestamp)}
-                    hideBars={elf.action === 3}
-                    onClick={() => elf.action !== 8 && dispatch({
+                    healthPercentage={elf.healthPercentage}
+                    hideBars={elf.didPassive}
+                    onClick={() => !elf.didBridge && dispatch({
                       type: "UPDATE_SELECTION",
                       id: elf.id,
                       sectionId: sectionIndex,
@@ -116,7 +109,7 @@ export default function Home() {
                   <div
                     className="tmp-avatar-list-item"
                     key={`${sectionIndex}-${index}`}
-                    onClick={() => elf.action !== 8 && dispatch({
+                    onClick={() => !elf.didBridge && dispatch({
                       type: "UPDATE_SELECTION",
                       id: elf.id,
                       sectionId: sectionIndex,
@@ -125,18 +118,18 @@ export default function Home() {
                     <Avatar
                       image={elf.image}
                       isSelected={elf.isSelected}
-                      healthPercentage={timestampToHealthPercentage(elf.timestamp)}
-                      hideBars={elf.action === 3}
+                      healthPercentage={elf.healthPercentage}
+                      hideBars={elf.didPassive}
                     />
-                    <span>{ displayTypes[2].avatarDisplay(elf.id) }</span>
-                    <span>{ actionIntToString(elf.action) }</span>
-                    <span>{ displayTypes[1].avatarDisplay(elf.level) }</span>
-                    <span>{ displayTypes[0].avatarDisplay(elf.timestamp) }</span>
-                    { elf.inventory > 0 && (
+                    <span>{ elf.idString }</span>
+                    <span>{ elf.actionString }</span>
+                    <span>{ elf.levelString }</span>
+                    <span>{ elf.cooldownString }</span>
+                    { elf.hasInventory && (
                       <>
-                        <img className="item-image" src={itemIntToObject(elf.inventory).image} alt="" />
-                        <strong>{ itemIntToObject(elf.inventory).text }</strong>
-                        <span>{ itemIntToObject(elf.inventory).description }</span>
+                        <img className="item-image" src={elf.inventoryObject.image} alt="" />
+                        <strong>{ elf.inventoryObject.text }</strong>
+                        <span>{ elf.inventoryObject.description }</span>
                       </>
                     ) }
                   </div>
@@ -146,7 +139,7 @@ export default function Home() {
         </div>
       </React.Fragment>
     );
-  }), [dispatch, displayType, sections, viewType.view]);
+  }), [dispatch, sections, viewType.view]);
 
   const handleDisplayTypeChange = (e) => {
     const newDisplayType = displayTypes.find(

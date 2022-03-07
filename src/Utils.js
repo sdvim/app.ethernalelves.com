@@ -18,6 +18,11 @@ const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(env.POLYGON_ALCHEMY
 
 // const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
+const saveImageHash = (hash, image) => {
+  if (localStorage.getItem(hash) !== null) return;
+  window.localStorage.setItem(hash, JSON.stringify(image));
+}
+
 export const hexToInt = (hex) => parseInt(hex.hex, 16);
 
 export const timestampToHealthPercentage = (timestamp) => {
@@ -101,24 +106,7 @@ export const itemIntToObject = (item) => {
   return items[item] || items[0];
 }
 
-export const actionIntToString = (action, isCoolingDown = false) => {
-  switch (action) {
-    case 0: return "Idle";
-    case 1: return "Staked, but Idle";
-    case 2: return isCoolingDown ? "On Campaign" : "Campaign Ended";
-    case 3: return "Sent to Passive Campaign";
-    case 4: return "Returned from Passive Campaign";
-    case 5: return "Re-Rolled Weapon";
-    case 6: return "Re-Rolled Items";
-    case 7: return isCoolingDown ? "Healing" : "Done Healing";
-    case 8: return "Recently bridged";
-    case 9: return "Synergized";
-    case 10: return "Bloodthirst";
-    default: return "Unknown";
-  }
-}
-
-export const fetchElvesByIds = async (elfIds, chain = "eth") => {
+export const fetchElfDataByIds = async (elfIds, chain = "eth") => {
   if (!elfIds || elfIds.length < 1) return;
 
   let abi, contractAddress, web3Instance;
@@ -172,15 +160,10 @@ export const fetchElvesByIds = async (elfIds, chain = "eth") => {
       weaponTier,
       inventory,
     ] = metadata.returnValues;
-    const [adddressCurrent] = addresses.returnValues;
+    const [addressCurrent] = addresses.returnValues;
     const [base64metadata] = tokenData.returnValues;
 
-    const isBurnedOrIdle = action === 0
-      || addressOwner === "0x0000000000000000000000000000000000000000";
-    
-    const status = isBurnedOrIdle ? "unstaked" : "staked";
-
-    const tokenObject = base64metadata
+       const tokenObject = base64metadata
       ? JSON.parse(window.atob(base64metadata.split(",")[1]))
       : {
         image: null,
@@ -192,28 +175,139 @@ export const fetchElvesByIds = async (elfIds, chain = "eth") => {
         attributes: null,
       };
     
-    const { image, name, attributes } = tokenObject;
+    const { image, name } = tokenObject;
+
+    const imageHashArray = [
+      String(hexToInt(race)).padStart(2, "0"),
+      String(hexToInt(sentinelClass)).padStart(2, "0"),
+      String(hexToInt(hair)).padStart(2, "0"),
+      String(hexToInt(primaryWeapon)).padStart(3, "0"),
+    ];
+
+    const imageHash = imageHashArray.join("");
+
+    saveImageHash(imageHash, image);
 
     return {
       addressOwner,
-      timestamp: hexToInt(timestamp),
-      action: hexToInt(action),
-      health: hexToInt(health),
-      attack: hexToInt(attack),
-      level: hexToInt(level),
-      hair: hexToInt(hair),
-      race: hexToInt(race),
-      accessories: hexToInt(accessories),
-      sentinelClass: hexToInt(sentinelClass),
-      weaponTier: hexToInt(weaponTier),
-      inventory: hexToInt(inventory),
-      primaryWeapon: hexToInt(primaryWeapon),
-      adddressCurrent,
-      status,
-      image,
-      name: name ? name : `Elf #${id}`,
-      attributes,
+      addressCurrent,
       id,
+      imageHash,
+      name: name ? name : `Elf #${id}`,
+      race: hexToInt(race),
+      classification: hexToInt(sentinelClass),
+      hair: hexToInt(hair),
+      stats: {
+        health: hexToInt(health),
+        attack: hexToInt(attack),
+        level: hexToInt(level),
+      },
+      accessories: hexToInt(accessories),
+      inventory: hexToInt(inventory),
+      weapon: {
+        id: hexToInt(primaryWeapon),
+        tier: hexToInt(weaponTier),
+      },
+      lastAction: {
+        id: hexToInt(action),
+        timestamp: hexToInt(timestamp),
+      },
     };
   });
+}
+
+export class Elf {
+  addressOwner;
+  addressCurrent;
+  id;
+  imageHash;
+  name;
+  race;
+  classification;
+  hair;
+  stats;
+  accessories;
+  inventory;
+  weapon;
+  lastAction;
+
+  isSelected = false;
+
+  constructor(elfData) {
+    const {
+      addressOwner,
+      addressCurrent,
+      id,
+      imageHash,
+      name,
+      race,
+      classification,
+      hair,
+      stats,
+      accessories,
+      inventory,
+      weapon,
+      lastAction,
+    } = elfData;
+    
+    this.addressOwner = addressOwner;
+    this.addressCurrent = addressCurrent;
+    this.id = id;
+    this.imageHash = imageHash;
+    this.name = name;
+    this.race = race;
+    this.classification = classification;
+    this.hair = hair;
+    this.stats = stats;
+    this.accessories = accessories;
+    this.inventory = inventory;
+    this.weapon = weapon;
+    this.lastAction = lastAction;
+  }
+
+  get isDruid() { return this.classification === 0 }
+  get isAssassin() { return this.classification === 1 }
+  get isRanger() { return this.classification === 2 }
+  get isCoolingDown() { return this.lastAction.timestamp > +new Date() / 1000 }
+  get isStaked() { return this.lastAction.id !== 0 && this.addressOwner !== "0x0000000000000000000000000000000000000000" }
+  get didNothing() { return this.lastAction.id === 1 }
+  get didStake() { return this.lastAction.id === 2 }
+  get didPassive() { return this.lastAction.id === 3 }
+  get didReturnPassive() { return this.lastAction.id === 4 }
+  get didWeaponReroll() { return this.lastAction.id === 5 }
+  get didItemReroll() { return this.lastAction.id === 6 }
+  get didHeal() { return this.lastAction.id === 7 }
+  get didBridge() { return this.lastAction.id === 8 }
+  get didSynergize() { return this.lastAction.id === 9 }
+  get didBloodthirst() { return this.lastAction.id === 10 }
+  get hasInventory() { return this.inventory > 0 }
+  get cooldownString() { return timestampToTimeString(this.lastAction.timestamp) }
+  get image() { return JSON.parse(localStorage.getItem(this.imageHash)) }
+  get inventoryObject() { return itemIntToObject(this.inventory) }
+  get idString() { return `#${this.id}` }
+  get levelString() { return `Lv. ${this.stats.level}` }
+  get healthPercentage() { return timestampToHealthPercentage(this.lastAction.timestamp) }
+  get actionString() {
+    switch (this.lastAction.id) {
+      case 0: return "Idle";
+      case 1: return "Staked, but Idle";
+      case 2: return this.isCoolingDown ? "On Campaign" : "Campaign Ended";
+      case 3: return "Sent to Passive Campaign";
+      case 4: return "Returned from Passive Campaign";
+      case 5: return "Re-Rolled Weapon";
+      case 6: return "Re-Rolled Items";
+      case 7: return this.isCoolingDown ? "Healing" : "Done Healing";
+      case 8: return "Recently bridged";
+      case 9: return "Synergized";
+      case 10: return "Bloodthirst";
+      default: return "Unknown";
+    }
+  }
+}
+
+Elf.prototype.select = function (bool) { this.isSelected = bool }
+Elf.prototype.sort = function(attr) {
+  if (attr === "level") this.sort = this.stats.level;
+  if (attr === "id") this.sort = this.id;
+  if (attr === "timestamp") this.sort = this.lastAction.timestamp;
 }
