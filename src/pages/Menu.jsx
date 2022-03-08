@@ -8,12 +8,17 @@ export default function Menu() {
 
   return (
     <div className="NotFound page">
-      <button onClick={() => dispatch({type: "TOGGLE_CHAIN"})}>
+      <button key={1} onClick={() => dispatch({type: "TOGGLE_CHAIN" })}>
         Switch to { chainLabel }
       </button>
       <br />
       <br />
-      <button onClick={() => dispatch({type: "DISCONNECT_WALLET"})}>
+      <button key={2} onClick={() => dispatch({type: "LOAD_ELF_DATA" })}>
+        Reload data
+      </button>
+      <br />
+      <br />
+      <button key={3} onClick={() => dispatch({type: "DISCONNECT_WALLET" })}>
         Disconnect wallet
       </button>
     </div>

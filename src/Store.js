@@ -114,8 +114,8 @@ const asyncActionHandlers = {
           signingMessage: "Log into Ethernal Elves dApp"
         }).then((user) => {
           let address = user.get("ethAddress");
-          dispatch({ type: "LOAD_ELF_DATA", address });
           dispatch({ type: "UPDATE_ADDRESS", address });
+          dispatch({ type: "LOAD_ELF_DATA" });
         }).catch((error) => {
           dispatch({ type: "SHOW_ERROR", message: error.message });
         });
@@ -137,14 +137,14 @@ const asyncActionHandlers = {
     },
   LOAD_ELF_DATA: ({ dispatch, getState }) =>
     async (action) => {
-      if (!action.address) {
+      if (!getState().user?.address) {
         dispatch({ type: "SHOW_ERROR", message: "Address unknown" });
         return false;
       }
 
       await Moralis.enableWeb3();
 
-      const { chain } = getState();
+      const { chain, user: { address } } = getState();
       const elfIds = [];
       const elvesQuery = new Moralis.Query(Moralis.Object.extend("Elves"));
       let isMoreElves = true;
@@ -153,7 +153,7 @@ const asyncActionHandlers = {
       while (isMoreElves) {
         let currentIndex = ELF_PAGE_LIMIT * page;
 
-        elvesQuery.equalTo("owner_of", action.address);
+        elvesQuery.equalTo("owner_of", address);
         if (chain !== "eth") elvesQuery.equalTo("chain", chain);
         elvesQuery.limit(ELF_PAGE_LIMIT);
         elvesQuery.skip(ELF_PAGE_LIMIT * (page - 1));
