@@ -5,11 +5,11 @@ import { useDispatch, useTrackedState } from "../Store";
 
 const displayTypes = [
   {
-    attr: "timestamp",
+    attr: "lastActionTimestamp",
     label: "Time",
   },
   {
-    attr: "level",
+    attr: "statLevel",
     label: "Level",
   },
   {
@@ -39,7 +39,7 @@ export default function Home() {
   const elves = useMemo(() => elfData?.map((elfObject) => {
     const elf = new Elf(elfObject);
     elf.select(selection?.includes(elf.id));
-    elf.sort(displayType.attr);
+    elf.sortBy(displayType.attr);
     return elf;
   }), [displayType.attr, elfData, selection]);
 

@@ -11,6 +11,7 @@ import polygonElvesABI from "./abi/polygonElves.json";
 import { Multicall } from "ethereum-multicall";
 import env from "react-dotenv";
 
+const IMAGE_HASH_PREFIX = "elf-image-";
 const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
 const POLYGON_ELVES_CONTRACT = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5";
 const web3 = new Web3(new Web3.providers.HttpProvider(env.ALCHEMY_URL));
@@ -19,20 +20,20 @@ const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(env.POLYGON_ALCHEMY
 // const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
 const saveImageHash = (hash, image) => {
-  if (localStorage.getItem(hash) !== null) return;
-  window.localStorage.setItem(hash, JSON.stringify(image));
+  if (localStorage.getItem(IMAGE_HASH_PREFIX + hash) !== null) return;
+  window.localStorage.setItem(IMAGE_HASH_PREFIX + hash, JSON.stringify(image));
 }
 
-export const hexToInt = (hex) => parseInt(hex.hex, 16);
+const hexToInt = (hex) => parseInt(hex.hex, 16);
 
-export const timestampToHealthPercentage = (timestamp) => {
+const timestampToHealthPercentage = (timestamp) => {
   const now = new Date().getTime()
   const diff = Math.floor(new Date(timestamp * 1000).getTime() - now) / 36e5;
   const result = 100 - 2.5 * diff;
   return Math.min(100, Math.max(5, result));
 }
 
-export const timestampToTimeString = (timestamp) => {
+const timestampToTimeString = (timestamp) => {
   let diff = +new Date() / 1000 - timestamp;
   let isFuture = diff < 0;
 
@@ -65,7 +66,7 @@ export const timestampToTimeString = (timestamp) => {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-export const itemIntToObject = (item) => {
+const itemIntToObject = (item) => {
   const items = [
     {
       text: "Empty",
@@ -144,7 +145,7 @@ export const fetchElfDataByIds = async (elfIds, chain = "eth") => {
       tokenData,
     ] = results.results[`Elves${id}`].callsReturnContext;
     const [
-      addressOwner,
+      , // addressOwner
       timestamp,
       action,
       health,
@@ -163,16 +164,16 @@ export const fetchElfDataByIds = async (elfIds, chain = "eth") => {
     const [addressCurrent] = addresses.returnValues;
     const [base64metadata] = tokenData.returnValues;
 
-       const tokenObject = base64metadata
+    const tokenObject = base64metadata
       ? JSON.parse(window.atob(base64metadata.split(",")[1]))
       : {
         image: null,
         name: null,
-        body: null,
-        helm: null,
-        mainhand: null,
-        offhand: null,
-        attributes: null,
+        // body: null,
+        // helm: null,
+        // mainhand: null,
+        // offhand: null,
+        // attributes: null,
       };
     
     const { image, name } = tokenObject;
@@ -189,106 +190,110 @@ export const fetchElfDataByIds = async (elfIds, chain = "eth") => {
     saveImageHash(imageHash, image);
 
     return {
-      addressOwner,
       addressCurrent,
       id,
       imageHash,
-      name: name ? name : `Elf #${id}`,
-      race: hexToInt(race),
-      classification: hexToInt(sentinelClass),
-      hair: hexToInt(hair),
-      stats: {
-        health: hexToInt(health),
-        attack: hexToInt(attack),
-        level: hexToInt(level),
-      },
+      name,
       accessories: hexToInt(accessories),
       inventory: hexToInt(inventory),
-      weapon: {
-        id: hexToInt(primaryWeapon),
-        tier: hexToInt(weaponTier),
-      },
-      lastAction: {
-        id: hexToInt(action),
-        timestamp: hexToInt(timestamp),
-      },
+      elfClass: hexToInt(sentinelClass),
+      elfHair: hexToInt(hair),
+      elfRace: hexToInt(race),
+      statAttack: hexToInt(attack),
+      statHealth: hexToInt(health),
+      statLevel: hexToInt(level),
+      weaponId: hexToInt(primaryWeapon),
+      weaponTier: hexToInt(weaponTier),
+      lastActionId: hexToInt(action),
+      lastActionTimestamp: hexToInt(timestamp),
     };
   });
 }
 
 export class Elf {
-  addressOwner;
   addressCurrent;
   id;
   imageHash;
   name;
-  race;
-  classification;
-  hair;
-  stats;
   accessories;
   inventory;
-  weapon;
-  lastAction;
+  elfClass;
+  elfHair;
+  elfRace;
+  statAttack;
+  statHealth;
+  statLevel;
+  weaponId;
+  weaponTier;
+  lastActionId;
+  lastActionTimestamp;
 
   isSelected = false;
+  sort;
 
   constructor(elfData) {
     const {
-      addressOwner,
       addressCurrent,
       id,
       imageHash,
       name,
-      race,
-      classification,
-      hair,
-      stats,
       accessories,
       inventory,
-      weapon,
-      lastAction,
+      elfClass,
+      elfHair,
+      elfRace,
+      statAttack,
+      statHealth,
+      statLevel,
+      weaponId,
+      weaponTier,
+      lastActionId,
+      lastActionTimestamp,
     } = elfData;
     
-    this.addressOwner = addressOwner;
     this.addressCurrent = addressCurrent;
     this.id = id;
     this.imageHash = imageHash;
     this.name = name;
-    this.race = race;
-    this.classification = classification;
-    this.hair = hair;
-    this.stats = stats;
     this.accessories = accessories;
     this.inventory = inventory;
-    this.weapon = weapon;
-    this.lastAction = lastAction;
+    this.elfClass = elfClass;
+    this.elfHair = elfHair;
+    this.elfRace = elfRace;
+    this.statAttack = statAttack;
+    this.statHealth = statHealth;
+    this.statLevel = statLevel;
+    this.weaponId = weaponId;
+    this.weaponTier = weaponTier;
+    this.lastActionId = lastActionId;
+    this.lastActionTimestamp = lastActionTimestamp;
   }
 
   get isDruid() { return this.classification === 0 }
   get isAssassin() { return this.classification === 1 }
   get isRanger() { return this.classification === 2 }
-  get isCoolingDown() { return this.lastAction.timestamp > +new Date() / 1000 }
-  get isStaked() { return this.lastAction.id !== 0 && this.addressOwner !== "0x0000000000000000000000000000000000000000" }
-  get didNothing() { return this.lastAction.id === 1 }
-  get didStake() { return this.lastAction.id === 2 }
-  get didPassive() { return this.lastAction.id === 3 }
-  get didReturnPassive() { return this.lastAction.id === 4 }
-  get didWeaponReroll() { return this.lastAction.id === 5 }
-  get didItemReroll() { return this.lastAction.id === 6 }
-  get didHeal() { return this.lastAction.id === 7 }
-  get didBridge() { return this.lastAction.id === 8 }
-  get didSynergize() { return this.lastAction.id === 9 }
-  get didBloodthirst() { return this.lastAction.id === 10 }
+  get isCoolingDown() { return this.lastActionTimestamp > +new Date() / 1000 }
+  get isStaked() { return [ELVES_CONTRACT, POLYGON_ELVES_CONTRACT].includes(this.addressCurrent) }
+  get didNothing() { return this.lastActionId === 1 }
+  get didStake() { return this.lastActionId === 2 }
+  get didPassive() { return this.lastActionId === 3 }
+  get didReturnPassive() { return this.lastActionId === 4 }
+  get didWeaponReroll() { return this.lastActionId === 5 }
+  get didItemReroll() { return this.lastActionId === 6 }
+  get didHeal() { return this.lastActionId === 7 }
+  get didBridge() { return this.lastActionId === 8 }
+  get didSynergize() { return this.lastActionId === 9 }
+  get didBloodthirst() { return this.lastActionId === 10 }
   get hasInventory() { return this.inventory > 0 }
-  get cooldownString() { return timestampToTimeString(this.lastAction.timestamp) }
-  get image() { return JSON.parse(localStorage.getItem(this.imageHash)) }
+  get cooldownString() { return timestampToTimeString(this.lastActionTimestamp) }
+  get image() { return JSON.parse(localStorage.getItem(IMAGE_HASH_PREFIX + this.imageHash)) }
   get inventoryObject() { return itemIntToObject(this.inventory) }
   get idString() { return `#${this.id}` }
-  get levelString() { return `Lv. ${this.stats.level}` }
-  get healthPercentage() { return timestampToHealthPercentage(this.lastAction.timestamp) }
+  get levelString() { return `Lv. ${this.statLevel}` }
+  get nameString() { return this.name ? this.name : `Elf #${this.id}` }
+  get healthPercentage() { return timestampToHealthPercentage(this.lastActionTimestamp) }
   get actionString() {
-    switch (this.lastAction.id) {
+    switch (this.lastActionId) {
       case 0: return "Idle";
       case 1: return "Staked, but Idle";
       case 2: return this.isCoolingDown ? "On Campaign" : "Campaign Ended";
@@ -306,8 +311,4 @@ export class Elf {
 }
 
 Elf.prototype.select = function (bool) { this.isSelected = bool }
-Elf.prototype.sort = function(attr) {
-  if (attr === "level") this.sort = this.stats.level;
-  if (attr === "id") this.sort = this.id;
-  if (attr === "timestamp") this.sort = this.lastAction.timestamp;
-}
+Elf.prototype.sortBy = function(attr) { this.sort = this[attr] }

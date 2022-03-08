@@ -15,22 +15,11 @@ const initialState = {
   user: {
     address: null,
     ren: 0,
-    nextId: 0,
     elfData: [],
     selection: [],
   },
 };
 const ELF_PAGE_LIMIT = 50;
-
-export const MINT_PRICE_REN = 200;
-export const ELF_ACTION = {
-  UNSTAKE: 0,
-  SEND_CAMPAIGN: 3,
-  SEND_PASSIVE: 4,
-  REROLL_WEAPON: 5,
-  REROLL_ITEMS: 6,
-  HEAL: 7,
-};
 
 const init = () => {
   if (typeof window === "undefined") return initialState;
