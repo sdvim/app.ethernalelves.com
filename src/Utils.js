@@ -1,18 +1,9 @@
-import AuraOfImmunity from "./assets/items/aura-of-immunity.png";
-import DemonicRupture from "./assets/items/demonic-rupture.png";
-import MidasRing from "./assets/items/midas-ring.png";
-import MoonElixir from "./assets/items/moon-elixir.png";
-import SpiritBand from "./assets/items/spirit-band.png";
-import TalismanOfEnragement from "./assets/items/talisman-of-enragement.png";
-
 import Web3 from "web3";
 import elvesABI from "./abi/elves.json";
 import polygonElvesABI from "./abi/polygonElves.json";
 import { Multicall } from "ethereum-multicall";
+import { items, IMAGE_HASH_PREFIX, POLYGON_ELVES_CONTRACT, ELVES_CONTRACT } from "./data";
 
-const IMAGE_HASH_PREFIX = "elf-image-";
-const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
-const POLYGON_ELVES_CONTRACT = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5";
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ALCHEMY_URL));
 const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_ALCHEMY_URL));
 
@@ -63,47 +54,6 @@ const timestampToTimeString = (timestamp) => {
   const seconds = String((diff % 60) | 0).padStart(2, "0");
 
   return `${hours}:${minutes}:${seconds}`;
-}
-
-const itemIntToObject = (item) => {
-  const items = [
-    {
-      text: "Empty",
-      hidden: true,
-    },
-    {
-      text: "Talisman of Enragement",
-      description: "Doubles total attack points",
-      image: TalismanOfEnragement,
-    },
-    {
-      text: "Moon Elixir",
-      description: "Increases HP by 50%",
-      image: MoonElixir,
-    },
-    {
-      text: "Midas Ring",
-      description: "Doubles rewarded $REN",
-      image: MidasRing,
-    },
-    {
-      text: "Spirit Band",
-      description: "Doubles gained levels",
-      image: SpiritBand,
-    },
-    {
-      text: "Aura of Immunity",
-      description: "Eliminates regeneration",
-      image: AuraOfImmunity,
-    },
-    {
-      text: "Demonic Rupture",
-      description: "Triples total attack points",
-      image: DemonicRupture,
-    },
-  ];
-
-  return items[item] || items[0];
 }
 
 export const fetchElfDataByIds = async (elfIds, chain = "eth") => {
@@ -289,7 +239,7 @@ export class Elf {
   get isAbleToSynergize() { return this.isDruid && (this.lastActionTimestamp + 12 * 1000 > +new Date() / 1000) }
   get cooldownString() { return timestampToTimeString(this.lastActionTimestamp) }
   get image() { return JSON.parse(localStorage.getItem(IMAGE_HASH_PREFIX + this.imageHash)) }
-  get inventoryObject() { return itemIntToObject(this.inventory) }
+  get inventoryObject() { return items[this.inventory] }
   get idString() { return `#${this.id}` }
   get levelString() { return `Lv. ${this.statLevel}` }
   get nameString() { return this.name ? this.name : `Elf #${this.id}` }
