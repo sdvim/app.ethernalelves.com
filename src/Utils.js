@@ -268,13 +268,14 @@ export class Elf {
     this.lastActionTimestamp = lastActionTimestamp;
   }
 
-  get isDruid() { return this.classification === 0 }
-  get isAssassin() { return this.classification === 1 }
-  get isRanger() { return this.classification === 2 }
+  get isDruid() { return this.elfClass === 0 }
+  get isAssassin() { return this.elfClass === 1 }
+  get isRanger() { return this.elfClass === 2 }
   get isCoolingDown() { return this.lastActionTimestamp > +new Date() / 1000 }
   get isStaked() { return [ELVES_CONTRACT, POLYGON_ELVES_CONTRACT].includes(this.addressCurrent) }
-  get didNothing() { return this.lastActionId === 1 }
-  get didStake() { return this.lastActionId === 2 }
+  get didNothing() { return this.lastActionId === 0 }
+  get didStake() { return this.lastActionId === 1 }
+  get didCampaign() { return this.lastActionId === 2 }
   get didPassive() { return this.lastActionId === 3 }
   get didReturnPassive() { return this.lastActionId === 4 }
   get didWeaponReroll() { return this.lastActionId === 5 }
@@ -284,6 +285,8 @@ export class Elf {
   get didSynergize() { return this.lastActionId === 9 }
   get didBloodthirst() { return this.lastActionId === 10 }
   get hasInventory() { return this.inventory > 0 }
+  get isAbleToHeal() { return this.isDruid && !this.isCoolingDown }
+  get isAbleToSynergize() { return this.isDruid && (this.lastActionTimestamp + 12 * 1000 > +new Date() / 1000) }
   get cooldownString() { return timestampToTimeString(this.lastActionTimestamp) }
   get image() { return JSON.parse(localStorage.getItem(IMAGE_HASH_PREFIX + this.imageHash)) }
   get inventoryObject() { return itemIntToObject(this.inventory) }
