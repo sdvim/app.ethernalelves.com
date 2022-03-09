@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
 import { Elf } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
 import { actions } from "../data";
-import { Link, Outlet } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const displayTypes = [
   {
@@ -34,7 +34,6 @@ const viewTypes = [
 export function ElvesDetailsPanel() {
   return (
     <div className="ElvesDetailsPanel">
-      <Outlet />
     </div>
   );
 }
@@ -54,7 +53,10 @@ export function ElvesActions() {
 export default function Home() {
   const [displayType, setDisplayType] = useState(displayTypes[0]);
   const [viewType, setViewType] = useState(viewTypes[0]);
+  const [nextElfToUpdate, setNextElfToUpdate] = useState(null);
+  const [nextUpdate, setNextUpdate] = useState(1000);
   const dispatch = useDispatch();
+  const location = useLocation();
   const state = useTrackedState();
   const { elfData, selection } = state.user;
 
@@ -62,11 +64,30 @@ export default function Home() {
     const elf = new Elf(elfObject);
     elf.select(selection?.includes(elf.id));
     elf.sortBy(displayType.attr);
+    if (!nextElfToUpdate || (elf.isCoolingDown && elf.lastActionTimestamp < nextElfToUpdate.lastActionTimestamp)) {
+      setNextElfToUpdate(elf);
+    }
     return elf;
-  }), [displayType.attr, elfData, selection]);
+  }), [displayType.attr, elfData, nextElfToUpdate, selection]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!nextElfToUpdate) {
+        return;
+      }
+      if (nextElfToUpdate.cooldownSeconds < 2 * 60 * 60) {
+        setNextUpdate(1000 + (Math.random() / 1000));
+        return;
+      }
+      setNextUpdate((1000 * 60) + (Math.random() / 1000));
+    }, nextUpdate);
+    return () => clearInterval(interval);
+  }, [nextElfToUpdate, nextUpdate]);
 
   const sections = useMemo(() => {
-    const collections = [...actions[0].sections];
+    const currentPath = location.pathname.split("/").pop();
+    const action = actions.find(({ path }) => path === currentPath) || actions[0];
+    const collections = action.sections;
 
     collections.forEach((collection) => {
       collection.elves = elves?.filter(collection.filter);
@@ -74,7 +95,7 @@ export default function Home() {
     });
 
     return collections;
-  }, [elves]);
+  }, [elves, location.pathname]);
 
   const sectionsDOM = useMemo(() => sections.map((section, sectionIndex) => {
     return (section.elves?.length > 0) && (
@@ -140,7 +161,7 @@ export default function Home() {
         </div>
       </React.Fragment>
     );
-  }), [dispatch, sections, viewType.view]);
+  }), [dispatch, displayType, selection, sections, nextUpdate, viewType.view]);
 
   const handleDisplayTypeChange = (e) => {
     const newDisplayType = displayTypes.find(

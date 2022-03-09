@@ -74,6 +74,9 @@
 .Home {
   display: flex;
   flex-direction: column;
+  .tmp-scroll {
+    flex: 1;
+  }
 }
 
 .errors {
