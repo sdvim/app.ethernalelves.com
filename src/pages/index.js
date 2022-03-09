@@ -7,14 +7,20 @@ import Menu from "./Menu";
 import NotFound from "./404";
 
 import { useTrackedState } from "../Store";
+import { actions } from "../data";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
-const BackButton = () => {
+const BackButton = (props) => {
   const navigate = useNavigate();
-
   return (
-    <button onClick={() => navigate(-1)}>&lt;</button>
+    <button onClick={() => navigate(props.to || -1)}>Back</button>
   );
+}
+
+const InfoButton = () => {
+  return (
+    <a href="https://docs.ethernalelves.com" target="_blank" rel="noreferrer">Info</a>
+  )
 }
 
 const MenuButton = () => {
@@ -38,14 +44,28 @@ const RequireAuth = ({ children }) => {
 export const pages = [
   {
     path: "/",
+    isIndex: true,
+    element: <Navigate to="elves" />
+  },
+  {
+    path: "/elves",
     title: "Elves",
     element:
       <RequireAuth>
         <Elves />
       </RequireAuth>,
-    isIndex: true,
     leftButton: <MenuButton />,
   },
+  ...actions.map((action) => ({
+    path: `/elves/${action.path}`,
+    title: action.label,
+    leftButton: <BackButton to="/elves" />,
+    rightButton: <InfoButton />,
+    element:
+      <RequireAuth>
+        <Elves />
+      </RequireAuth>,
+  })),
   {
     path: "/account",
     title: "Account",
@@ -80,7 +100,7 @@ export const pages = [
     leftButton: <BackButton />,
   },
   {
-    path: "*",
+    path: "/*",
     title: "404",
     leftButton: <BackButton />,
     element: <NotFound />,

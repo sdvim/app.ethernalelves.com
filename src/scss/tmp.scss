@@ -11,6 +11,9 @@
     justify-content: space-between;
     align-items: center;
   }
+  &-scroll {
+    overflow-y: auto;
+  }
   &-avatar-list-item {
     display: grid;
     grid-template-columns: 2fr 1fr 5fr;
@@ -68,6 +71,11 @@
   }
 }
 
+.Home {
+  display: flex;
+  flex-direction: column;
+}
+
 .errors {
   font-family: 'DM Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   position: absolute;
@@ -77,5 +85,16 @@
   width: 100%;
   > * {
     margin-top: 1em;
+  }
+}
+
+.ElvesActions {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0.5rem;
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 }

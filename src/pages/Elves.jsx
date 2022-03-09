@@ -2,6 +2,8 @@ import React, { useState, useMemo } from "react";
 import { Avatar } from "../components";
 import { Elf } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
+import { actions } from "../data";
+import { Link, Outlet } from "react-router-dom";
 
 const displayTypes = [
   {
@@ -29,6 +31,26 @@ const viewTypes = [
   },
 ];
 
+export function ElvesDetailsPanel() {
+  return (
+    <div className="ElvesDetailsPanel">
+      <Outlet />
+    </div>
+  );
+}
+
+export function ElvesActions() {
+  return (
+    <div className="ElvesActions">
+      { actions.map((action, index) => {
+        return !action.hidden && (
+          <Link replace={true} key={index} to={`/elves/${action.path}`}>{ action.label }</Link>
+        );
+      }) }
+    </div>
+  );
+}
+
 export default function Home() {
   const [displayType, setDisplayType] = useState(displayTypes[0]);
   const [viewType, setViewType] = useState(viewTypes[0]);
@@ -44,28 +66,7 @@ export default function Home() {
   }), [displayType.attr, elfData, selection]);
 
   const sections = useMemo(() => {
-    const collections = [
-      {
-        title: "Idle",
-        filter: (elf) => !elf.didBridge && !elf.isCoolingDown,
-        elves: [],
-      },
-      {
-        title: "Active",
-        filter: (elf) => elf.isCoolingDown,
-        elves: [],
-      },
-      {
-        title: "Passive",
-        filter: (elf) => elf.didPassive,
-        elves: [],
-      },
-      {
-        title: "Bridged (Polygon)",
-        filter: (elf) => elf.didBridge,
-        elves: [],
-      },
-    ];
+    const collections = [...actions[0].sections];
 
     collections.forEach((collection) => {
       collection.elves = elves?.filter(collection.filter);
@@ -79,8 +80,8 @@ export default function Home() {
     return (section.elves?.length > 0) && (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
-          <h2 key={`${section.title}`}>
-            { section.title }:{ " " }
+          <h2 key={`${section.label}`}>
+            { section.label }:{ " " }
             { section.elves.length }
           </h2>
           { section.action &&
@@ -185,7 +186,11 @@ export default function Home() {
           </label>
         )}
       </form>
-      { sectionsDOM }
+      <div className="tmp-scroll">
+        { sectionsDOM }
+      </div>
+      <ElvesDetailsPanel />
+      <ElvesActions />
     </div>
   );
 }

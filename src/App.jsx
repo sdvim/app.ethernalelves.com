@@ -19,6 +19,7 @@ const App = () => {
   }, [isMoralisConnected, dispatch]);
 
   useEffect(() => {
+    if (currentPage.path === location.pathname) return;
     const matchedPage = pages.find((page) => page.path === location.pathname);
     setCurrentPage(matchedPage ? matchedPage : pages[pages.length - 1]);
     document.title = `${currentPage.title} - Ethernal Elves`;
