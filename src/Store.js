@@ -1,7 +1,6 @@
 import { useReducerAsync } from "use-reducer-async";
 import { createContainer } from "react-tracked";
 import Moralis from "moralis/dist/moralis.min.js";
-import env from "react-dotenv";
 import { useEffect } from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { fetchElfDataByIds } from "./Utils.js";
@@ -79,9 +78,9 @@ const reducer = (state, action) => {
 const asyncActionHandlers = {
   INITIALIZE_MORALIS: ({ dispatch }) =>
     async (action) => {
-      let appId = env.MORALIS_APP_ID;
-      let serverUrl = env.MORALIS_SERVER_URL;
-      let infuraId = env.INFURA_ID;
+      let appId = process.env.REACT_APP_MORALIS_APP_ID;
+      let serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
+      let infuraId = process.env.REACT_APP_INFURA_ID;
       let provider = window.ethereum?.isMetaMask
         ? "metamask"
         : new WalletConnectProvider({ infuraId });
@@ -94,7 +93,7 @@ const asyncActionHandlers = {
     },
   CONNECT_WALLET: ({ dispatch }) =>
     async (action) => {
-      let infuraId = env.INFURA_ID;
+      let infuraId = process.env.REACT_APP_INFURA_ID;
       let provider = window.ethereum?.isMetaMask
         ? "metamask"
         : new WalletConnectProvider({ infuraId });

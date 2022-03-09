@@ -9,13 +9,12 @@ import Web3 from "web3";
 import elvesABI from "./abi/elves.json";
 import polygonElvesABI from "./abi/polygonElves.json";
 import { Multicall } from "ethereum-multicall";
-import env from "react-dotenv";
 
 const IMAGE_HASH_PREFIX = "elf-image-";
 const ELVES_CONTRACT = "0xA351B769A01B445C04AA1b8E6275e03ec05C1E75";
 const POLYGON_ELVES_CONTRACT = "0x4DeAb743F79b582c9b1d46b4aF61A69477185dd5";
-const web3 = new Web3(new Web3.providers.HttpProvider(env.ALCHEMY_URL));
-const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(env.POLYGON_ALCHEMY_URL));
+const web3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_ALCHEMY_URL));
+const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_APP_POLYGON_ALCHEMY_URL));
 
 // const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
