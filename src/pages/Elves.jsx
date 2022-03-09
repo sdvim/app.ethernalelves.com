@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Avatar } from "../components";
-import { Elf } from "../Utils";
 import { useDispatch, useTrackedState } from "../Store";
-import { actions } from "../data";
+import { actions, Elf } from "../data";
 import { Link, useLocation } from "react-router-dom";
 
 const displayTypes = [
@@ -97,7 +96,7 @@ export default function Home() {
     return collections;
   }, [elves, location.pathname]);
 
-  const sectionsDOM = useMemo(() => sections.map((section, sectionIndex) => {
+  const sectionsDOM = sections.map((section, sectionIndex) => {
     return (section.elves?.length > 0) && (
       <React.Fragment key={sectionIndex}>
         <div className="tmp-flex">
@@ -161,7 +160,7 @@ export default function Home() {
         </div>
       </React.Fragment>
     );
-  }), [dispatch, displayType, selection, sections, nextUpdate, viewType.view]);
+  });
 
   const handleDisplayTypeChange = (e) => {
     const newDisplayType = displayTypes.find(

@@ -1,8 +1,6 @@
 import Account from "./Account";
-import Actions from "./Actions";
 import Connect from "./Connect";
 import Elves from "./Elves";
-import Help from "./Help";
 import Menu from "./Menu";
 import NotFound from "./404";
 
@@ -75,20 +73,9 @@ export const pages = [
       </RequireAuth>,
   },
   {
-    path: "/actions",
-    title: "Actions",
-    leftButton: <BackButton />,
-    element: <Actions />,
-  },
-  {
     path: "/connect",
     title: "Connect",
     element: <Connect />,
-  },
-  {
-    path: "/help",
-    title: "Help",
-    element: <Help />,
   },
   {
     path: "/menu",
