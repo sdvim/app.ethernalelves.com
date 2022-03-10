@@ -1,13 +1,10 @@
 .Elves {
-  display: flex;
-  flex-direction: column;
   padding: 0;
+  position: relative;
 }
 
 .ElvesCollection {
-  overflow-y: auto;
-  flex: 1;
-  padding: 1em 0.5em 2em;
+  padding: 1rem 0.5rem 16rem;
 
   &__header {
     display: flex;
@@ -60,12 +57,17 @@
   display: grid;
   gap: 0.5rem;
   grid-template-columns: repeat(4, 1fr);
-  box-shadow: 0 -1em 2em rgba(var(--color-shadow));
-  position: relative;
+  box-shadow: 0 0 1em 1em rgba(var(--color-shadow));
+  position: fixed;
+  width: calc(100% - 3rem);
+  height: 12.33rem;
+  bottom: 1.5rem;
+  margin: auto;
+  left: 0;
+  right: 0;
   border: 15px solid;
   border-image: var(--border-image-frame) 100 / 45px / 15px stretch;
   background: rgb(var(--color-900));
-  margin: 1.5em;
   margin-top: 0;
 
   button {
