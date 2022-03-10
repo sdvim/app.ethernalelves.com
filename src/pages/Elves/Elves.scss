@@ -9,6 +9,15 @@
   flex: 1;
   padding: 1em 0 2em;
 
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__count {
+    color: var(--selection-bg);
+  }
+
   &__grid {
     display: grid;
     gap: 0.5em;

@@ -53,9 +53,11 @@ export function ElvesCollection({displayType: { attr }, viewType: { view }}) {
       { sections.map((section, sectionIndex) => 
         (section.elves?.length > 0) && (
           <React.Fragment key={sectionIndex}>
-            <h3 key={`${section.label}`}>
-              { section.label }:{ " " }
-              { section.elves.length }
+            <h3 key={`${section.label}`} className="ElvesCollection__header">
+              <span>{ section.label }</span>
+              <span className="ElvesCollection__count">
+                { section.elves.length } { section.elves.length === 1 ? "Elf" : "Elves" }
+              </span>
             </h3>
             <div key={`${sectionIndex}-view`} className={`ElvesCollection__${view}`}>
               {

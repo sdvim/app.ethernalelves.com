@@ -93,24 +93,16 @@ const actions = [
     image: Forge,
     sections: [
       {
-        label: "Tier 0",
-        filter: (elf) => elf.weaponTier === 0,
+        label: "Tier 0-1",
+        filter: (elf) => 0 <= elf.weaponTier && elf.weaponTier <= 1,
       },
       {
-        label: "Tier 1",
-        filter: (elf) => elf.weaponTier === 1,
-      },
-      {
-        label: "Tier 2",
-        filter: (elf) => elf.weaponTier === 2,
-      },
-      {
-        label: "Tier 3",
-        filter: (elf) => elf.weaponTier === 3,
+        label: "Tier 2-3",
+        filter: (elf) => 2 <= elf.weaponTier && elf.weaponTier <= 3,
       },
       {
         label: "Tier 4-5",
-        filter: (elf) => elf.weaponTier > 3,
+        filter: (elf) => 3 < elf.weaponTier,
       },
     ],
   },
