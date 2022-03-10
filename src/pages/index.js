@@ -1,9 +1,10 @@
 import Account from "./Account";
 import Connect from "./Connect";
 import Elves from "./Elves/Elves";
-import Menu from "./Menu";
+import MenuPage from "./Menu";
 import NotFound from "./404";
 
+import { ChevronLeft, Menu, HelpCircle } from 'react-feather';
 import { useTrackedState } from "../Store";
 import { actions } from "../data";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -11,20 +12,26 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 const BackButton = (props) => {
   const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(props.to || -1)}>Back</button>
+    <button onClick={() => navigate(props.to || -1)}>
+      <ChevronLeft />
+    </button>
   );
 }
 
 const InfoButton = () => {
   return (
-    <a href="https://docs.ethernalelves.com" target="_blank" rel="noreferrer">Info</a>
-  )
+    <a href="https://docs.ethernalelves.com" target="_blank" rel="noreferrer">
+      <HelpCircle />
+    </a>
+  );
 }
 
 const MenuButton = () => {
   return (
-    <Link to="/menu">Menu</Link>
-  )
+    <Link to="/menu">
+      <Menu />
+    </Link>
+  );
 }
 
 const RequireAuth = ({ children }) => {
@@ -82,7 +89,7 @@ export const pages = [
     title: "Menu",
     element: 
       <RequireAuth>
-        <Menu />
+        <MenuPage />
       </RequireAuth>,
     leftButton: <BackButton />,
   },

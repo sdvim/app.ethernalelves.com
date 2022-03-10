@@ -2,6 +2,7 @@ import { ElvesActionPanel } from "./ElvesActionPanel";
 import { ElvesCollection } from "./ElvesCollection";
 import { ElvesDetailsPanel } from "./ElvesDetailsPanel";
 import { ElvesFilterPanel } from "./ElvesFilterPanel";
+import { Award, Clock, Grid, List, Hash } from 'react-feather';
 import { useState } from "react";
 import "./Elves.scss";
 
@@ -9,17 +10,17 @@ export const displayTypes = [
   {
     attr: "lastActionTimestamp",
     value: "lastActionTimestamp",
-    label: "Time",
+    label: <Clock />,
   },
   {
     attr: "statLevel",
     value: "statLevel",
-    label: "Level",
+    label: <Award />,
   },
   {
     attr: "id",
     value: "id",
-    label: "ID",
+    label: <Hash />,
   },
 ];
 
@@ -27,12 +28,12 @@ export const viewTypes = [
   {
     view: "grid",
     value: "grid",
-    label: "Grid",
+    label: <Grid />,
   },
   {
     view: "list",
     value: "list",
-    label: "List",
+    label: <List />,
   },
 ];
 
