@@ -3,12 +3,31 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=Sen:wght@400;700&display=swap');
 
 :root {
-  --background-color: #090D16;
-  --foreground-color: #0E1A27;
-  --selection-color: cyan;
-  --selection-bg: rgba(0, 255, 255, 0.5);
+  --color-950: 14, 26, 46;
+  --color-900: 19, 32, 57;
+  --color-850: 23, 38, 67;
+  --color-750: 40, 35, 90;
+  --color-700: 50, 43, 112;
+  --color-650: 55, 48, 124;
+  --color-550: 59, 55, 151;
+  --color-500: 74, 70, 168;
+  --color-450: 81, 77, 177;
+  --color-350: 87, 98, 194;
+  --color-300: 109, 123, 203;
+  --color-250: 120, 135, 209;
+  --color-150: 133, 165, 223;
+  --color-100: 153, 180, 228;
+  --color-50:  163, 187, 231;
+  --color-accent-700: 252, 161, 38;
+  --color-accent-500: 253, 188, 64;
+  --color-accent-300: 254, 215, 90;
+  --color-shadow: 0, 0, 0, 0.125;
+  --color-tint: 255, 255, 255, 0.5;
   --button-gradient: linear-gradient(#E8C171 0%, #DE9E40 15%, #602C2C 85%);
   --button-disabled-gradient: linear-gradient(#1E1E1E 20%, #070707);
+  --border-image-frame: url('/assets/borders/frame-prime.png');
+  --border-image-avatar: url('/assets/borders/avatar-prime.png');
+  --border-image-avatar-highlighted: url('/assets/borders/avatar-highlighted-prime.png');
 }
 
 html {
@@ -24,7 +43,7 @@ html {
 }
 
 body {
-  background: var(--background-color);
+  background: rgb(var(--color-950));
   color: white;
   margin: 0;
   font-family: 'Sen', sans-serif;
@@ -43,7 +62,7 @@ code {
 }
 
 a {
-  color: var(--selection-color);
+  color: rgb(var(--color-accent-500));
   font-weight: bold;
 }
 

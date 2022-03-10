@@ -1,13 +1,16 @@
 .Avatar {
   border: 4px solid #0E1A27;
-  border-image: url('/assets/borders/avatar.png') 4;
+  border-image: var(--border-image-avatar) 4;
   position: relative;
 
   &--is-selected {
-    background: var(--selection-bg);
-    box-shadow: 0 0 1em 0.125em var(--selection-color);
-    border-image: url('/assets/borders/avatar-highlighted.png') 4;
+    background: rgb(var(--color-accent-500, 0.5));
+    box-shadow: 0 0 1em 0.125em rgb(var(--color-accent-500));
+    border-image: var(--border-image-avatar-highlighted) 4;
     cursor: pointer;
+    .Avatar__cooldown {
+      --cooldown-color: var(--color-accent-500), 0.75;
+    }
   }
 
   &__image {
@@ -23,7 +26,7 @@
     left: 0;
     width: 100%;
     aspect-ratio: 1;
-    opacity: 0.66;
+    --cooldown-color: 0, 0, 0, 0.66;
   }
 
   &__bar {
@@ -34,7 +37,7 @@
   }
 
   &__index {
-    background: var(--selection-color);
+    background: rgb(var(--color-accent-500));
     position: absolute;
     top: 0;
     left: 0;

@@ -1,13 +1,13 @@
 .Elves {
   display: flex;
   flex-direction: column;
-  padding: 1em;
+  padding: 0;
 }
 
 .ElvesCollection {
   overflow-y: auto;
   flex: 1;
-  padding: 1em 0 2em;
+  padding: 1em 0.5em 2em;
 
   &__header {
     display: flex;
@@ -15,7 +15,7 @@
   }
 
   &__count {
-    color: var(--selection-bg);
+    color: rgb(var(--color-300, 0.5));
   }
 
   &__grid {
@@ -32,7 +32,7 @@
     align-items: center;
     margin-bottom: 1em;
     padding-bottom: 1em;
-    border-bottom: 2px solid var(--foreground-color);
+    border-bottom: 2px solid rgb(var(--color-400));
     &:last-child {
       border-bottom: none;
     }
@@ -43,27 +43,30 @@
       display: block;
       grid-row: 3 / 5;
       width: 100%;
-      border: 2px solid var(--foreground-color);
+      border: 2px solid rgb(var(--color-400));
     }
   }
 }
 
 .ElvesFilterPanel {
-  box-shadow: 0 1em 2em rgba(0, 0, 0, .75);
+  background: rgb(var(--color-900));
+  box-shadow: 0 1em 2em rgba(var(--color-shadow));
+  padding: 0.5em;
   position: relative;
   z-index: 1;
 }
 
 .ElvesActionPanel {
-  background: var(--foreground-color);
   display: grid;
   gap: 0.5rem;
   grid-template-columns: repeat(4, 1fr);
-  box-shadow: 0 -1em 2em rgba(0, 0, 0, .75);
+  box-shadow: 0 -1em 2em rgba(var(--color-shadow));
   position: relative;
   border: 15px solid;
-  border-image: url('/assets/border@4x.png') 100 / 45px / 10px stretch;
-  background: var(--foreground-color);
+  border-image: var(--border-image-frame) 100 / 45px / 15px stretch;
+  background: rgb(var(--color-900));
+  margin: 1.5em;
+  margin-top: 0;
 
   button {
     display: block;

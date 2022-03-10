@@ -11,11 +11,13 @@
     input {
       display: none;
       &:checked ~ span {
-        background: var(--selection-bg);
+        background: rgb(var(--color-300, 0.5));
+        color: white;
       }
     }
     span {
-      background: var(--foreground-color);
+      background: rgb(var(--color-700));
+      color: rgba(var(--color-tint));
       padding: 0.25em 0.5em;
       margin-right: 2px;
     }
