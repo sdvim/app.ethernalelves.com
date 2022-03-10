@@ -10,7 +10,7 @@
   &__grid {
     display: grid;
     gap: 0.5em;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   &__list .list-item {
