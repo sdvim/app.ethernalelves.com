@@ -1,0 +1,49 @@
+.Elves {
+  display: flex;
+  flex-direction: column;
+}
+
+.ElvesCollection {
+  overflow-y: auto;
+  flex: 1;
+
+  &__grid {
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__list .list-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 5fr;
+    gap: 0.5em 1em;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 2px solid var(--foreground-color);
+    &:last-child {
+      border-bottom: none;
+    }
+    .Avatar {
+      grid-row: 1 / 5;
+    }
+    .item-image {
+      display: block;
+      grid-row: 3 / 5;
+      width: 100%;
+      border: 2px solid var(--foreground-color);
+    }
+  }
+}
+
+.ElvesActionPanel {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0.5rem;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}

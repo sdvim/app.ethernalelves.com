@@ -1,6 +1,6 @@
 import Account from "./Account";
 import Connect from "./Connect";
-import Elves from "./Elves";
+import Elves from "./Elves/Elves";
 import Menu from "./Menu";
 import NotFound from "./404";
 
