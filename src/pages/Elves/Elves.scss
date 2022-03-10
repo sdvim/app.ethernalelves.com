@@ -4,7 +4,7 @@
 }
 
 .ElvesCollection {
-  padding: 1rem 0.5rem 16rem;
+  padding: 0 1rem 16rem;
 
   &__header {
     display: flex;
@@ -47,8 +47,8 @@
 
 .ElvesFilterPanel {
   background: rgb(var(--color-900));
-  box-shadow: 0 1em 2em rgba(var(--color-shadow));
-  padding: 0.5em;
+  box-shadow: 0 1rem 2rem rgba(var(--color-shadow));
+  padding: 0.5rem 1rem;
   position: relative;
   z-index: 1;
 }
