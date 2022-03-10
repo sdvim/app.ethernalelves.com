@@ -7,6 +7,7 @@
 .ElvesCollection {
   overflow-y: auto;
   flex: 1;
+  padding: 1em 0 2em;
 
   &__grid {
     display: grid;

@@ -16,12 +16,20 @@ const actions = [
     hidden: true,
     sections: [
       {
-        label: "Idle",
+        label: "Ready",
         filter: (elf) => !elf.didBridge && !elf.isCoolingDown,
       },
       {
-        label: "Active",
-        filter: (elf) => elf.isCoolingDown,
+        label: "Almost ready",
+        filter: (elf) => 0 < elf.cooldownSeconds && elf.cooldownSeconds <= 2 * 3600,
+      },
+      {
+        label: "Ready soon",
+        filter: (elf) => 2 * 3600 < elf.cooldownSeconds && /^\d+$/.test(elf.cooldownString[0]),
+      },
+      {
+        label: "Ready later",
+        filter: (elf) => 2 * 3600 < elf.cooldownSeconds && !/^\d+$/.test(elf.cooldownString[0]),
       },
       {
         label: "Passive",

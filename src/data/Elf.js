@@ -8,7 +8,7 @@ import {
 const timestampToHealthPercentage = (timestamp) => {
   const now = new Date().getTime()
   const diff = Math.floor(new Date(timestamp * 1000).getTime() - now) / 36e5;
-  const result = 100 - 2.5 * diff;
+  const result = 100 - 3 * diff;
   return Math.min(100, Math.max(5, result));
 }
 
@@ -42,7 +42,7 @@ const timestampToTimeString = (timestamp) => {
   const minutes = String((diff / 60) | 0).padStart(2, "0");
   const seconds = String((diff % 60) | 0).padStart(2, "0");
 
-  return `${hours}:${minutes}:${seconds}`;
+  return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }
 
 export class Elf {

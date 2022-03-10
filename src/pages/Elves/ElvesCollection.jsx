@@ -53,16 +53,16 @@ export function ElvesCollection({displayType: { attr }, viewType: { view }}) {
       { sections.map((section, sectionIndex) => 
         (section.elves?.length > 0) && (
           <React.Fragment key={sectionIndex}>
-            <h2 key={`${section.label}`}>
+            <h3 key={`${section.label}`}>
               { section.label }:{ " " }
               { section.elves.length }
-            </h2>
+            </h3>
             <div key={`${sectionIndex}-view`} className={`ElvesCollection__${view}`}>
               {
                 section.elves.map((elf, index) => {
                   const display = (() => {
                     switch (attr) {
-                      case "lastActionTimestamp": return elf.cooldownString;
+                      case "lastActionTimestamp": return elf.isCoolingDown && elf.cooldownString;
                       case "statLevel": return elf.levelString;
                       case "id":
                       default: return elf.idString;
@@ -79,7 +79,7 @@ export function ElvesCollection({displayType: { attr }, viewType: { view }}) {
                         image={elf.image}
                         isSelected={elf.isSelected}
                         healthPercentage={elf.healthPercentage}
-                        hideBars={elf.didPassive}
+                        hideBars={!elf.isCoolingDown}
                         display={display}
                         onClick={onClick}
                       />
