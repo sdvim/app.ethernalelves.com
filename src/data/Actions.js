@@ -1,3 +1,12 @@
+import Bloodthirst from "../assets/actions/bloodthirst.png";
+import Campaign from "../assets/actions/campaign.png";
+import Forge from "../assets/actions/forge.png";
+import Heal from "../assets/actions/heal.png";
+import Merchant from "../assets/actions/merchant.png";
+import Passive from "../assets/actions/passive.png";
+import Rampage from "../assets/actions/rampage.png";
+import Synergize from "../assets/actions/synergize.png";
+
 import { SELECTION_LIMIT, CAMPAIGN_LEVEL_LIMIT } from "./";
 
 const actions = [
@@ -27,6 +36,7 @@ const actions = [
   {
     path: "heal",
     label: "Heal",
+    image: Heal,
     sections: [
       {
         label: "Healers",
@@ -45,6 +55,7 @@ const actions = [
   {
     path: "synergize",
     label: "Synergize",
+    image: Synergize,
     sections: [
       {
         label: "Able to Synergize",
@@ -56,6 +67,7 @@ const actions = [
   {
     path: "merchant",
     label: "Merchant",
+    image: Merchant,
     sections: [
       {
         label: "Itemless",
@@ -70,6 +82,7 @@ const actions = [
   {
     path: "forge",
     label: "Forge",
+    image: Forge,
     sections: [
       {
         label: "Tier 0",
@@ -96,6 +109,7 @@ const actions = [
   {
     path: "passive",
     label: "Passive",
+    image: Passive,
     sections: [
       {
         label: "Ready for Passive",
@@ -112,6 +126,7 @@ const actions = [
   {
     path: "campaign",
     label: "Campaign",
+    image: Campaign,
     sections: [
       {
         label: "Ready to Campaign",
@@ -128,6 +143,7 @@ const actions = [
   {
     path: "bloodthirst",
     label: "Bloodthirst",
+    image: Bloodthirst,
     sections: [
       {
         label: "Ready to Bloodthirst",
@@ -137,6 +153,23 @@ const actions = [
       {
         label: "In Bloodthirst",
         filter: (elf) => elf.isCoolingDown && elf.didBloodthirst,
+        readonly: true,
+      },
+    ],
+  },
+  {
+    path: "rampage",
+    label: "Rampage",
+    image: Rampage,
+    sections: [
+      {
+        label: "Ready to Rampage",
+        filter: (elf) => !elf.isCoolingDown,
+        required: true,
+      },
+      {
+        label: "In Rampage",
+        filter: (elf) => elf.isCoolingDown && elf.didRampage,
         readonly: true,
       },
     ],
