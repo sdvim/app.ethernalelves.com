@@ -1,0 +1,30 @@
+.ButtonGroup {
+  &__container {
+    display: flex;
+    padding: 0.5em 0;
+  }
+  &__group-name {
+    margin-right: auto;
+    font-size: 1.25rem;
+  }
+  &__item {
+    input {
+      display: none;
+      &:checked ~ span {
+        background: var(--selection-bg);
+      }
+    }
+    span {
+      background: var(--foreground-color);
+      padding: 0.25em 0.5em;
+      margin-right: 2px;
+    }
+    &:first-of-type span {
+      border-radius: .5em 0 0 .5em;
+    }
+    &:last-child span {
+      border-radius: 0 .5em .5em 0;
+      margin-right: 0;
+    }
+  }
+}
