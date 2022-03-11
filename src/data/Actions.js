@@ -7,7 +7,13 @@ import Passive from "../assets/actions/passive.png";
 import Rampage from "../assets/actions/rampage.png";
 import Synergize from "../assets/actions/synergize.png";
 
-import { SELECTION_LIMIT, CAMPAIGN_LEVEL_LIMIT } from "./";
+import {
+  SELECTION_LIMIT,
+  CAMPAIGN_LEVEL_LIMIT,
+  SYNERGIZE_COST_REN,
+  MERCHANT_COST_REN,
+  FORGE_COST_REN,
+} from "./";
 
 const actions = [
   {
@@ -45,6 +51,7 @@ const actions = [
     path: "heal",
     label: "Heal",
     image: Heal,
+    text: "Heal #ELVES?",
     sections: [
       {
         label: "Healers",
@@ -64,6 +71,8 @@ const actions = [
     path: "synergize",
     label: "Synergize",
     image: Synergize,
+    cost: SYNERGIZE_COST_REN,
+    text: "Reroll cooldown for #ELVES and burn #REN $REN?",
     sections: [
       {
         label: "Able to Synergize",
@@ -76,6 +85,8 @@ const actions = [
     path: "merchant",
     label: "Merchant",
     image: Merchant,
+    cost: MERCHANT_COST_REN,
+    text: "Reroll items for #ELVES and burn #REN $REN?",
     sections: [
       {
         label: "Itemless",
@@ -91,6 +102,8 @@ const actions = [
     path: "forge",
     label: "Forge",
     image: Forge,
+    cost: FORGE_COST_REN,
+    text: "Reroll weapons for #ELVES and burn #REN $REN?",
     sections: [
       {
         label: "Tier 0-1",
@@ -110,6 +123,7 @@ const actions = [
     path: "passive",
     label: "Passive",
     image: Passive,
+    text: "Send #ELVES to Passive?",
     sections: [
       {
         label: "Ready for Passive",
@@ -127,6 +141,7 @@ const actions = [
     path: "campaign",
     label: "Campaign",
     image: Campaign,
+    text: "Send #ELVES to #CAMPAIGN?",
     sections: [
       {
         label: "Ready to Campaign",
@@ -144,6 +159,7 @@ const actions = [
     path: "bloodthirst",
     label: "Bloodthirst",
     image: Bloodthirst,
+    text: "Send #ELVES to Bloodthirst?",
     sections: [
       {
         label: "Ready to Bloodthirst",
@@ -161,6 +177,7 @@ const actions = [
     path: "rampage",
     label: "Rampage",
     image: Rampage,
+    text: "Send #ELVES to #RAMPAGE and burn #REN?",
     sections: [
       {
         label: "Ready to Rampage",

@@ -54,13 +54,10 @@
 }
 
 .ElvesActionPanel {
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(4, 1fr);
   box-shadow: 0 0 1em 1em rgba(var(--color-shadow));
   position: fixed;
   width: calc(100% - 3rem);
-  height: 12.33rem;
+  height: 12rem;
   bottom: 1.5rem;
   margin: auto;
   left: 0;
@@ -68,7 +65,42 @@
   border: 15px solid;
   border-image: var(--border-image-frame) 100 / 45px / 15px stretch;
   background: rgb(var(--color-900));
-  margin-top: 0;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.ActionPagelet {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+.ActionSelection {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(4, 1fr);
 
   button {
     display: block;
@@ -81,10 +113,5 @@
     width: 100%;
     overflow: hidden;
     padding-top: calc(100% - 0.5em);
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
   }
 }
