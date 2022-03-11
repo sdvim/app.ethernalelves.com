@@ -4,8 +4,8 @@ import Elves from "./Elves/Elves";
 import MenuPage from "./Menu";
 import NotFound from "./404";
 
-import { ChevronLeft, Menu, HelpCircle } from 'react-feather';
-import { useTrackedState } from "../Store";
+import { ChevronLeft, Menu, HelpCircle, RefreshCw } from 'react-feather';
+import { useDispatch, useTrackedState } from "../Store";
 import { actions } from "../data";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
@@ -23,6 +23,15 @@ const InfoButton = () => {
     <a href="https://docs.ethernalelves.com" target="_blank" rel="noreferrer">
       <HelpCircle />
     </a>
+  );
+}
+
+const ReloadButton = () => {
+  const dispatch = useDispatch();
+  return (
+    <button onClick={() => dispatch({type: "LOAD_ELF_DATA" })}>
+      <RefreshCw />
+    </button>
   );
 }
 
@@ -60,6 +69,7 @@ export const pages = [
         <Elves />
       </RequireAuth>,
     leftButton: <MenuButton />,
+    rightButton: <ReloadButton />,
   },
   ...actions.map((action) => ({
     path: `/elves/${action.path}`,

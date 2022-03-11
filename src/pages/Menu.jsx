@@ -13,12 +13,7 @@ export default function Menu() {
       </button>
       <br />
       <br />
-      <button key={2} onClick={() => dispatch({type: "LOAD_ELF_DATA" })}>
-        Reload data
-      </button>
-      <br />
-      <br />
-      <button key={3} onClick={() => dispatch({type: "DISCONNECT_WALLET" })}>
+      <button key={2} onClick={() => dispatch({type: "DISCONNECT_WALLET" })}>
         Disconnect wallet
       </button>
     </div>
