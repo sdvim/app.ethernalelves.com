@@ -23,7 +23,7 @@ const actions = [
     sections: [
       {
         label: "Ready",
-        filter: (elf) => !elf.didBridge && !elf.isCoolingDown,
+        filter: (elf) => !elf.didBridge && !elf.isCoolingDown && !elf.didPassive,
       },
       {
         label: "Almost ready",
