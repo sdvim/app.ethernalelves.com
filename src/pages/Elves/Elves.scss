@@ -1,6 +1,14 @@
+:root {
+  --filter-height: 8.5rem;
+}
+
 .Elves {
   padding: 0;
   position: relative;
+
+  &__frame {
+    min-height: calc(100vh + var(--filter-height));
+  }
 }
 
 .ElvesCollection {
@@ -51,6 +59,10 @@
   padding: 0.5rem 1rem;
   position: relative;
   z-index: 1;
+  min-height: var(--filter-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ElvesActionPanel {

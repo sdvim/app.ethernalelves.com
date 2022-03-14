@@ -57,14 +57,9 @@ export default function Elves() {
     pageEl.current.scrollTop = filterEl.current.clientHeight;
   }, [location]);
 
-  const minHeight =() => {
-    let filterHeight = filterEl.current?.clientHeight || 0;
-    return `calc(100vh + ${filterHeight}px)`;
-  };
-
   return (
     <div className="Elves page" ref={pageEl}>
-      <div style={{ minHeight }}>
+      <div className="Elves__frame">
         <ElvesFilterPanel
           onDisplayTypeChange={setDisplayType}
           onViewTypeChange={setViewType}
