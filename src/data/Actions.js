@@ -1,5 +1,5 @@
 import { Hardware } from "@areatechnology/shields-react";
-
+import { inRange } from "../Utils";
 import {
   SELECTION_LIMIT,
   CAMPAIGN_LEVEL_LIMIT,
@@ -16,7 +16,7 @@ const actions = [
     sections: [
       {
         label: "Ready",
-        filter: (elf) => !elf.didBridge && !elf.isCoolingDown && !elf.didPassive,
+        filter: (elf) => !elf.didBridge && elf.isReady,
       },
       {
         label: "Almost ready",
@@ -49,11 +49,11 @@ const actions = [
     sections: [
       {
         label: "Itemless",
-        filter: (elf) => !elf.hasInventory,
+        filter: (elf) => !elf.didPassive && !elf.hasInventory,
       },
       {
         label: "Has Item",
-        filter: (elf) => elf.hasInventory,
+        filter: (elf) => !elf.didPassive && elf.hasInventory,
       },
     ],
   },
@@ -66,15 +66,15 @@ const actions = [
     sections: [
       {
         label: "Tier 0-1",
-        filter: (elf) => 0 <= elf.weaponTier && elf.weaponTier <= 1,
+        filter: (elf) => !elf.didPassive && inRange(0, elf.weaponTier, 1),
       },
       {
         label: "Tier 2-3",
-        filter: (elf) => 2 <= elf.weaponTier && elf.weaponTier <= 3,
+        filter: (elf) => !elf.didPassive && inRange(2, elf.weaponTier, 3),
       },
       {
         label: "Tier 4-5",
-        filter: (elf) => 3 < elf.weaponTier,
+        filter: (elf) => !elf.didPassive && (3 < elf.weaponTier),
       },
     ],
   },
@@ -120,7 +120,7 @@ const actions = [
     sections: [
       {
         label: "Ready for Passive",
-        filter: (elf) => !elf.didPassive && !elf.isCoolingDown,
+        filter: (elf) => elf.isReady,
         required: true,
       },
       {
@@ -138,12 +138,12 @@ const actions = [
     sections: [
       {
         label: "Ready to Campaign",
-        filter: (elf) => !elf.isCoolingDown && elf.statLevel <= CAMPAIGN_LEVEL_LIMIT,
+        filter: (elf) => elf.isReady && elf.statLevel <= CAMPAIGN_LEVEL_LIMIT,
         required: true,
       },
       {
         label: "In Campaign",
-        filter: (elf) => elf.didCampaign,
+        filter: (elf) => elf.isCoolingDown && elf.didCampaign,
         readonly: true,
       },
     ],
@@ -156,7 +156,7 @@ const actions = [
     sections: [
       {
         label: "Ready to Bloodthirst",
-        filter: (elf) => !elf.isCoolingDown,
+        filter: (elf) => elf.isReady,
         required: true,
       },
       {
@@ -174,7 +174,7 @@ const actions = [
     sections: [
       {
         label: "Ready to Rampage",
-        filter: (elf) => !elf.isCoolingDown,
+        filter: (elf) => elf.isReady,
         required: true,
       },
       {

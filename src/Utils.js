@@ -9,6 +9,10 @@ const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_A
 
 // const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
+export const inRange = (start, x, end) => {
+  return ((x - start) * (x - end)) <= 0;
+}
+
 const saveImageHash = (hash, image) => {
   if (localStorage.getItem(IMAGE_HASH_PREFIX + hash) !== null) return;
   window.localStorage.setItem(IMAGE_HASH_PREFIX + hash, JSON.stringify(image));
