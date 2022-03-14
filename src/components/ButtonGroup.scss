@@ -12,13 +12,13 @@
     input {
       display: none;
       &:checked ~ span {
-        background: rgb(var(--color-300, 0.5));
+        background: rgba(var(--color-300));
         color: white;
       }
     }
     span {
       background: rgb(var(--color-700));
-      color: rgba(var(--color-tint));
+      color: rgb(var(--color-300));
       padding: 0.5rem;
       margin-right: 2px;
       display: block;
