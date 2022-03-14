@@ -42,15 +42,11 @@ const ActionPagelet = ({ text }) => {
   )
 }
 
-export const ElvesActionPanel = () => {
-  const location = useLocation();
-  const currentPath = location.pathname.split("/").pop();
-  const currentAction = actions.find(({path}) => path === currentPath);
-
+export const ElvesActionPanel = ({ action, sections }) => {
   return (
     <div className="ElvesActionPanel">
-      { currentAction
-        ? <ActionPagelet text={currentAction.text} />
+      { !action.hidden
+        ? <ActionPagelet text={action.text} />
         : <ActionSelection />
       }
     </div>
