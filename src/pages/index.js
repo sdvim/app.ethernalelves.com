@@ -74,7 +74,7 @@ export const pages = [
   ...actions.map((action) => ({
     path: `/elves/${action.path}`,
     title: action.label,
-    rightButton: <InfoButton />,
+    leftButton: <InfoButton />,
     element:
       <RequireAuth>
         <Elves />
