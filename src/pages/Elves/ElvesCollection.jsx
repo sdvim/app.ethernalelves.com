@@ -66,6 +66,7 @@ export function ElvesCollection({displayType: { attr }, viewType: { view }}) {
                     switch (attr) {
                       case "lastActionTimestamp": return elf.isCoolingDown && elf.cooldownString;
                       case "statLevel": return elf.levelString;
+                      case "weaponTier": return elf.weaponTierString;
                       case "id":
                       default: return elf.idString;
                     }

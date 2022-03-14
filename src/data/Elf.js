@@ -130,6 +130,7 @@ export class Elf {
   get idString() { return `#${this.id}` }
   get levelString() { return `Lv. ${this.statLevel}` }
   get nameString() { return this.name ? this.name : `Elf #${this.id}` }
+  get weaponTierString() { return `+${this.weaponTier}` }
   get healthPercentage() { return timestampToHealthPercentage(this.lastActionTimestamp) }
   get actionString() {
     switch (this.lastActionId) {

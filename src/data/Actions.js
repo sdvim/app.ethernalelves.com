@@ -41,40 +41,6 @@ const actions = [
     ],
   },
   {
-    path: "heal",
-    label: "Heal",
-    image: <Hardware hardwareId={25} />, // Crozier
-    text: "Heal #ELVES?",
-    sections: [
-      {
-        label: "Healers",
-        limit: SELECTION_LIMIT / 2,
-        filter: (elf) => elf.isAbleToHeal,
-        required: true,
-      },
-      {
-        label: "Damaged",
-        limit: SELECTION_LIMIT / 2,
-        filter: (elf) => !elf.isDruid && elf.isCoolingDown,
-        required: true,
-      },
-    ],
-  },
-  {
-    path: "synergize",
-    label: "Synergize",
-    image: <Hardware hardwareId={23} />, // Pocketwatch
-    cost: SYNERGIZE_COST_REN,
-    text: "Reroll cooldown for #ELVES and burn #REN $REN?",
-    sections: [
-      {
-        label: "Able to Synergize",
-        filter: (elf) => elf.isAbleToSynergize,
-        required: true,
-      },
-    ],
-  },
-  {
     path: "merchant",
     label: "Merchant",
     image: <Hardware hardwareId={29} />, // Cauldron
@@ -109,6 +75,40 @@ const actions = [
       {
         label: "Tier 4-5",
         filter: (elf) => 3 < elf.weaponTier,
+      },
+    ],
+  },
+  {
+    path: "synergize",
+    label: "Synergize",
+    image: <Hardware hardwareId={23} />, // Pocketwatch
+    cost: SYNERGIZE_COST_REN,
+    text: "Reroll cooldown for #ELVES and burn #REN $REN?",
+    sections: [
+      {
+        label: "Able to Synergize",
+        filter: (elf) => elf.isAbleToSynergize,
+        required: true,
+      },
+    ],
+  },
+  {
+    path: "heal",
+    label: "Heal",
+    image: <Hardware hardwareId={25} />, // Crozier
+    text: "Heal #ELVES?",
+    sections: [
+      {
+        label: "Healers",
+        limit: SELECTION_LIMIT / 2,
+        filter: (elf) => elf.isAbleToHeal,
+        required: true,
+      },
+      {
+        label: "Damaged",
+        limit: SELECTION_LIMIT / 2,
+        filter: (elf) => !elf.isDruid && elf.isCoolingDown,
+        required: true,
       },
     ],
   },

@@ -2,7 +2,7 @@ import { ElvesActionPanel } from "./ElvesActionPanel";
 import { ElvesCollection } from "./ElvesCollection";
 import { ElvesDetailsPanel } from "./ElvesDetailsPanel";
 import { ElvesFilterPanel } from "./ElvesFilterPanel";
-import { Award, Clock, Grid, List, Hash } from 'react-feather';
+import { Award, Clock, Crosshair, Grid, List, Hash } from 'react-feather';
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./Elves.scss";
@@ -17,6 +17,11 @@ export const displayTypes = [
     attr: "statLevel",
     value: "statLevel",
     label: <Award />,
+  },
+  {
+    attr: "weaponTier",
+    value: "weaponTier",
+    label: <Crosshair />,
   },
   {
     attr: "id",
