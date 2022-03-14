@@ -49,6 +49,7 @@ export const viewTypes = [
 
 
 export default function Elves() {
+  const [nextUpdate, setNextUpdate] = useState(new Date());
   const [displayType, setDisplayType] = useState(displayTypes[0]);
   const [viewType, setViewType] = useState(viewTypes[0]);
   const pageEl = useRef(null);
@@ -72,6 +73,20 @@ export default function Elves() {
     return currentAction || actions[0];
   }, [location.pathname]);
 
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextUpdateSeconds = elves.reduce(
+        (min, p) => 0 < p.cooldownSeconds && p.cooldownSeconds < min ? p.cooldownSeconds : min,
+        Infinity
+      );
+      console.log(nextUpdateSeconds);
+      setNextUpdate(nextUpdateSeconds * 1000);
+    }, nextUpdate);
+    return () => clearInterval(interval);
+  });
+
   const availableActions = useMemo(() => {
     return actions.map((action) => {
       let elvesCount = 0;
@@ -88,10 +103,11 @@ export default function Elves() {
         return true;
       });
 
+      action.nextUpdate = nextUpdate;
       action.disabled = disabled;
       return action;
     });
-  }, [elves]);
+  }, [elves, nextUpdate]);
 
   const sections = useMemo(() => {
     const { sections } = action;
@@ -103,7 +119,7 @@ export default function Elves() {
       section.elves?.sort((a, b) => a.sort - b.sort);
     });
     return sections;
-  }, [action, displayType.attr, elves]);
+  }, [action, displayType.attr, elves, nextUpdate]);
 
   return (
     <div className="Elves page" ref={pageEl}>
