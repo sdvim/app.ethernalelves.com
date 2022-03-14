@@ -7,7 +7,9 @@ const ActionSelection = () => {
     <div className="ActionSelection">
       { actions.map((action, index) => !action.hidden && (
         <NavLink replace={true} key={index} to={`/elves/${action.path}`}>
-          <button style={{ backgroundImage: `url(${action.image})` }} />
+          <button>
+            { action.image }
+          </button>
         </NavLink>
       )) }
     </div>

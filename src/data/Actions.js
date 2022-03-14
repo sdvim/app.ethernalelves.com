@@ -1,11 +1,4 @@
-import Bloodthirst from "../assets/actions/bloodthirst.png";
-import Campaign from "../assets/actions/campaign.png";
-import Forge from "../assets/actions/forge.png";
-import Heal from "../assets/actions/heal.png";
-import Merchant from "../assets/actions/merchant.png";
-import Passive from "../assets/actions/passive.png";
-import Rampage from "../assets/actions/rampage.png";
-import Synergize from "../assets/actions/synergize.png";
+import { Hardware } from "@areatechnology/shields-react";
 
 import {
   SELECTION_LIMIT,
@@ -50,7 +43,7 @@ const actions = [
   {
     path: "heal",
     label: "Heal",
-    image: Heal,
+    image: <Hardware hardwareId={25} />, // Crozier
     text: "Heal #ELVES?",
     sections: [
       {
@@ -70,7 +63,7 @@ const actions = [
   {
     path: "synergize",
     label: "Synergize",
-    image: Synergize,
+    image: <Hardware hardwareId={23} />, // Pocketwatch
     cost: SYNERGIZE_COST_REN,
     text: "Reroll cooldown for #ELVES and burn #REN $REN?",
     sections: [
@@ -84,7 +77,7 @@ const actions = [
   {
     path: "merchant",
     label: "Merchant",
-    image: Merchant,
+    image: <Hardware hardwareId={29} />, // Cauldron
     cost: MERCHANT_COST_REN,
     text: "Reroll items for #ELVES and burn #REN $REN?",
     sections: [
@@ -101,7 +94,7 @@ const actions = [
   {
     path: "forge",
     label: "Forge",
-    image: Forge,
+    image: <Hardware hardwareId={24} />, // Anvil
     cost: FORGE_COST_REN,
     text: "Reroll weapons for #ELVES and burn #REN $REN?",
     sections: [
@@ -122,7 +115,7 @@ const actions = [
   {
     path: "passive",
     label: "Passive",
-    image: Passive,
+    image: <Hardware hardwareId={84} />, // Lyre
     text: "Send #ELVES to Passive?",
     sections: [
       {
@@ -140,7 +133,7 @@ const actions = [
   {
     path: "campaign",
     label: "Campaign",
-    image: Campaign,
+    image: <Hardware hardwareId={87} />, // Castle
     text: "Send #ELVES to #CAMPAIGN?",
     sections: [
       {
@@ -158,7 +151,7 @@ const actions = [
   {
     path: "bloodthirst",
     label: "Bloodthirst",
-    image: Bloodthirst,
+    image: <Hardware hardwareId={64} />, // Pickaxe
     text: "Send #ELVES to Bloodthirst?",
     sections: [
       {
@@ -176,7 +169,7 @@ const actions = [
   {
     path: "rampage",
     label: "Rampage",
-    image: Rampage,
+    image: <Hardware hardwareId={94} />, // Torch
     text: "Send #ELVES to #RAMPAGE and burn #REN?",
     sections: [
       {
