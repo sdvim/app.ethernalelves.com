@@ -1,5 +1,5 @@
 import { actions } from "../../data";
-import { Routes, Route, useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { ChevronLeft, Check } from 'react-feather';
 
 const ActionSelection = () => {
