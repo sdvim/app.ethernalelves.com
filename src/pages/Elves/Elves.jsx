@@ -55,38 +55,16 @@ export default function Elves() {
   const filterEl = useRef(null);
   const location = useLocation();
 
-  // const [nextElfToUpdate, setNextElfToUpdate] = useState(null);
-  // const [nextUpdate, setNextUpdate] = useState(1000);
-  const { user: { elfData, selection } } = useTrackedState();
-
-  const elves = useMemo(() => elfData?.map((elfObject) => {
-    const elf = new Elf(elfObject);
-    elf.select(selection?.includes(elf.id));
-    elf.sortBy(displayType.attr);
-    // if (!nextElfToUpdate || (elf.isCoolingDown && elf.lastActionTimestamp < nextElfToUpdate.lastActionTimestamp)) {
-    //   setNextElfToUpdate(elf);
-    // }
-    return elf;
-  }), [displayType.attr, elfData, selection]);
+  const { user: { elfData } } = useTrackedState();
 
   useEffect(() => {
     if (!pageEl || !filterEl) return;
     pageEl.current.scrollTop = filterEl.current.clientHeight;
   }, [location]);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (!nextElfToUpdate) {
-  //       return;
-  //     }
-  //     if (nextElfToUpdate.cooldownSeconds < 2 * 60 * 60) {
-  //       setNextUpdate(1000 + (Math.random() / 1000));
-  //       return;
-  //     }
-  //     setNextUpdate((1000 * 60) + (Math.random() / 1000));
-  //   }, nextUpdate);
-  //   return () => clearInterval(interval);
-  // }, [nextElfToUpdate, nextUpdate]);
+  const elves = useMemo(() =>
+    elfData?.map((elfObject) => new Elf(elfObject)
+  ), [elfData]);
 
   const action = useMemo(() => {
     const currentPath = location.pathname.split("/").pop();
@@ -98,10 +76,13 @@ export default function Elves() {
     const { sections } = action;
     sections.forEach((section) => {
       section.elves = elves?.filter(section.filter);
+      section.elves?.forEach((elf) => {
+        elf.sortBy(displayType.attr);
+      })
       section.elves?.sort((a, b) => a.sort - b.sort);
     });
     return sections;
-  }, [action, elves]);
+  }, [action, displayType.attr, elves]);
 
   return (
     <div className="Elves page" ref={pageEl}>
@@ -117,10 +98,7 @@ export default function Elves() {
           sections={sections}
         />
         <ElvesDetailsPanel />
-        <ElvesActionPanel
-          action={action}
-          sections={sections}
-        />
+        <ElvesActionPanel action={action} />
       </div>
     </div>
   );

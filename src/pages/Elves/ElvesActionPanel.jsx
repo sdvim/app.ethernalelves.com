@@ -1,5 +1,5 @@
 import { actions } from "../../data";
-import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { ChevronLeft, Check } from 'react-feather';
 
 const ActionSelection = () => {
@@ -42,7 +42,7 @@ const ActionPagelet = ({ text }) => {
   )
 }
 
-export const ElvesActionPanel = ({ action, sections }) => {
+export const ElvesActionPanel = ({ action }) => {
   return (
     <div className="ElvesActionPanel">
       { !action.hidden

@@ -150,5 +150,4 @@ export class Elf {
   }
 }
 
-Elf.prototype.select = function(bool) { this.isSelected = bool }
 Elf.prototype.sortBy = function(attr) { this.sort = this[attr] }

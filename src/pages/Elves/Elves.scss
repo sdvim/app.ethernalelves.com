@@ -29,7 +29,7 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
-  &__list .list-item {
+  &__list-item {
     display: grid;
     grid-template-columns: 2fr 1fr 5fr;
     gap: 0.5em 1em;
