@@ -1,16 +1,21 @@
-import { actions } from "../../data";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Check } from 'react-feather';
 
-const ActionSelection = () => {
+const ActionSelection = ({ availableActions }) => {
+  const navigate = useNavigate();
+
+  const onClick = (url) => navigate(url, { replace: true });
+
   return (
     <div className="ActionSelection">
-      { actions.map((action, index) => !action.hidden && (
-        <NavLink replace={true} key={index} to={`/elves/${action.path}`}>
-          <button>
-            { action.image }
-          </button>
-        </NavLink>
+      { availableActions?.map((action, index) => !action.hidden && (
+        <button
+          disabled={action.disabled}
+          key={index}
+          onClick={() => onClick(`/elves/${action.path}`)}
+        >
+          { action.image }
+        </button>
       )) }
     </div>
   );
@@ -42,12 +47,12 @@ const ActionPagelet = ({ text }) => {
   )
 }
 
-export const ElvesActionPanel = ({ action }) => {
+export const ElvesActionPanel = ({ action, availableActions }) => {
   return (
     <div className="ElvesActionPanel">
       { !action.hidden
         ? <ActionPagelet text={action.text} />
-        : <ActionSelection />
+        : <ActionSelection availableActions={availableActions} />
       }
     </div>
   );

@@ -128,6 +128,13 @@
     width: 100%;
     overflow: hidden;
     padding-top: calc(100% - 0.5em);
+
+    &:disabled {
+      background: rgb(var(--color-700, 0.5));
+      svg {
+        filter: contrast(0) brightness(0) opacity(.25);
+      }
+    }
   }
 
   svg {

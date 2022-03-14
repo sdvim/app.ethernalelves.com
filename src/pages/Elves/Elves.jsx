@@ -72,6 +72,27 @@ export default function Elves() {
     return currentAction || actions[0];
   }, [location.pathname]);
 
+  const availableActions = useMemo(() => {
+    return actions.map((action) => {
+      let elvesCount = 0;
+      let disabled = false;
+      
+      action.sections.every(({ filter, required }) => {
+        let possibleElves = [...elves.filter(filter)].length;
+        elvesCount += possibleElves;
+        if (!possibleElves && required) {
+          disabled = true;
+          return false;
+        }
+        if (elvesCount) return false;
+        return true;
+      });
+
+      action.disabled = disabled;
+      return action;
+    });
+  }, [elves]);
+
   const sections = useMemo(() => {
     const { sections } = action;
     sections.forEach((section) => {
@@ -98,7 +119,10 @@ export default function Elves() {
           sections={sections}
         />
         <ElvesDetailsPanel />
-        <ElvesActionPanel action={action} />
+        <ElvesActionPanel
+          action={action}
+          availableActions={availableActions}
+        />
       </div>
     </div>
   );
