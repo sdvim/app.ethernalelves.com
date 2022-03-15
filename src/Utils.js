@@ -9,6 +9,10 @@ const polygonWeb3 = new Web3(new Web3.providers.HttpProvider(process.env.REACT_A
 
 // const polygonContract = new polygonWeb3.eth.Contract(polygonElvesABI.abi, POLYGON_ELVES_CONTRACT);
 
+export const pluralizeElves = (count) => {
+  return `${count} ${count === 1 ? "Elf" : "Elves"}`;
+}
+
 export const inRange = (start, x, end) => {
   return ((x - start) * (x - end)) <= 0;
 }

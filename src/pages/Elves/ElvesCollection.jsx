@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Avatar } from "../../components";
 import { useDispatch, useTrackedState } from "../../Store";
-
-const pluralizeElves = (count) => {
-  return `${count} ${count === 1 ? "Elf" : "Elves"}`;
-}
+import { pluralizeElves } from "../../Utils";
 
 const attrToDisplayString = ({ elf, attr }) => {
   switch (attr) {
