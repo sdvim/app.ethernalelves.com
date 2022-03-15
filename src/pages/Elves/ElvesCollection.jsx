@@ -53,6 +53,7 @@ const SectionElfItem = ({ elf, attr, view, readonly }) => {
      ? <Avatar
           image={elf.image}
           isSelected={isSelected}
+          isSelectable={!readonly}
           healthPercentage={elf.healthPercentage}
           hideBars={!elf.isCoolingDown}
           display={attrToDisplayString({ elf, attr })}
@@ -66,6 +67,7 @@ const SectionElfItem = ({ elf, attr, view, readonly }) => {
           <Avatar
             image={elf.image}
             isSelected={isSelected}
+            isSelectable={!readonly}
             healthPercentage={elf.healthPercentage}
             hideBars={elf.didPassive}
             lastUpdated={lastUpdated}
