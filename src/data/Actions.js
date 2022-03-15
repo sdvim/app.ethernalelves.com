@@ -20,17 +20,17 @@ const actions = [
         readonly: true,
       },
       {
-        label: "Almost ready",
+        label: "Ready soon",
         filter: (elf) => 0 < elf.cooldownSeconds && elf.cooldownSeconds <= 2 * 3600,
         readonly: true,
       },
       {
-        label: "Ready soon",
+        label: "Ready later today",
         filter: (elf) => 2 * 3600 < elf.cooldownSeconds && /^\d+$/.test(elf.cooldownString[0]),
         readonly: true,
       },
       {
-        label: "Ready later",
+        label: "Ready in a while",
         filter: (elf) => 2 * 3600 < elf.cooldownSeconds && !/^\d+$/.test(elf.cooldownString[0]),
         readonly: true,
       },
