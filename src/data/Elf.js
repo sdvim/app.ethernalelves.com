@@ -3,30 +3,44 @@ import {
   ELVES_CONTRACT,
   POLYGON_ELVES_CONTRACT,
   IMAGE_HASH_PREFIX,
+  PASSIVE_THRESHOLDS,
   items
 } from "./";
 
+const timestampToPassiveProgress = (timestamp) => {
+  let remainingSeconds = +new Date() / 1000 - timestamp;
+  let days = (remainingSeconds / 3600 / 24);
+  let thresholds = Object.keys(PASSIVE_THRESHOLDS);
+  let i = 0;
+
+  while (days > thresholds[i] && i <= thresholds.length) i++;
+
+  return {
+    percentage: days / thresholds[i] * 100,
+    tier: i,
+  };
+}
+
 const timestampToHealthPercentage = (timestamp) => {
-  const now = new Date().getTime()
-  const diff = Math.floor(new Date(timestamp * 1000).getTime() - now) / 36e5;
-  const result = 100 - 3 * diff;
+  let remainingSeconds = +new Date() / 1000 - timestamp;
+  let result = 100 - (-remainingSeconds / 1200);
   return Math.min(100, Math.max(5, result));
 }
 
 const timestampToTimeString = (timestamp) => {
-  let diff = +new Date() / 1000 - timestamp;
-  let isFuture = diff < 0;
+  let remainingSeconds = +new Date() / 1000 - timestamp;
+  let isFuture = remainingSeconds < 0;
 
-  diff = Math.abs(diff);
-  let hours = Math.floor(diff / 3600);
+  remainingSeconds = Math.abs(remainingSeconds);
+  let hours = Math.floor(remainingSeconds / 3600);
 
   if (!isFuture) {
     if (hours >= 24) {
       return `${(hours / 24).toFixed(1)}d ago`;
     }
     if (hours < 1) {
-      diff -= hours * 3600;
-      return `${Math.floor(diff / 60)}m ago`;
+      remainingSeconds -= hours * 3600;
+      return `${Math.floor(remainingSeconds / 60)}m ago`;
     }
     return `${hours}h ago`;
   }
@@ -39,9 +53,9 @@ const timestampToTimeString = (timestamp) => {
     return today !== day ? `${day} ${time}` : `${time}`;
   }
 
-  diff -= hours * 3600;
-  const minutes = String((diff / 60) | 0).padStart(2, "0");
-  const seconds = String((diff % 60) | 0).padStart(2, "0");
+  remainingSeconds -= hours * 3600;
+  const minutes = String((remainingSeconds / 60) | 0).padStart(2, "0");
+  const seconds = String((remainingSeconds % 60) | 0).padStart(2, "0");
 
   return hours ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }
@@ -133,6 +147,7 @@ export class Elf {
   get levelString() { return `Lv. ${this.statLevel}` }
   get nameString() { return this.name ? this.name : `Elf #${this.id}` }
   get weaponTierString() { return `+${this.weaponTier}` }
+  get passiveProgress() { return this.didPassive && timestampToPassiveProgress(this.lastActionTimestamp) }
   get healthPercentage() { return timestampToHealthPercentage(this.lastActionTimestamp) }
   get actionString() {
     switch (this.lastActionId) {

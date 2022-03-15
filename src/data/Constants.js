@@ -6,3 +6,8 @@ export const SELECTION_LIMIT = 10;
 export const SYNERGIZE_COST_REN = 5;
 export const MERCHANT_COST_REN = 10;
 export const FORGE_COST_REN = 200;
+export const PASSIVE_THRESHOLDS = {
+  7: 140,
+  14: 420,
+  30: 1200,
+};

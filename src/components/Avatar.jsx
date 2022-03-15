@@ -7,7 +7,7 @@ export default function Avatar({
   onClick,
   image,
   display,
-  selectionIndex,
+  passiveProgress,
 }) {
   const selectable = isSelectable ? "Avatar--selectable" : "";
   const selected = isSelected ? "Avatar--selected" : "";
@@ -18,17 +18,14 @@ export default function Avatar({
       <img className="Avatar__image" src={image} alt="Avatar of Elf" />
       <div className="Avatar__cooldown" style={style}></div>
       <div className="Avatar__display mono">{display}</div>
-      { selectionIndex >= 0 &&
-        <div className="Avatar__index">#{ selectionIndex + 1 }</div>
-      }
-      {/* { !hideBars &&
-        <div className="Avatar__bar Avatar__health">
+      { passiveProgress &&
+        <div className={`Avatar__bar Avatar__passive Avatar__passive--tier-${passiveProgress.tier}`}>
           <div
-            className="Avatar__health--inner"
-            style={{ width: `${healthPercentage}%` }}
+            className="Avatar__passive--inner"
+            style={{ width: `${passiveProgress.percentage}%` }}
           ></div>
         </div>
-      } */}
+      }
     </div>
   );
 }

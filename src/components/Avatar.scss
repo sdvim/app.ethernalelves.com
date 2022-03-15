@@ -68,12 +68,28 @@
     padding: 2px 4px;
   }
 
-  &__health {
-    background: #020;
+  &__passive {
     &--inner {
-      background: #060;
       height: 100%;
-      box-shadow: 0 0 0 1px inset rgba(white, 0.2);
+      box-shadow: 0 0 0 1px inset rgba(var(--color-tint));
+    }
+    &--tier-0 {
+      background: rgba(var(--color-750));
+      > * {
+        background: rgba(var(--color-500));
+      }
+    }
+    &--tier-1 {
+      background: rgba(var(--color-550));
+      > * {
+        background: rgba(var(--color-300));
+      }
+    }
+    &--tier-2 {
+      background: rgba(var(--color-300));
+      > * {
+        background: rgba(var(--color-50));
+      }
     }
   }
 }

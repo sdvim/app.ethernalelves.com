@@ -55,7 +55,7 @@ const SectionElfItem = ({ elf, attr, view, readonly }) => {
           isSelected={isSelected}
           isSelectable={!readonly}
           healthPercentage={elf.healthPercentage}
-          hideBars={!elf.isCoolingDown}
+          passiveProgress={elf.passiveProgress}
           display={attrToDisplayString({ elf, attr })}
           onClick={onClick}
           lastUpdated={lastUpdated}
@@ -69,7 +69,7 @@ const SectionElfItem = ({ elf, attr, view, readonly }) => {
             isSelected={isSelected}
             isSelectable={!readonly}
             healthPercentage={elf.healthPercentage}
-            hideBars={elf.didPassive}
+            passiveProgress={elf.passiveProgress}
             lastUpdated={lastUpdated}
           />
           <span>{ elf.idString }</span>
