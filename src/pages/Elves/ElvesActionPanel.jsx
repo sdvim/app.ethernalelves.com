@@ -48,7 +48,7 @@ const ActionPagelet = ({ action: { text, cost } }) => {
         <button onClick={onBackClick}>
           <ChevronLeft />
         </button>
-        <button onClick={onConfirm}>
+        <button onClick={onConfirm} disabled={!selection.length}>
           <Check />
         </button>
       </div>
