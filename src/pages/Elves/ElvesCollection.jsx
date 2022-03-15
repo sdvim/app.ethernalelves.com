@@ -82,7 +82,7 @@ const SectionElfItem = ({ elf, attr, view, readonly }) => {
             </>
           ) }
         </div>
-  }, [attr, dispatch, elf, lastUpdated, selection, view]);
+  }, [attr, dispatch, elf, lastUpdated, readonly, selection, view]);
 }
 
 export function ElvesCollection({

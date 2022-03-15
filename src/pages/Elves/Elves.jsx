@@ -1,4 +1,4 @@
-import { useTrackedState, useDispatch } from "../../Store";
+import { useTrackedState } from "../../Store";
 import { actions, Elf } from "../../data";
 import { useLocation } from "react-router-dom";
 
@@ -55,9 +55,8 @@ export default function Elves() {
   const pageEl = useRef(null);
   const filterEl = useRef(null);
   const location = useLocation();
-  const dispatch = useDispatch();
 
-  const { user: { elfData, selection } } = useTrackedState();
+  const { user: { elfData } } = useTrackedState();
 
   useEffect(() => {
     if (!pageEl || !filterEl) return;
@@ -71,9 +70,8 @@ export default function Elves() {
   const action = useMemo(() => {
     const currentPath = location.pathname.split("/").pop();
     const currentAction = actions.find(({ path }) => path === currentPath);
-    if (selection.length) dispatch({ type: "CLEAR_SELECTION" });
     return currentAction || actions[0];
-  }, [dispatch, location.pathname]);
+  }, [location.pathname]);
 
 
 
@@ -114,6 +112,7 @@ export default function Elves() {
     const { sections } = action;
     sections.forEach((section) => {
       section.elves = elves?.filter(section.filter);
+      section.nextUpdate = nextUpdate;
       section.elves?.forEach((elf) => {
         elf.sortBy(displayType.attr);
       })

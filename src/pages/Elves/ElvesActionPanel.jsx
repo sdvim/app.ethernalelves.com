@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Check } from 'react-feather';
-import { useTrackedState } from "../../Store";
+import { useTrackedState, useDispatch } from "../../Store";
 import { pluralizeElves } from "../../Utils";
 
 const ActionSelection = ({ availableActions }) => {
@@ -25,6 +25,7 @@ const ActionSelection = ({ availableActions }) => {
 
 const ActionPagelet = ({ action: { text, cost } }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user: { selection } } = useTrackedState();
 
   const onConfirm = () => {
@@ -32,6 +33,7 @@ const ActionPagelet = ({ action: { text, cost } }) => {
   }
 
   const onBackClick = () => {
+    dispatch({ type: "CLEAR_SELECTION" });
     navigate("/elves", { replace: true });
   }
 
