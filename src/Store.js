@@ -44,8 +44,9 @@ const reducer = (state, action) => {
           action.message
         ]
       };
-    
     // User Actions
+    case "CLEAR_SELECTION":
+      return { ...state, user: { ...state.user, selection: [] } };
     case "UPDATE_SELECTION":
       const { selection } = state.user;
       return {

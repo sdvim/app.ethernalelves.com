@@ -17,26 +17,32 @@ const actions = [
       {
         label: "Ready",
         filter: (elf) => !elf.didBridge && elf.isReady,
+        readonly: true,
       },
       {
         label: "Almost ready",
         filter: (elf) => 0 < elf.cooldownSeconds && elf.cooldownSeconds <= 2 * 3600,
+        readonly: true,
       },
       {
         label: "Ready soon",
         filter: (elf) => 2 * 3600 < elf.cooldownSeconds && /^\d+$/.test(elf.cooldownString[0]),
+        readonly: true,
       },
       {
         label: "Ready later",
         filter: (elf) => 2 * 3600 < elf.cooldownSeconds && !/^\d+$/.test(elf.cooldownString[0]),
+        readonly: true,
       },
       {
         label: "Passive",
         filter: (elf) => elf.didPassive,
+        readonly: true,
       },
       {
         label: "Bridged (Polygon)",
         filter: (elf) => elf.didBridge,
+        readonly: true,
       },
     ],
   },

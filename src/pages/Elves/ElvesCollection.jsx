@@ -24,7 +24,7 @@ const SectionHeader = ({ section: { label, elves }}) => {
   );
 }
 
-const SectionElfItem = ({ elf, attr, view }) => {
+const SectionElfItem = ({ elf, attr, view, readonly }) => {
   const dispatch = useDispatch();
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [nextUpdate, setNextUpdate] = useState(1000);
@@ -44,7 +44,7 @@ const SectionElfItem = ({ elf, attr, view }) => {
 
   return useMemo(() => {
     const isSelected = selection?.includes(elf.id);
-    const onClick = () => !elf.didBridge && dispatch({
+    const onClick = () => !readonly && !elf.didBridge && dispatch({
       type: "UPDATE_SELECTION",
       id: elf.id,
     });
@@ -104,6 +104,7 @@ export function ElvesCollection({
                 attr={attr}
                 view={view}
                 key={`${sectionIndex}-${elfIndex}`}
+                readonly={section.readonly}
               />
             )}
           </div>
