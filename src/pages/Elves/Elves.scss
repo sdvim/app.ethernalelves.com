@@ -1,18 +1,14 @@
-:root {
-  --filter-height: 8.5rem;
-}
-
 .Elves {
   padding: 0;
   position: relative;
 
   &__frame {
-    min-height: calc(100vh + var(--filter-height));
+    min-height: calc(100vh + var(--height-filter) - var(--height-header));
   }
 }
 
 .ElvesCollection {
-  padding: 0 1rem 16rem;
+  padding: 0 1rem 4rem;
 
   &__header {
     display: flex;
@@ -59,7 +55,7 @@
   padding: 0.5rem 1rem;
   position: relative;
   z-index: 1;
-  min-height: var(--filter-height);
+  min-height: var(--height-filter);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -67,7 +63,7 @@
 
 .ElvesActionPanel {
   box-shadow: 0 0 1em 1em rgba(var(--color-shadow));
-  position: fixed;
+  position: sticky;
   width: calc(100% - 3rem);
   height: 12rem;
   bottom: 1.5rem;
@@ -77,6 +73,12 @@
   border: 15px solid;
   border-image: var(--border-image-frame) 100 / 45px / 15px stretch;
   background: rgb(var(--color-900));
+  opacity: 1;
+  transition: opacity var(--transition-fast);
+
+  &--hidden {
+    opacity: 0;
+  }
 
   a {
     text-decoration: none;

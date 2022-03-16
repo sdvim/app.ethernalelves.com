@@ -14,9 +14,9 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    height: 3.5em;
-    padding: 0.5em;
-    box-shadow: 0 1em 2em rgba(var(--color-shadow));
+    height: var(--height-header);
+    padding: 0.5rem;
+    box-shadow: 0 1rem 2rem rgba(var(--color-shadow));
     position: relative;
     z-index: 1;
 

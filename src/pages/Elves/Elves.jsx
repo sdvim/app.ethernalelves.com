@@ -1,6 +1,7 @@
 import { useTrackedState } from "../../Store";
 import { actions, Elf } from "../../data";
 import { useLocation } from "react-router-dom";
+import { throttle } from "../../Utils";
 
 import { ElvesActionPanel } from "./ElvesActionPanel";
 import { ElvesCollection } from "./ElvesCollection";
@@ -52,15 +53,29 @@ export default function Elves() {
   const [nextUpdate, setNextUpdate] = useState(new Date());
   const [displayType, setDisplayType] = useState(displayTypes[0]);
   const [viewType, setViewType] = useState(viewTypes[0]);
+  const [hideActions, sethideActions] = useState(false);
+  const lastScroll = useRef(0);
   const pageEl = useRef(null);
   const filterEl = useRef(null);
   const location = useLocation();
 
   const { user: { elfData } } = useTrackedState();
 
+  const onScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    const isNearBottom = scrollHeight - scrollTop <= clientHeight + 60;
+    const isScrollingDown = (scrollTop - lastScroll.current) > 0;
+    const shouldHideActions = !isNearBottom && isScrollingDown;
+    lastScroll.current = scrollTop;
+    if (shouldHideActions !== hideActions) sethideActions(shouldHideActions);
+  }
+
+  const throttledOnScroll = throttle(onScroll, 300, { leading: false });
+
   useEffect(() => {
     if (!pageEl || !filterEl) return;
     pageEl.current.scrollTop = filterEl.current.clientHeight;
+    lastScroll.current = filterEl.current.clientHeight;
   }, [location]);
 
   const elves = useMemo(() =>
@@ -72,8 +87,6 @@ export default function Elves() {
     const currentAction = actions.find(({ path }) => path === currentPath);
     return currentAction || actions[0];
   }, [location.pathname]);
-
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -122,7 +135,7 @@ export default function Elves() {
   }, [action, displayType.attr, elves, nextUpdate]);
 
   return (
-    <div className="Elves page" ref={pageEl}>
+    <div className="Elves page" ref={pageEl} onScroll={throttledOnScroll} onWheel={null}>
       <div className="Elves__frame">
         <ElvesFilterPanel
           onDisplayTypeChange={setDisplayType}
@@ -138,6 +151,7 @@ export default function Elves() {
         <ElvesActionPanel
           action={action}
           availableActions={availableActions}
+          hideActions={hideActions}
         />
       </div>
     </div>

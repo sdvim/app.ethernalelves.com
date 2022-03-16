@@ -58,9 +58,10 @@ const ActionPagelet = ({ action: { text, cost } }) => {
   )
 }
 
-export const ElvesActionPanel = ({ action, availableActions }) => {
+export const ElvesActionPanel = ({ action, availableActions, hideActions }) => {
+  const hidden = hideActions ? "ElvesActionPanel--hidden" : "";
   return (
-    <div className="ElvesActionPanel">
+    <div className={`ElvesActionPanel ${hidden}`}>
       { !action.hidden
         ? <ActionPagelet action={action} />
         : <ActionSelection availableActions={availableActions} />
